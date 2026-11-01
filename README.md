@@ -13,38 +13,29 @@ Abrí `prototype/index.html` en el navegador. No necesita build ni servidor.
 
 ## Pantallas
 
+Temática cute, cozy y misteriosa: noche de cacao, luz de vela, fases de la luna y Miso, el gatito de la app.
+
 | | Pantalla | Qué resuelve |
 |---|---|---|
-| A | **Hoy** | Arco del día (despertar → dormir), rutinas, recordatorio próximo, tareas, hábitos con un toque y registro rápido de ánimo. |
-| B | **Rutinas** | Mañana y noche paso a paso, con horario, duración, anillo de progreso y racha. |
-| C | **Agenda** | Calendario mensual con puntos por tipo de evento y la línea de tiempo del día elegido. Botón + para crear tareas con recordatorio. |
-| D | **Hábitos y metas** | Hábitos con la semana en barras y racha; metas anuales con marca de *ritmo esperado*. |
-| E | **Progreso** | Puntaje semanal, cumplimiento por día, estadísticas, ánimo de la semana, una observación y mapa de las últimas 12 semanas. |
-| F | **Diario** | Escala de ánimo de 5 niveles, etiquetas, texto libre, 3 agradecimientos e historial. |
+| A | **Hoy** | Arco del día (despertar → a soñar), carta del día para dar vuelta, rituales, recordatorio, pendientes, velitas y "¿Cómo te sentís hoy?". |
+| B | **Rituales** | Ritual del amanecer y ritual de la luna, paso a paso con horario, duración y racha. |
+| C | **Agenda lunar** | Calendario con las fases reales de la luna, planes del día elegido y botón + para pendientes con recordatorio. |
+| D | **Velitas y constelaciones** | Cada hábito es una velita que se enciende; cada meta es una constelación que se ilumina estrella por estrella. |
+| E | **Bola de cristal** | Puntaje semanal, día por día, estadísticas, lunas de la semana, un patrón detectado y "tu cielo" de 12 semanas. |
+| F | **Diario** | Ánimo en fases de la luna (Tormenta → Luna llena), etiquetas, texto libre, tres cositas lindas e historial. |
 
 ## Sistema visual
 
-**Principios**
-1. *El día es un arco.* Todo se ordena entre despertar y dormir. Ámbar = mañana, índigo = noche; se repiten en rutinas, agenda y metas.
-2. *Un toque, no un formulario.* Marcar un hábito, un paso o el ánimo es un solo toque; escribir es opcional.
-3. *Progreso honesto.* Las metas muestran el ritmo esperado, no solo el porcentaje.
+**Paleta base**
 
-**Color** (claro / oscuro)
+| Nombre | Hex | Uso |
+|---|---|---|
+| Mushroom | `#A89A94` | Textos suaves, luna |
+| Blush Beige | `#D9C4BC` | Botones, completado |
+| Deep Cocoa | `#4A3835` | Tarjetas, noche |
 
-| Token | Rol | Claro | Oscuro |
-|---|---|---|---|
-| `--accent` Musgo | Marca, completado | `#2E6B4C` | `#72C194` |
-| `--sun` Amanecer | Mañana, rachas | `#C97A12` | `#F1AD4E` |
-| `--moon` Anochecer | Noche, observaciones | `#4A4E9E` | `#A3A7F2` |
-| `--alert` Aviso | Urgente, vencimientos | `#B9473F` | `#EC8178` |
-| `--ink` Tinta | Texto | `#16201A` | `#E5ECE6` |
-| `--bg` Luz de día | Fondo | `#E9EDE7` | `#0D120F` |
+Derivados: cacao profundo `#2B201E` (fondo), luz de vela `#E8B98C` (mañana, estrellas), coral polvo `#E0907F` (recordatorios). Modo claro: fondo beige `#EEE3DE` con texto Deep Cocoa.
 
-Escala de ánimo: Pésimo · Bajo · Neutro · Bien · Pleno (de índigo a ámbar).
+**Tipografía**: Fraunces suave (títulos e itálicas del diario), Nunito (texto), DM Mono (horas y números).
 
-**Tipografía**
-- Títulos: Bricolage Grotesque 700–800, tracking negativo.
-- Texto: Onest 400–600.
-- Horas y números: JetBrains Mono, cifras tabulares.
-
-**Forma**: radios de 22 / 14 / 9 px; tarjetas sin sombra sobre fondo verdoso; checks cuadrados para tareas y redondos para pasos de rutina.
+**Principios**: un refugio, no una oficina · rituales chiquitos de un toque · magia sin culpa.

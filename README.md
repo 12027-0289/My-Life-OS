@@ -6,10 +6,15 @@ Este repositorio contiene, por ahora, el **diseño visual y un prototipo navegab
 
 ## Ver el prototipo
 
-Abrí `prototype/index.html` en el navegador. No necesita build ni servidor.
+- `prototype/index.html`: el prototipo completo (tablero con pantallas, celular y sistema visual). **Es el archivo que se edita.**
+- `prototype/celular.html`: abre el mismo prototipo en **modo celular**, con solo el teléfono, como un simulador. También funciona `index.html#celular`.
 
-- `prototype/my-life-os.html` es la fuente (fragmento HTML con estilos y script).
-- `prototype/index.html` es la versión autónoma, generada envolviendo la fuente con `<html>`/`<head>`/`<body>`.
+### Ver el celular en vivo mientras programás (VS Code)
+
+1. Instalá la extensión **Live Preview** (de Microsoft).
+2. Abrí `prototype/index.html` en el editor.
+3. Clic derecho en `prototype/celular.html` → **Show Preview**.
+4. Arrastrá la pestaña de la vista previa a la derecha. El celular se ajusta solo al tamaño del panel y se actualiza mientras escribís.
 
 ## Pantallas
 

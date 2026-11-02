@@ -36,7 +36,14 @@
   --bezel: #4A3835;
   --glow: rgba(232, 168, 120, .38);
   --shadow: 0 10px 26px -16px rgba(74, 56, 53, .45);
-  --m1: #7A6762; --m2: #A89A94; --m3: #CDB7AE; --m4: #E3B48F; --m5: #D98C4F;
+  /* pasteles que combinan con la paleta */
+  --rose: #E79AA8; --rose-soft: #FBE1E5;
+  --sage: #93B784; --sage-soft: #E3EFDB;
+  --lav: #AC97D6; --lav-soft: #ECE4F8;
+  --butter: #E9BF4F; --butter-soft: #FCF0CC;
+  --sky: #84B2D6; --sky-soft: #DFEDF8;
+  --peach: #EE9B74; --peach-soft: #FDE3D6;
+  --m1: var(--lav); --m2: var(--sky); --m3: var(--sage); --m4: var(--peach); --m5: var(--butter);
 
   /* Type */
   --display: "Fraunces", "Iowan Old Style", Georgia, serif;
@@ -52,7 +59,9 @@
   --candle: #E8B98C; --candle-soft: #4F3B2E; --moon: #BFAFA9; --moon-soft: #463733;
   --alert: #E0907F; --alert-soft: #55332E; --star: rgba(217, 196, 188, .5); --dot: rgba(217, 196, 188, .05);
   --cat: #1C1412; --bezel: #150F0E; --glow: rgba(232, 185, 140, .45); --shadow: 0 0 0 transparent;
-  --m1: #7A6560; --m2: #A89A94; --m3: #CDB9B1; --m4: #E2C4AA; --m5: #EDB57F;
+  --rose: #DE8E9C; --rose-soft: #4B3237; --sage: #96B689; --sage-soft: #33402F; --lav: #AF9DD8; --lav-soft: #3B3349;
+  --butter: #E5BE5E; --butter-soft: #463C22; --sky: #8BB4D6; --sky-soft: #2D3A45; --peach: #EC9C7A; --peach-soft: #4A3229;
+  --m1: var(--lav); --m2: var(--sky); --m3: var(--sage); --m4: var(--peach); --m5: var(--butter);
   color-scheme: dark;
 }
 
@@ -159,18 +168,18 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 
 .routine-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .routine-tile { border: 0; text-align: left; border-radius: var(--r-lg); padding: 14px; display: flex; flex-direction: column; gap: 8px; min-height: 138px; }
-.routine-tile.sun { background: var(--candle-soft); }
-.routine-tile.moon { background: var(--moon-soft); }
+.routine-tile.sun { background: linear-gradient(140deg, var(--butter-soft), var(--peach-soft)); }
+.routine-tile.moon { background: linear-gradient(140deg, var(--lav-soft), var(--sky-soft)); }
 .routine-tile .rt-top { display: flex; justify-content: space-between; align-items: center; }
 .routine-tile .rt-top svg { width: 24px; height: 24px; }
 .routine-tile.sun .rt-top svg { color: var(--candle); }
-.routine-tile.moon .rt-top svg { color: var(--moon); }
+.routine-tile.moon .rt-top svg { color: var(--lav); }
 .routine-tile b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 17px; font-weight: 600; line-height: 1.15; }
 .routine-tile small { color: var(--muted); font-size: 12px; }
 .meter { height: 6px; border-radius: 3px; background: var(--bg); overflow: hidden; margin-top: auto; }
 .meter i { display: block; height: 100%; border-radius: 3px; transition: width .3s; }
-.sun .meter i { background: var(--candle); }
-.moon .meter i { background: var(--moon); }
+.sun .meter i { background: var(--peach); }
+.moon .meter i { background: var(--lav); }
 
 .tarot-row { display: grid; grid-template-columns: 86px 1fr; gap: 14px; align-items: center; background: var(--surface); border-radius: var(--r-lg); padding: 14px; }
 .tarot { width: 86px; height: 132px; perspective: 600px; border: 0; padding: 0; background: none; }
@@ -212,7 +221,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 .habit-chip .mini-candle { width: 18px; height: 28px; overflow: visible; }
 .habit-chip b { font-size: 13.5px; font-weight: 700; display: block; }
 .habit-chip small { font-size: 11.5px; color: var(--muted); }
-.habit-chip[aria-pressed="true"] { background: var(--candle-soft); border-color: var(--candle); }
+.habit-chip[aria-pressed="true"] { background: var(--cs, var(--candle-soft)); border-color: var(--c, var(--candle)); }
 
 /* Candles */
 .candle .wax { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.2; }
@@ -221,7 +230,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 .candle .halo { fill: var(--glow); opacity: 0; transition: opacity .25s; }
 .candle.lit .flame { opacity: 1; animation: flicker 1.6s ease-in-out infinite; }
 .candle.lit .halo { opacity: .6; }
-.candle.lit .wax { fill: var(--candle-soft); stroke: var(--candle); }
+.candle.lit .wax { fill: var(--cs, var(--candle-soft)); stroke: var(--c, var(--candle)); }
 @keyframes flicker { 0%, 100% { transform: scale(1) rotate(-2deg); } 50% { transform: scale(.9, 1.08) rotate(3deg); } }
 
 .mood-prompt { background: linear-gradient(150deg, var(--moon-soft), var(--candle-soft)); border-radius: var(--r-lg); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
@@ -242,14 +251,14 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 .segmented button svg { width: 16px; height: 16px; }
 .segmented button[aria-pressed="true"] { background: var(--surface-2); color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
 .routine-hero { display: flex; align-items: center; gap: 16px; border-radius: var(--r-lg); padding: 16px; }
-.routine-hero.sun { background: var(--candle-soft); }
-.routine-hero.moon { background: var(--moon-soft); }
+.routine-hero.sun { background: linear-gradient(140deg, var(--butter-soft), var(--peach-soft)); }
+.routine-hero.moon { background: linear-gradient(140deg, var(--lav-soft), var(--sky-soft)); }
 .ring { width: 78px; height: 78px; flex: none; }
 .ring circle { fill: none; stroke-width: 7; }
 .ring .bg { stroke: var(--bg); }
 .ring .fg { stroke-linecap: round; transition: stroke-dashoffset .35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
-.sun .ring .fg { stroke: var(--candle); }
-.moon .ring .fg { stroke: var(--moon); }
+.sun .ring .fg { stroke: var(--peach); }
+.moon .ring .fg { stroke: var(--lav); }
 .ring text { font-family: var(--mono); font-size: 16px; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
 .routine-hero b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 600; font-size: 20px; display: block; }
 .routine-hero small { color: var(--muted); font-size: 13px; }
@@ -260,8 +269,8 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 .step .txt b { font-weight: 600; }
 .step .txt small { display: block; color: var(--muted); font-size: 12.5px; }
 .step.done .txt b { text-decoration: line-through; color: var(--muted); }
-.sun-steps .check[aria-pressed="true"] { background: var(--candle); border-color: var(--candle); }
-.moon-steps .check[aria-pressed="true"] { background: var(--moon); border-color: var(--moon); }
+.sun-steps .check[aria-pressed="true"] { background: var(--peach); border-color: var(--peach); }
+.moon-steps .check[aria-pressed="true"] { background: var(--lav); border-color: var(--lav); }
 .tip { font-size: 13px; color: var(--muted); display: flex; gap: 10px; align-items: start; }
 .tip svg { width: 18px; height: 18px; color: var(--candle); flex: none; margin-top: 2px; }
 
@@ -296,7 +305,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 .event small { color: var(--muted); font-size: 12.5px; }
 .empty { color: var(--muted); font-size: 13.5px; text-align: center; padding: 18px; background: var(--surface); border-radius: var(--r-md); }
 
-.fab { position: absolute; right: 20px; bottom: 96px; width: 58px; height: 58px; border-radius: 50%; border: 0; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; box-shadow: 0 0 0 6px var(--accent-soft), 0 14px 28px -10px var(--glow); }
+.fab { position: absolute; right: 20px; bottom: 96px; width: 58px; height: 58px; border-radius: 50%; border: 0; background: linear-gradient(135deg, var(--rose), var(--peach)); color: #FFFFFF; display: grid; place-items: center; box-shadow: 0 0 0 6px var(--rose-soft), 0 14px 28px -10px var(--glow); }
 .fab svg { width: 24px; height: 24px; }
 .sheet-scrim { position: absolute; inset: 0; background: rgba(20, 13, 12, .55); display: flex; align-items: flex-end; z-index: 5; }
 .sheet { width: 100%; background: var(--surface); border-radius: 28px 28px 0 0; padding: 10px 18px 28px; display: flex; flex-direction: column; gap: 14px; animation: up .25s ease-out; }
@@ -316,23 +325,23 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 .candles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; background: var(--surface); border-radius: var(--r-lg); padding: 16px 8px 12px; }
 .candle-btn { border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; font-size: 11.5px; font-weight: 700; text-align: center; line-height: 1.2; }
 .candle-btn svg { width: 34px; height: 56px; overflow: visible; }
-.candle-btn small { font-family: var(--mono); font-size: 10.5px; color: var(--candle); font-weight: 500; }
+.candle-btn small { font-family: var(--mono); font-size: 10.5px; color: color-mix(in srgb, var(--c, var(--candle)) 60%, var(--ink)); font-weight: 500; }
 .habit-week { background: var(--surface); border-radius: var(--r-lg); padding: 14px; display: flex; flex-direction: column; gap: 10px; }
 .hw-row { display: grid; grid-template-columns: 92px repeat(7, 1fr); gap: 4px; align-items: center; font-size: 12.5px; }
 .hw-row b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hw-row.head span { font-size: 10.5px; color: var(--muted); text-align: center; font-weight: 700; }
 .hw-row i { justify-self: center; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--line); }
-.hw-row i.on { background: var(--candle); border-color: var(--candle); box-shadow: 0 0 6px var(--glow); }
-.goal { background: var(--surface); border-radius: var(--r-lg); padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+.hw-row i.on { background: var(--c, var(--candle)); border-color: var(--c, var(--candle)); }
+.goal { background: linear-gradient(160deg, var(--cs, var(--surface)), var(--surface) 55%); border-radius: var(--r-lg); padding: 14px; display: flex; flex-direction: column; gap: 6px; }
 .goal-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
 .goal-top b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 600; font-size: 17px; }
 .goal-top .num { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
 .goal svg { display: block; width: 100%; height: auto; }
 .goal .ln { stroke: var(--line); stroke-width: 1.2; stroke-dasharray: 3 3; }
-.goal .ln.on { stroke: var(--candle); stroke-dasharray: none; opacity: .7; }
+.goal .ln.on { stroke: var(--c, var(--candle)); stroke-dasharray: none; opacity: .85; }
 .goal .st { fill: var(--line); }
 .goal .st.on { filter: drop-shadow(0 0 4px var(--glow)); }
-.goal .st.next { fill: none; stroke: var(--candle); stroke-width: 1.3; stroke-dasharray: 2 2; }
+.goal .st.next { fill: none; stroke: var(--c, var(--candle)); stroke-width: 1.3; stroke-dasharray: 2 2; }
 .goal small { color: var(--muted); font-size: 12.5px; }
 
 /* ---------- Bola de cristal ---------- */
@@ -470,6 +479,67 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 .hello::before { content: ""; position: absolute; right: -30px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, var(--candle-soft), transparent 70%); z-index: -1; }
 .hello { z-index: 0; }
 
+/* Colores por cosa */
+.tag.sage { background: var(--sage-soft); color: color-mix(in srgb, var(--sage) 50%, var(--ink)); }
+.tag.lav { background: var(--lav-soft); color: color-mix(in srgb, var(--lav) 50%, var(--ink)); }
+.tag.peach { background: var(--peach-soft); color: color-mix(in srgb, var(--peach) 50%, var(--ink)); }
+.tag.sky { background: var(--sky-soft); color: color-mix(in srgb, var(--sky) 50%, var(--ink)); }
+.tag.rose { background: var(--rose-soft); color: color-mix(in srgb, var(--rose) 50%, var(--ink)); }
+.row .check[aria-pressed="true"] { background: var(--c, var(--accent)); border-color: var(--c, var(--accent)); }
+.stat:nth-child(1) { background: var(--rose-soft); }
+.stat:nth-child(2) { background: var(--sage-soft); }
+.stat:nth-child(3) { background: var(--lav-soft); }
+.stat:nth-child(4) { background: var(--sky-soft); }
+.event.sun { background: linear-gradient(90deg, var(--butter-soft), var(--surface) 75%); }
+.event.moon { background: linear-gradient(90deg, var(--lav-soft), var(--surface) 75%); }
+.event.alert { background: linear-gradient(90deg, var(--alert-soft), var(--surface) 75%); }
+.event.rose { background: linear-gradient(90deg, var(--rose-soft), var(--surface) 75%); }
+.event.sage { background: linear-gradient(90deg, var(--sage-soft), var(--surface) 75%); }
+.event.peach { background: linear-gradient(90deg, var(--peach-soft), var(--surface) 75%); }
+.event.rose::before { background: var(--rose); box-shadow: 0 0 8px var(--rose); }
+.event.sage::before { background: var(--sage); box-shadow: 0 0 8px var(--sage); }
+.event.peach::before { background: var(--peach); box-shadow: 0 0 8px var(--peach); }
+.event.moon::before { background: var(--lav); box-shadow: 0 0 8px var(--lav); }
+.tabbar button:nth-child(1)[aria-current="true"] .tab-ic { background: var(--peach-soft); }
+.tabbar button:nth-child(2)[aria-current="true"] .tab-ic { background: var(--sky-soft); }
+.tabbar button:nth-child(3)[aria-current="true"] .tab-ic { background: var(--butter-soft); }
+.tabbar button:nth-child(4)[aria-current="true"] .tab-ic { background: var(--lav-soft); }
+.tabbar button:nth-child(5)[aria-current="true"] .tab-ic { background: var(--rose-soft); }
+.mood-prompt { transition: background .4s; }
+
+/* Anillos del día */
+.day-card { display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; background: var(--surface); border-radius: var(--r-lg); padding: 14px 16px; box-shadow: var(--shadow); }
+.rings { width: 96px; height: 96px; transform: rotate(-90deg); }
+.rings circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+.rings .rf { transition: stroke-dashoffset .7s cubic-bezier(.3, .7, .3, 1.2); }
+.day-copy b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 600; font-size: 17px; display: block; margin: 2px 0 8px; line-height: 1.2; }
+.day-copy b .big { font-weight: 700; font-size: 26px; }
+.legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; color: var(--muted); }
+.legend li { display: flex; align-items: center; gap: 6px; }
+.legend i { width: 9px; height: 9px; border-radius: 50%; }
+.legend .num { margin-left: auto; color: var(--ink); }
+
+/* Agüita */
+.water { background: linear-gradient(135deg, var(--sky-soft), var(--surface) 80%); border-radius: var(--r-lg); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow); }
+.water .num { font-size: 12.5px; color: var(--muted); }
+.drops { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+.drop { border: 0; background: none; padding: 0; display: grid; place-items: center; height: 40px; }
+.drop svg { width: 24px; height: 30px; overflow: visible; }
+.drop path { fill: var(--surface); stroke: var(--sky); stroke-width: 1.6; transition: fill .2s; }
+.drop.on path { fill: var(--sky); }
+.drop.on svg { animation: pop .35s; }
+@keyframes pop { 50% { transform: scale(1.3); } }
+
+/* Decoración y reacciones */
+.deco { position: absolute; width: 18px; height: 18px; pointer-events: none; animation: sway 4s ease-in-out infinite; }
+@keyframes sway { 50% { transform: rotate(28deg) translateY(-3px); } }
+.cat.hop { animation: hop .55s ease; }
+@keyframes hop { 30% { transform: translateY(-12px) rotate(-6deg); } 60% { transform: translateY(0) rotate(4deg); } }
+.particle { position: absolute; width: 16px; height: 16px; pointer-events: none; z-index: 7; }
+.routine-tile, .habit-chip, .candle-btn, .day, .mood-scale button, .drop, .tarot, .fab, .btn, .choice, .icon-btn { transition: transform .15s ease; }
+:is(.routine-tile, .habit-chip, .candle-btn, .day, .mood-scale button, .drop, .tarot, .fab, .btn, .choice, .icon-btn):active { transform: scale(.92); }
+@media (hover: hover) { .routine-tile:hover, .habit-chip:hover { transform: translateY(-2px); } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
@@ -479,6 +549,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="i-flower" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M12 2.2a4 4 0 0 1 3.9 4.9 4 4 0 0 1 2.4 7.3 4 4 0 0 1-6.3 4.6 4 4 0 0 1-6.3-4.6 4 4 0 0 1 2.4-7.3A4 4 0 0 1 12 2.2zm0 7.5a2.3 2.3 0 1 0 0 4.6 2.3 2.3 0 0 0 0-4.6z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.2 5.3 3.1 1.7-1.9 3.1-3.1 5.3-3.1 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></symbol>
     <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5l2.3 6.4 6.7.2-5.3 4.1 1.9 6.5L12 15.9l-5.6 3.8 1.9-6.5L3 9.1l6.7-.2z"/></symbol>
     <symbol id="i-spark" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c.6 4.8 2.2 6.4 7 7-4.8.6-6.4 2.2-7 7-.6-4.8-2.2-6.4-7-7 4.8-.6 6.4-2.2 7-7z"/></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 13.5A8 8 0 1 1 10.5 4a6.3 6.3 0 0 0 9.5 9.5z"/></symbol>
@@ -529,6 +600,9 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
               <div class="eyebrow"><svg id="todayMoon" viewBox="0 0 24 24"></svg><span id="todayLabel">Domingo 1 de noviembre</span></div>
               <h2>Hola, <em>estrellita</em></h2>
               <span class="bubble"><b>Miso:</b> <span id="catSays">miau. tomá agüita</span></span><button class="theme-btn" id="themeBtn" type="button"><svg><use href="#i-moon"/></svg><span>Modo noche</span></button>
+              <svg class="deco" style="right:84px;top:4px;color:var(--rose)" aria-hidden="true"><use href="#i-flower"/></svg>
+              <svg class="deco" style="right:4px;top:72px;width:14px;height:14px;color:var(--butter);animation-delay:-1.3s" aria-hidden="true"><use href="#i-flower"/></svg>
+              <svg class="deco" style="right:70px;top:44px;width:12px;height:12px;color:var(--lav);animation-delay:-2.4s" aria-hidden="true"><use href="#i-flower"/></svg>
               <svg class="cat" viewBox="0 0 64 64" role="img" aria-label="Miso, el gatito de la app. Tocalo.">
                 <path d="M50 60c9 0 12-9 7-14" fill="none" stroke="var(--cat)" stroke-width="4" stroke-linecap="round"/>
                 <path fill="var(--cat)" d="M13 61c-2-11 1-21 7-26l-3-17 10 9a20 20 0 0 1 10 0l10-9-3 17c6 5 9 15 7 26z"/>
@@ -537,6 +611,23 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
                 <path d="M30 40l2 1.5 2-1.5" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="20" cy="40" r="2.2" fill="var(--alert)" opacity=".5"/><circle cx="44" cy="40" r="2.2" fill="var(--alert)" opacity=".5"/>
               </svg>
+            </div>
+
+            <div class="day-card">
+              <svg class="rings" viewBox="0 0 90 90" role="img" aria-label="Progreso de hoy: pendientes, velitas y rituales">
+                <circle cx="45" cy="45" r="38" style="stroke:var(--rose-soft)"/><circle class="rf" id="ringT" cx="45" cy="45" r="38" style="stroke:var(--rose)"/>
+                <circle cx="45" cy="45" r="28" style="stroke:var(--sage-soft)"/><circle class="rf" id="ringH" cx="45" cy="45" r="28" style="stroke:var(--sage)"/>
+                <circle cx="45" cy="45" r="18" style="stroke:var(--lav-soft)"/><circle class="rf" id="ringR" cx="45" cy="45" r="18" style="stroke:var(--lav)"/>
+              </svg>
+              <div class="day-copy">
+                <span class="eyebrow">Tu día</span>
+                <b><span class="big num" id="dayPct">0%</span> <span id="dayMsg">recién empieza</span></b>
+                <ul class="legend">
+                  <li><i style="background:var(--rose)"></i>Pendientes <span class="num" id="lgT"></span></li>
+                  <li><i style="background:var(--sage)"></i>Velitas <span class="num" id="lgH"></span></li>
+                  <li><i style="background:var(--lav)"></i>Rituales <span class="num" id="lgR"></span></li>
+                </ul>
+              </div>
             </div>
 
             <div class="arc-card">
@@ -587,6 +678,11 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
               <span class="bell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
               <span class="txt"><b>Llamar a la abuela</b><small>Recordatorio · hoy 11:00</small></span>
               <span class="tag alert">en 2 h 48</span>
+            </div>
+
+            <div class="water">
+              <div class="sec-title"><h3>Agüita</h3><span class="num" id="waterCount">3/8 vasos</span></div>
+              <div class="drops" id="drops"></div>
             </div>
 
             <div class="card">
@@ -859,33 +955,33 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
       ['22:16', 'Leer bajo la manta', '20 min', false], ['22:36', 'Celular lejos, luces off', '4 min', false]] }
   };
   const todayTasks = [
-    { t: 'Regar las plantas', s: 'La monstera y los potus', tag: ['Casa', ''], done: true },
-    { t: 'Terminar el capítulo 4', s: 'Club de lectura el martes', tag: ['Vence martes', 'alert'], done: false },
-    { t: 'Comprar comida de Miso', s: 'La de salmón', tag: ['Miso', 'moon'], done: false },
-    { t: 'Caminata de 4 km', s: 'Constelación: correr 10 km', tag: ['Meta', 'sun'], done: false }
+    { t: 'Regar las plantas', s: 'La monstera y los potus', tag: ['Casa', 'sage'], c: 'sage', done: true },
+    { t: 'Terminar el capítulo 4', s: 'Club de lectura el martes', tag: ['Vence martes', 'alert'], c: 'rose', done: false },
+    { t: 'Comprar comida de Miso', s: 'La de salmón', tag: ['Miso', 'lav'], c: 'lav', done: false },
+    { t: 'Caminata de 4 km', s: 'Constelación: correr 10 km', tag: ['Meta', 'peach'], c: 'peach', done: false }
   ];
   const habits = [
-    { n: 'Meditar', s: '10 min', streak: 12, week: [1,1,1,1,1,1,0], today: false },
-    { n: 'Agüita', s: '8 vasos', streak: 5, week: [0,1,1,1,1,1,0], today: false },
-    { n: 'Leer', s: '20 págs', streak: 23, week: [1,1,1,1,1,1,1], today: true },
-    { n: 'Moverme', s: '30 min', streak: 2, week: [1,0,1,0,1,1,0], today: false },
-    { n: 'Sin pantallas', s: 'desde las 22', streak: 4, week: [0,0,1,1,1,1,0], today: false }
+    { n: 'Meditar', c: 'lav', s: '10 min', streak: 12, week: [1,1,1,1,1,1,0], today: false },
+    { n: 'Agüita', c: 'sky', s: '8 vasos', streak: 5, week: [0,1,1,1,1,1,0], today: false },
+    { n: 'Leer', c: 'rose', s: '20 págs', streak: 23, week: [1,1,1,1,1,1,1], today: true },
+    { n: 'Moverme', c: 'sage', s: '30 min', streak: 2, week: [1,0,1,0,1,1,0], today: false },
+    { n: 'Sin pantallas', c: 'peach', s: 'desde las 22', streak: 4, week: [0,0,1,1,1,1,0], today: false }
   ];
   const goals = [
-    { n: 'Leer 12 libros', unit: 'libros', total: 12, done: 9, note: 'Ahora: “La sombra del viento”, pág. 212. Te falta 1 para ir al ritmo del año.', seed: 1.1 },
-    { n: 'Correr 10 km', unit: 'semanas', total: 10, done: 6, note: 'Vas al día. Próxima estrella: 5 km el martes.', seed: 2.7 },
-    { n: 'Viaje a Bariloche', unit: 'partes', total: 8, done: 5, note: '$500.000 de $800.000 ahorrados. Cada estrella son $100.000.', seed: 4.2 }
+    { n: 'Leer 12 libros', unit: 'libros', total: 12, done: 9, note: 'Ahora: “La sombra del viento”, pág. 212. Te falta 1 para ir al ritmo del año.', seed: 1.1, c: 'lav' },
+    { n: 'Correr 10 km', unit: 'semanas', total: 10, done: 6, note: 'Vas al día. Próxima estrella: 5 km el martes.', seed: 2.7, c: 'peach' },
+    { n: 'Viaje a Bariloche', unit: 'partes', total: 8, done: 5, note: '$500.000 de $800.000 ahorrados. Cada estrella son $100.000.', seed: 4.2, c: 'sky' }
   ];
   const moods = [ ['Tormenta', .06, '--m1'], ['Niebla', .15, '--m2'], ['Calma', .25, '--m3'], ['Brillo', .38, '--m4'], ['Luna llena', .5, '--m5'] ];
   const agenda = {
-    1: [ ['06:30', 'Ritual del amanecer', '6 pasos · 45 min', 'sun'], ['09:00', 'Caminata por el bosque', 'Parque Saavedra', 'sun'], ['11:00', 'Llamar a la abuela', 'Recordatorio', 'alert'],
-         ['17:00', 'Tarde de té y capítulo 4', '2 h para mí', ''], ['22:00', 'Ritual de la luna', '5 pasos · 40 min', 'moon'] ],
+    1: [ ['06:30', 'Ritual del amanecer', '6 pasos · 45 min', 'sun'], ['09:00', 'Caminata por el bosque', 'Parque Saavedra', 'sage'], ['11:00', 'Llamar a la abuela', 'Recordatorio', 'alert'],
+         ['17:00', 'Tarde de té y capítulo 4', '2 h para mí', 'peach'], ['22:00', 'Ritual de la luna', '5 pasos · 40 min', 'moon'] ],
     3: [ ['19:30', 'Club de lectura', 'En la librería de siempre', 'moon'] ],
     5: [ ['12:00', 'Pagar la tarjeta', 'Vence hoy', 'alert'] ],
-    7: [ ['11:00', 'Feria de plantas', 'Llevar bolsa de tela', 'sun'] ],
+    7: [ ['11:00', 'Feria de plantas', 'Llevar bolsa de tela', 'sage'] ],
     10: [ ['15:00', 'Turno con la dentista', 'Dra. Ruiz', 'alert'] ],
     14: [ ['20:00', 'Noche de pelis de terror', 'Con Juli y Tomi', 'moon'] ],
-    21: [ ['10:00', 'Brunch de cumple de Juli', 'Comprar velas aromáticas de regalo', 'sun'] ]
+    21: [ ['10:00', 'Brunch de cumple de Juli', 'Comprar velas aromáticas de regalo', 'rose'] ]
   };
   const entries = [
     [3, 'Sábado 31 oct', 'Familia · Descanso', 'Halloween tranqui: sopa de calabaza y película vieja. Miso se asustó de su propia sombra.'],
@@ -921,7 +1017,11 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
   $('#todayLabel').textContent = `Domingo 1 de noviembre · ${phaseName(todayP)}`;
   const catLines = ['miau. tomá agüita', 'la luna está menguando: buen momento para soltar', 'prr… ¿un té?', 'te quiero (dame comida)', 'encendé una velita y yo te miro'];
   let catI = 0;
-  $('.cat').addEventListener('click', () => { catI = (catI + 1) % catLines.length; $('#catSays').textContent = catLines[catI]; });
+  $('.cat').addEventListener('click', () => {
+    catI = (catI + 1) % catLines.length; $('#catSays').textContent = catLines[catI];
+    const c = $('.cat'); c.classList.remove('hop'); void c.getBoundingClientRect(); c.classList.add('hop');
+    burst(c, 7, ['i-heart']);
+  });
 
   /* ---------- Day arc ---------- */
   (function arc() {
@@ -940,7 +1040,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
   /* ---------- Tarot ---------- */
   $('#tarot').addEventListener('click', () => {
     const t = $('#tarot'), open = t.getAttribute('aria-pressed') !== 'true';
-    t.setAttribute('aria-pressed', open);
+    t.setAttribute('aria-pressed', open); if (open) burst(t, 14, ['i-star', 'i-spark']);
     $('#tarotCopy').innerHTML = open
       ? '<span class="eyebrow">Carta del día · XVII</span><b>La Estrella</b><p>Esperanza y calma después de una semana movida. Intención: ir despacio y confiar.</p>'
       : '<span class="eyebrow">Carta del día</span><b>Tocala para darla vuelta</b><p>Una carta por día, para elegir una intención.</p>';
@@ -960,22 +1060,25 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
     const box = $('#steps'); box.className = `steps ${routineKey}-steps`;
     box.innerHTML = r.steps.map((s, i) => `<div class="step${s[3] ? ' done' : ''}"><span class="time">${s[0]}</span><span class="txt"><b>${s[1]}</b><small>${s[2]}</small></span><button class="check" type="button" data-step="${i}" aria-pressed="${s[3]}" aria-label="Completar ${s[1]}">${FLOWER}</button></div>`).join('');
     ['sun', 'moon'].forEach(k => { const [dd, nn] = routineProgress(k); $(`[data-count="${k}"]`).textContent = `${dd}/${nn}`; $(`[data-meter="${k}"]`).style.width = `${dd / nn * 100}%`; });
+    updateDay();
   }
   $('#steps').addEventListener('click', e => {
     const b = e.target.closest('[data-step]'); if (!b) return;
-    const s = routines[routineKey].steps[b.dataset.step]; s[3] = !s[3]; renderRoutine();
+    const s = routines[routineKey].steps[b.dataset.step]; s[3] = !s[3]; if (s[3]) burst(b, 8); renderRoutine();
+    if (s[3] && routineProgress(routineKey)[0] === routineProgress(routineKey)[1]) burst($('#routineHero'), 24);
     const [d, n] = routineProgress(routineKey); if (d === n) toast(routineKey === 'sun' ? 'Ritual del amanecer completo. ¡Buen día!' : 'Ritual de la luna completo. Dulces sueños');
   });
   $$('[data-routine-tab]').forEach(b => b.addEventListener('click', () => setRoutine(b.dataset.routineTab)));
 
   /* ---------- Tasks ---------- */
   function renderTasks() {
-    $('#todayTasks').innerHTML = todayTasks.map((t, i) => `<div class="row${t.done ? ' done' : ''}"><button class="check" type="button" data-task="${i}" aria-pressed="${t.done}" aria-label="Completar ${esc(t.t)}">${FLOWER}</button><span class="txt"><b>${esc(t.t)}</b><small>${esc(t.s)}</small></span><span class="tag ${t.tag[1]}">${esc(t.tag[0])}</span></div>`).join('');
+    $('#todayTasks').innerHTML = todayTasks.map((t, i) => `<div class="row${t.done ? ' done' : ''}" style="--c:var(--${t.c})"><button class="check" type="button" data-task="${i}" aria-pressed="${t.done}" aria-label="Completar ${esc(t.t)}">${FLOWER}</button><span class="txt"><b>${esc(t.t)}</b><small>${esc(t.s)}</small></span><span class="tag ${t.tag[1]}">${esc(t.tag[0])}</span></div>`).join('');
     $('#taskCount').textContent = `${todayTasks.filter(t => t.done).length}/${todayTasks.length}`;
+    updateDay();
   }
   $('#todayTasks').addEventListener('click', e => {
     const b = e.target.closest('[data-task]'); if (!b) return;
-    const t = todayTasks[b.dataset.task]; t.done = !t.done; renderTasks(); if (t.done) toast('Una florcita más');
+    const t = todayTasks[b.dataset.task]; t.done = !t.done; if (t.done) burst(b, 9); renderTasks(); if (t.done) toast('Una florcita más');
   });
 
   /* ---------- Habits (candles) ---------- */
@@ -983,14 +1086,15 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
   const streakOf = h => h.today && !h.week[6] ? h.streak + 1 : h.streak;
   const DOW = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
   function renderHabits() {
-    $('#habitChips').innerHTML = habits.map((h, i) => `<button class="habit-chip" type="button" data-habit="${i}" aria-pressed="${h.today}">${candleSVG(h.today, 'mini-candle')}<span><b>${h.n}</b><small>${h.today ? 'encendida' : h.s}</small></span></button>`).join('');
-    $('#candles').innerHTML = habits.map((h, i) => `<button class="candle-btn" type="button" data-habit="${i}" aria-pressed="${h.today}" aria-label="${h.today ? 'Apagar' : 'Encender'} ${h.n}">${candleSVG(h.today)}<span>${h.n}</span><small>${streakOf(h)} días</small></button>`).join('');
+    $('#habitChips').innerHTML = habits.map((h, i) => `<button class="habit-chip" type="button" data-habit="${i}" aria-pressed="${h.today}" style="${hv(h)}">${candleSVG(h.today, 'mini-candle')}<span><b>${h.n}</b><small>${h.today ? 'encendida' : h.s}</small></span></button>`).join('');
+    $('#candles').innerHTML = habits.map((h, i) => `<button class="candle-btn" type="button" style="${hv(h)}" data-habit="${i}" aria-pressed="${h.today}" aria-label="${h.today ? 'Apagar' : 'Encender'} ${h.n}">${candleSVG(h.today)}<span>${h.n}</span><small>${streakOf(h)} días</small></button>`).join('');
     $('#habitWeek').innerHTML = `<div class="hw-row head"><span></span>${DOW.map(d => `<span>${d}</span>`).join('')}</div>` +
-      habits.map(h => `<div class="hw-row"><b>${h.n}</b>${h.week.slice(0, 6).concat(h.today ? 1 : 0).map(o => `<i class="${o ? 'on' : ''}"></i>`).join('')}</div>`).join('');
+      habits.map(h => `<div class="hw-row" style="${hv(h)}"><b>${h.n}</b>${h.week.slice(0, 6).concat(h.today ? 1 : 0).map(o => `<i class="${o ? 'on' : ''}"></i>`).join('')}</div>`).join('');
+    updateDay();
   }
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-habit]'); if (!b) return;
-    const h = habits[b.dataset.habit]; h.today = !h.today; renderHabits();
+    const h = habits[b.dataset.habit]; h.today = !h.today; if (h.today) burst(b, 10, ['i-flower', 'i-spark']); renderHabits();
     if (h.today) toast(`Velita de ${h.n.toLowerCase()} encendida · ${streakOf(h)} días`);
   });
 
@@ -1001,10 +1105,10 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
       let s = '';
       for (let i = 1; i < pts.length; i++) s += `<line class="ln${i < g.done ? ' on' : ''}" x1="${pts[i - 1][0].toFixed(1)}" y1="${pts[i - 1][1].toFixed(1)}" x2="${pts[i][0].toFixed(1)}" y2="${pts[i][1].toFixed(1)}"/>`;
       pts.forEach(([x, y], i) => {
-        if (i < g.done) s += `<use href="#i-star" class="st on" x="${(x - 7).toFixed(1)}" y="${(y - 7).toFixed(1)}" width="14" height="14" style="color:var(--candle)"/>`;
+        if (i < g.done) s += `<use href="#i-star" class="st on" x="${(x - 7).toFixed(1)}" y="${(y - 7).toFixed(1)}" width="14" height="14" style="color:var(--c)"/>`;
         else s += `<circle class="st${i === g.done ? ' next' : ''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${i === g.done ? 5 : 2.5}"/>`;
       });
-      return `<div class="goal"><div class="goal-top"><b>${g.n}</b><span class="num">${g.done}/${g.total} ${g.unit}</span></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${g.n}: ${g.done} de ${g.total} estrellas encendidas">${s}</svg><small>${g.note}</small></div>`;
+      return `<div class="goal" style="--c:var(--${g.c});--cs:var(--${g.c}-soft)"><div class="goal-top"><b>${g.n}</b><span class="num">${g.done}/${g.total} ${g.unit}</span></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${g.n}: ${g.done} de ${g.total} estrellas encendidas">${s}</svg><small>${g.note}</small></div>`;
     }).join('');
   }
 
@@ -1019,7 +1123,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
   }
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-mood]'); if (!b || b.closest('[data-mood-scale="key"]')) return;
-    mood = +b.dataset.mood; renderMoodScales(); renderMoodWeek();
+    burst(b, 8, ['i-heart', 'i-flower']); mood = +b.dataset.mood; renderMoodScales(); renderMoodWeek(); moodReact();
     if (b.closest('[data-mood-scale="quick"]')) toast(`Tu luna de hoy: ${moods[mood][0]}`);
   });
   const moodTags = ['Sueño', 'Trabajo', 'Familia', 'Amigos', 'Movimiento', 'Salud', 'Miso', 'Descanso'];
@@ -1039,18 +1143,19 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
     const txt = $('#journalText').value.trim() || 'Hoy sin palabras.';
     if (entries[0][1].startsWith('Hoy')) entries.shift();
     entries.unshift([mood, 'Hoy, 08:12', tags, txt]);
-    renderEntries(); toast('Guardado. Miso no lo va a leer');
+    burst($('#saveEntry'), 16); renderEntries(); toast('Guardado. Miso no lo va a leer');
   });
 
   /* ---------- Crystal ball ---------- */
   (function bars() {
+    const cols = ['--rose', '--peach', '--butter', '--sage', '--sky', '--lav', '--rose'];
     const vals = [72, 85, 64, 90, 78, 55, 81], days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
     const L = 30, R = 312, T = 16, B = 126, h = v => B - (v / 100) * (B - T), bw = 24, step = (R - L) / 7;
     let s = '';
     [0, 50, 100].forEach(v => { s += `<line class="grid" x1="${L}" x2="${R}" y1="${h(v)}" y2="${h(v)}"/><text class="lbl" x="${L - 6}" y="${h(v) + 3}" text-anchor="end">${v}</text>`; });
     vals.forEach((v, i) => {
       const x = L + step * i + (step - bw) / 2;
-      s += `<rect class="bar-r${v >= 80 ? ' hi' : ''}" x="${x}" y="${h(v)}" width="${bw}" height="${B - h(v)}" rx="12"/>`;
+      s += `<rect class="bar-r" style="fill:var(${cols[i]})" x="${x}" y="${h(v)}" width="${bw}" height="${B - h(v)}" rx="12"/>`;
       s += `<text class="val" x="${x + bw / 2}" y="${h(v) - 5}">${v}</text>`;
       s += `<text class="lbl" x="${x + bw / 2}" y="${B + 16}" text-anchor="middle">${days[i]}</text>`;
     });
@@ -1079,7 +1184,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
       const show = marks.length > 0;
       if (show) keyPhases.push([d, marks[0]]);
       const ev = agenda[d] || [];
-      const dots = ev.slice(0, 3).map(e => `<i class="${e[3] === 'alert' ? 'alert' : e[3] === 'sun' ? 'sun' : ''}"></i>`).join('');
+      const dots = ev.slice(0, 3).map(e => `<i style="background:${DOTC[e[3]] || 'var(--accent)'}"></i>`).join('');
       s += `<button type="button" class="day${d === 1 ? ' today' : ''}" data-day="${d}" aria-pressed="${d === selDay}" aria-label="${d} de noviembre${show ? ', ' + phaseName(marks[0]) : ''}">${d}<svg class="ph${show ? '' : ' none'}" viewBox="0 0 24 24">${show ? moonSVG(marks[0], 'var(--candle)') : ''}</svg><span class="dots">${dots}</span></button>`;
     }
     $('#monthGrid').innerHTML = s;
@@ -1108,11 +1213,80 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
     const title = $('#taskTitle').value.trim(); if (!title) return;
     const when = $('#whenChoices [aria-pressed="true"]').textContent;
     const remind = $('#remindChoices [aria-pressed="true"]').textContent;
-    if (when === 'Hoy') { todayTasks.push({ t: title, s: remind === 'No' ? 'Sin aviso' : `Miso avisa: ${remind}`, tag: ['Nuevo', 'green'], done: false }); renderTasks(); (agenda[1] = agenda[1] || []).push(['--:--', title, 'Pendiente nuevo', '']); }
+    if (when === 'Hoy') { todayTasks.push({ t: title, s: remind === 'No' ? 'Sin aviso' : `Miso avisa: ${remind}`, tag: ['Nuevo', 'sky'], c: 'sky', done: false }); renderTasks(); (agenda[1] = agenda[1] || []).push(['--:--', title, 'Pendiente nuevo', '']); }
     else { const d = when === 'Mañana' ? 2 : 4; (agenda[d] = agenda[d] || []).push(['--:--', title, 'Pendiente nuevo', '']); }
     renderMonth(); renderDay();
     $('#taskTitle').value = ''; $('#sheet').hidden = true; toast(`Anotado para ${when.toLowerCase()}`);
   });
+
+  /* ---------- Colores, reacciones y progreso del día ---------- */
+  const hv = h => `--c:var(--${h.c});--cs:var(--${h.c}-soft)`;
+  const DOTC = { sun: 'var(--butter)', moon: 'var(--lav)', alert: 'var(--alert)', rose: 'var(--rose)', sage: 'var(--sage)', peach: 'var(--peach)', sky: 'var(--sky)' };
+  const PASTELS = ['--rose', '--butter', '--lav', '--sage', '--sky', '--peach'];
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function burst(target, n = 10, shapes = ['i-flower', 'i-star', 'i-heart']) {
+    if (calm || !target) return;
+    const app = $('#app'), z = parseFloat($('#phoneWrap').style.zoom) || 1;
+    const a = app.getBoundingClientRect(), r = target.getBoundingClientRect();
+    const x = (r.left + r.width / 2 - a.left) / z, y = (r.top + r.height / 2 - a.top) / z;
+    for (let i = 0; i < n; i++) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      el.setAttribute('class', 'particle');
+      el.innerHTML = `<use href="#${shapes[i % shapes.length]}"/>`;
+      el.style.left = x + 'px'; el.style.top = y + 'px';
+      el.style.color = `var(${PASTELS[(i + Math.floor(Math.random() * 6)) % 6]})`;
+      app.appendChild(el);
+      const ang = Math.random() * Math.PI * 2, d = 36 + Math.random() * 54, sc = .6 + Math.random() * .7;
+      el.animate([
+        { transform: 'translate(-50%, -50%) scale(.2)', opacity: 1 },
+        { transform: `translate(calc(-50% + ${Math.cos(ang) * d}px), calc(-50% + ${Math.sin(ang) * d - 20}px)) rotate(${Math.random() * 240 - 120}deg) scale(${sc})`, opacity: 0 }
+      ], { duration: 700 + Math.random() * 500, easing: 'cubic-bezier(.2, .8, .3, 1)' }).onfinish = () => el.remove();
+    }
+  }
+  const moodSoft = ['--lav-soft', '--sky-soft', '--sage-soft', '--peach-soft', '--butter-soft'];
+  const moodCat = ['vení, abrazo de gato', 'te traigo una mantita', 'todo tranqui, prr', '¡qué lindo verte así!', '¡brillás más que la luna!'];
+  function moodReact() {
+    $('.mood-prompt').style.background = `linear-gradient(150deg, var(${moodSoft[mood]}), var(--surface))`;
+    $('#catSays').textContent = moodCat[mood];
+  }
+
+  let water = 3;
+  const DROP = '<svg viewBox="0 0 24 30" aria-hidden="true"><path d="M12 2C12 2 4 12 4 19a8 8 0 0 0 16 0C20 12 12 2 12 2z"/></svg>';
+  function renderWater() {
+    $('#drops').innerHTML = Array.from({ length: 8 }, (_, i) => `<button type="button" class="drop${i < water ? ' on' : ''}" data-drop="${i}" aria-label="Vaso ${i + 1}">${DROP}</button>`).join('');
+    $('#waterCount').textContent = `${water}/8 vasos`;
+  }
+  $('#drops').addEventListener('click', e => {
+    const b = e.target.closest('[data-drop]'); if (!b) return;
+    const i = +b.dataset.drop; const prev = water;
+    water = i + 1 === water ? i : i + 1;
+    if (water > prev) burst(b, 5, ['i-spark', 'i-heart']);
+    renderWater();
+    const agua = habits.find(h => h.n === 'Agüita');
+    if (water === 8 && !agua.today) { agua.today = true; renderHabits(); burst($('#drops'), 18); toast('¡8 vasos! Velita de agüita encendida'); }
+  });
+
+  let wasFull = false;
+  function updateDay() {
+    if (!$('#ringT')) return;
+    const steps = [...routines.sun.steps, ...routines.moon.steps];
+    const parts = [
+      ['ringT', 'lgT', todayTasks.filter(t => t.done).length, todayTasks.length, 38],
+      ['ringH', 'lgH', habits.filter(h => h.today).length, habits.length, 28],
+      ['ringR', 'lgR', steps.filter(st => st[3]).length, steps.length, 18]
+    ];
+    let sum = 0;
+    parts.forEach(([ring, lg, d, n, r]) => {
+      const C = 2 * Math.PI * r, f = n ? d / n : 0; sum += f;
+      const el = $('#' + ring); el.style.strokeDasharray = C.toFixed(1); el.style.strokeDashoffset = (C * (1 - f)).toFixed(1);
+      $('#' + lg).textContent = `${d}/${n}`;
+    });
+    const pct = Math.round(sum / 3 * 100);
+    $('#dayPct').textContent = pct + '%';
+    $('#dayMsg').textContent = pct >= 100 ? '¡día completo!' : pct >= 75 ? 'ya casi, estrellita' : pct >= 50 ? '¡vas re bien!' : pct >= 25 ? 'vas arrancando' : 'recién empieza';
+    if (pct >= 100 && !wasFull) { burst($('.rings'), 28); toast('¡Completaste tu día! Miso está orgulloso'); }
+    wasFull = pct >= 100;
+  }
 
   /* ---------- Modo celular ---------- */
   function applyMode() {
@@ -1137,7 +1311,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
   $('#themeBtn').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
 
   /* ---------- Boot ---------- */
-  renderRoutine(); renderTasks(); renderHabits(); renderGoals(); renderMoodScales(); renderEntries(); renderMoodWeek(); renderMonth(); renderDay();
+  renderWater(); renderRoutine(); renderTasks(); renderHabits(); renderGoals(); renderMoodScales(); renderEntries(); renderMoodWeek(); renderMonth(); renderDay();
   go('hoy');
 })();
 </script>

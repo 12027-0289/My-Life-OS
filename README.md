@@ -49,6 +49,10 @@ Temática cute, cozy y misteriosa: noche de cacao, luz de vela, fases de la luna
 
 Modo día (por defecto): fondo beige rosado `#F5EAE5` con lunares, tarjetas `#FFF9F6` con sombra suave, texto y botones Deep Cocoa, luz de vela `#C47D4A`. Modo noche (botón "Modo noche"): fondo cacao `#2B201E`. La elección se recuerda en el navegador.
 
+**Pasteles** (combinan con la paleta y dan color a cada cosa): rosa `#E79AA8`, salvia `#93B784`, lavanda `#AC97D6`, manteca `#E9BF4F`, cielo `#84B2D6`, durazno `#EE9B74`. Cada hábito, meta y tipo de evento tiene su color.
+
+**Interacciones**: anillos de "Tu día" que se llenan con pendientes, velitas y rituales; contador de agüita (8 vasos enciende la velita); explosión de florcitas, corazones y estrellas al completar cosas; Miso salta y cambia lo que dice según tu ánimo; la tarjeta de ánimo toma el color de tu luna.
+
 **Tipografía**: Fraunces suave (títulos e itálicas del diario), Nunito (texto), DM Mono (horas y números).
 
 **Principios**: un refugio, no una oficina · rituales chiquitos de un toque · magia sin culpa.

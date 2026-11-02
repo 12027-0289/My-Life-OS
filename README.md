@@ -6,15 +6,23 @@ Este repositorio contiene, por ahora, el **diseño visual y un prototipo navegab
 
 ## Ver el prototipo
 
-- `prototype/index.html`: el prototipo completo (tablero con pantallas, celular y sistema visual). **Es el archivo que se edita.**
-- `prototype/celular.html`: abre la app sola, ocupando toda la vista previa, sin el dibujo del teléfono. También funciona `index.html#celular`.
+El archivo que se edita es `prototype/index.html`. Según cómo lo abras, se ve de tres formas:
 
-### Ver el celular en vivo mientras programás (VS Code)
+| Dirección | Cómo se ve | Para qué |
+|---|---|---|
+| `prototype/index.html` | Como una web: la app a pantalla completa | Navegador / Live Server ("Go Live") |
+| `prototype/celular.html` (o `index.html#celular`) | Dentro de un celular, como un simulador | Vista previa de VS Code mientras programás |
+| `prototype/index.html#tablero` | Tablero de diseño con pantallas y sistema visual | Ver el diseño completo |
 
-1. Instalá la extensión **Live Preview** (de Microsoft).
-2. Abrí `prototype/index.html` en el editor.
-3. Clic derecho en `prototype/celular.html` → **Show Preview**.
-4. Arrastrá la pestaña de la vista previa a la derecha. La app se adapta al ancho del panel y se actualiza mientras escribís.
+### Celular en VS Code mientras programás
+
+1. Instalá **Live Preview** (Microsoft).
+2. Abrí `prototype/celular.html` y tocá el globito (Show Preview).
+3. Llevá esa pestaña a la derecha y abrí `prototype/index.html` a la izquierda.
+
+### Web en el navegador
+
+Tocá **Go Live** (Live Server). Abre la carpeta y te lleva directo a la app.
 
 ## Pantallas
 

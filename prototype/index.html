@@ -438,7 +438,10 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
   .palette { grid-template-columns: 1fr; }
   .pal { min-height: 80px; }
 }
-/* ---------- Modo app (#celular): la app ocupa toda la vista previa, sin marco de teléfono ---------- */
+/* ---------- Tres vistas según la dirección ----------
+   index.html            → web: la app a pantalla completa (para el navegador / Live Server)
+   index.html#celular    → celular con marco, como un simulador (para la vista previa de VS Code)
+   index.html#tablero    → tablero de diseño con pantallas y sistema visual */
 .phone-wrap { flex-direction: column; align-items: center; gap: 14px; }
 .sim-bar { display: none; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px 14px; font-size: 12.5px; width: 390px; max-width: 100%; }
 .sim-bar .lights { display: flex; gap: 6px; }
@@ -447,16 +450,26 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 .sim-bar small { color: var(--muted); display: block; font-size: 11px; }
 .sim-bar a, .solo-link { margin-left: auto; color: var(--candle); font-weight: 700; text-decoration: none; font-size: 12.5px; }
 .solo-link { margin-left: 0; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 20px; padding: 6px 12px; background: var(--surface); }
-:root.solo, :root.solo body { height: 100%; }
-:root.solo body { padding: 0; margin: 0; overflow: hidden; background-image: none; }
-:root.solo .board-head, :root.solo .panel, :root.solo .sim-bar, :root.solo .status { display: none; }
-:root.solo .board { display: block; max-width: none; height: 100%; }
-:root.solo .phone-wrap { display: block; height: 100%; }
-:root.solo .phone { width: 100%; max-width: none; height: 100%; border-radius: 0; padding: 0; background: none; box-shadow: none; }
-:root.solo .app { border-radius: 0; }
-:root.solo .view { padding-top: 16px; }
-:root.solo .tabbar { padding-bottom: max(10px, env(safe-area-inset-bottom, 0px)); }
-:root.solo .fab { bottom: 84px; }
+
+/* Celular */
+:root.solo body { padding-block: 16px; background-image: none; }
+:root.solo .board-head, :root.solo .panel { display: none; }
+:root.solo .board { display: flex; justify-content: center; }
+:root.solo .sim-bar { display: flex; }
+:root.solo .phone { width: 390px; height: 820px; border-radius: 52px; padding: 11px; }
+:root.solo .app { border-radius: 42px; }
+
+/* Web */
+:root.web, :root.web body { height: 100%; }
+:root.web body { padding: 0; margin: 0; overflow: hidden; background-image: none; }
+:root.web .board-head, :root.web .panel, :root.web .sim-bar, :root.web .status { display: none; }
+:root.web .board { display: block; max-width: none; height: 100%; }
+:root.web .phone-wrap { display: block; height: 100%; }
+:root.web .phone { width: 100%; max-width: none; height: 100%; border-radius: 0; padding: 0; background: none; box-shadow: none; }
+:root.web .app { border-radius: 0; }
+:root.web .view { padding-top: 20px; max-width: 640px; margin: 0 auto; }
+:root.web .tabbar { padding: 8px max(8px, calc((100% - 640px) / 2)) max(10px, env(safe-area-inset-bottom, 0px)); }
+:root.web .fab { bottom: 84px; right: max(20px, calc((100% - 640px) / 2 + 20px)); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
@@ -501,7 +514,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 
   <!-- ======= Center: phone ======= -->
   <div class="phone-wrap" id="phoneWrap">
-    <div class="sim-bar"><span class="lights"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i></span><span><b>My Life OS</b><small>iPhone · vista previa en vivo</small></span><a href="#">Ver tablero</a></div>
+    <div class="sim-bar"><span class="lights"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i></span><span><b>My Life OS</b><small>iPhone · vista previa en vivo</small></span><a href="#tablero">Ver tablero</a></div>
     <div class="phone">
       <div class="app" id="app">
         <div class="status">
@@ -1104,10 +1117,14 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 
   /* ---------- Modo celular ---------- */
   function applyMode() {
-    const solo = location.hash === '#celular';
+    const h = location.hash, solo = h === '#celular', web = !solo && h !== '#tablero';
     document.documentElement.classList.toggle('solo', solo);
+    document.documentElement.classList.toggle('web', web);
+    // en modo celular, achica el teléfono para que entre entero en el panel
+    $('#phoneWrap').style.zoom = solo ? Math.min(1, (innerHeight - 24) / 920, (innerWidth - 32) / 400).toFixed(3) : '';
   }
   addEventListener('hashchange', applyMode);
+  addEventListener('resize', applyMode);
   applyMode();
 
   /* ---------- Boot ---------- */

@@ -7,14 +7,14 @@ Este repositorio contiene, por ahora, el **diseño visual y un prototipo navegab
 ## Ver el prototipo
 
 - `prototype/index.html`: el prototipo completo (tablero con pantallas, celular y sistema visual). **Es el archivo que se edita.**
-- `prototype/celular.html`: abre el mismo prototipo en **modo celular**, con solo el teléfono, como un simulador. También funciona `index.html#celular`.
+- `prototype/celular.html`: abre la app sola, ocupando toda la vista previa, sin el dibujo del teléfono. También funciona `index.html#celular`.
 
 ### Ver el celular en vivo mientras programás (VS Code)
 
 1. Instalá la extensión **Live Preview** (de Microsoft).
 2. Abrí `prototype/index.html` en el editor.
 3. Clic derecho en `prototype/celular.html` → **Show Preview**.
-4. Arrastrá la pestaña de la vista previa a la derecha. El celular se ajusta solo al tamaño del panel y se actualiza mientras escribís.
+4. Arrastrá la pestaña de la vista previa a la derecha. La app se adapta al ancho del panel y se actualiza mientras escribís.
 
 ## Pantallas
 

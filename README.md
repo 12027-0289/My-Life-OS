@@ -47,7 +47,7 @@ Temática cute, cozy y misteriosa: noche de cacao, luz de vela, fases de la luna
 | Blush Beige | `#D9C4BC` | Botones, completado |
 | Deep Cocoa | `#4A3835` | Tarjetas, noche |
 
-Derivados: cacao profundo `#2B201E` (fondo), luz de vela `#E8B98C` (mañana, estrellas), coral polvo `#E0907F` (recordatorios). Modo claro: fondo beige `#EEE3DE` con texto Deep Cocoa.
+Modo día (por defecto): fondo beige rosado `#F5EAE5` con lunares, tarjetas `#FFF9F6` con sombra suave, texto y botones Deep Cocoa, luz de vela `#C47D4A`. Modo noche (botón "Modo noche"): fondo cacao `#2B201E`. La elección se recuerda en el navegador.
 
 **Tipografía**: Fraunces suave (títulos e itálicas del diario), Nunito (texto), DM Mono (horas y números).
 

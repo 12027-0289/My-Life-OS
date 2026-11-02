@@ -13,56 +13,47 @@
 <style>
 /* Layout: a "cozy desk at night" board — rooms on the left, the phone glowing in the middle, the little book of spells (visual system) on the right. Dark-first: Deep Cocoa night is the default. */
 :root {
-  /* Color — built from the user's palette: Mushroom #A89A94, Blush Beige #D9C4BC, Deep Cocoa #4A3835.
-     Night (default) is cocoa; candle caramel and dusty coral are small warm derivatives for state. */
-  --bg: #2B201E;
-  --surface: #3A2C29;
-  --surface-2: #4A3835;   /* Deep Cocoa */
-  --ink: #F2E7E2;
-  --muted: #A89A94;       /* Mushroom */
-  --line: #5B4844;
-  --accent: #D9C4BC;      /* Blush Beige: hecho, botones */
-  --accent-ink: #4A3835;
-  --accent-soft: #574440;
-  --candle: #E8B98C;      /* luz de vela: mañana, estrellas */
-  --candle-soft: #4F3B2E;
-  --moon: #BFAFA9;        /* mushroom claro: noche, misterio */
-  --moon-soft: #463733;
-  --alert: #E0907F;
-  --alert-soft: #55332E;
-  --star: rgba(217, 196, 188, .5);
-  --cat: #1C1412;
-  --bezel: #150F0E;
-  --glow: rgba(232, 185, 140, .45);
-  --m1: #7A6560; --m2: #A89A94; --m3: #CDB9B1; --m4: #E2C4AA; --m5: #EDB57F;
+  /* Color — from the user's palette: Mushroom #A89A94, Blush Beige #D9C4BC, Deep Cocoa #4A3835.
+     Day (default) is a soft blush room with cocoa ink; "Modo noche" switches to cocoa night. */
+  --bg: #F5EAE5;
+  --surface: #FFF9F6;
+  --surface-2: #F1E2DB;
+  --ink: #4A3835;         /* Deep Cocoa */
+  --muted: #8C7871;
+  --line: #E8D6CE;
+  --accent: #4A3835;      /* botones cacao */
+  --accent-ink: #FFF5F1;
+  --accent-soft: #EBD7CF;
+  --candle: #C47D4A;      /* luz de vela */
+  --candle-soft: #FAE6D6;
+  --moon: #9A8780;        /* Mushroom */
+  --moon-soft: #EFE4E0;
+  --alert: #C4604F;
+  --alert-soft: #F9E0D9;
+  --star: rgba(168, 154, 148, .45);
+  --dot: rgba(168, 154, 148, .22);
+  --cat: #4A3835;
+  --bezel: #4A3835;
+  --glow: rgba(232, 168, 120, .38);
+  --shadow: 0 10px 26px -16px rgba(74, 56, 53, .45);
+  --m1: #7A6762; --m2: #A89A94; --m3: #CDB7AE; --m4: #E3B48F; --m5: #D98C4F;
 
   /* Type */
   --display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --body: "Nunito", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  --r-lg: 24px; --r-md: 16px; --r-sm: 10px;
-  color-scheme: dark;
-}
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #EEE3DE; --surface: #F8F1EE; --surface-2: #E4D3CC; --ink: #4A3835; --muted: #7D6C66; --line: #D9C4BC;
-    --accent: #4A3835; --accent-ink: #F2E7E2; --accent-soft: #D9C4BC;
-    --candle: #A5693A; --candle-soft: #F0DCCB; --moon: #7E6E68; --moon-soft: #E3D7D2;
-    --alert: #A9534A; --alert-soft: #F2D8D2; --star: rgba(74, 56, 53, .22); --cat: #4A3835; --bezel: #4A3835;
-    --glow: rgba(165, 105, 58, .3);
-    --m1: #6E5A55; --m2: #A89A94; --m3: #C3ACA3; --m4: #D2A57F; --m5: #C27F45;
-    color-scheme: light;
-  }
-}
-:root[data-theme="light"] {
-  --bg: #EEE3DE; --surface: #F8F1EE; --surface-2: #E4D3CC; --ink: #4A3835; --muted: #7D6C66; --line: #D9C4BC;
-  --accent: #4A3835; --accent-ink: #F2E7E2; --accent-soft: #D9C4BC;
-  --candle: #A5693A; --candle-soft: #F0DCCB; --moon: #7E6E68; --moon-soft: #E3D7D2;
-  --alert: #A9534A; --alert-soft: #F2D8D2; --star: rgba(74, 56, 53, .22); --cat: #4A3835; --bezel: #4A3835;
-  --glow: rgba(165, 105, 58, .3);
-  --m1: #6E5A55; --m2: #A89A94; --m3: #C3ACA3; --m4: #D2A57F; --m5: #C27F45;
+  --r-lg: 26px; --r-md: 18px; --r-sm: 12px;
   color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #2B201E; --surface: #3A2C29; --surface-2: #4A3835; --ink: #F2E7E2; --muted: #A89A94; --line: #5B4844;
+  --accent: #D9C4BC; --accent-ink: #4A3835; --accent-soft: #574440;
+  --candle: #E8B98C; --candle-soft: #4F3B2E; --moon: #BFAFA9; --moon-soft: #463733;
+  --alert: #E0907F; --alert-soft: #55332E; --star: rgba(217, 196, 188, .5); --dot: rgba(217, 196, 188, .05);
+  --cat: #1C1412; --bezel: #150F0E; --glow: rgba(232, 185, 140, .45); --shadow: 0 0 0 transparent;
+  --m1: #7A6560; --m2: #A89A94; --m3: #CDB9B1; --m4: #E2C4AA; --m5: #EDB57F;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -471,6 +462,14 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 :root.web .tabbar { padding: 8px max(8px, calc((100% - 640px) / 2)) max(10px, env(safe-area-inset-bottom, 0px)); }
 :root.web .fab { bottom: 84px; right: max(20px, calc((100% - 640px) / 2 + 20px)); }
 
+/* ---------- Cozy extras ---------- */
+.app { background-image: radial-gradient(var(--dot) 1.3px, transparent 1.8px); background-size: 22px 22px; }
+.card, .arc-card, .tarot-row, .reminder, .routine-tile, .step, .goal, .stat, .entry, .page, .habit-week, .candles, .orb-card, .month, .habit-chip, .mood-prompt, .event, .insight, .segmented { box-shadow: var(--shadow); }
+.theme-btn { display: inline-flex; align-items: center; gap: 6px; margin: 8px 0 0 6px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 20px; padding: 5px 11px; font-size: 12px; font-weight: 700; vertical-align: top; }
+.theme-btn svg { width: 14px; height: 14px; color: var(--candle); }
+.hello::before { content: ""; position: absolute; right: -30px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, var(--candle-soft), transparent 70%); z-index: -1; }
+.hello { z-index: 0; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
@@ -529,7 +528,7 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
             <div class="hello">
               <div class="eyebrow"><svg id="todayMoon" viewBox="0 0 24 24"></svg><span id="todayLabel">Domingo 1 de noviembre</span></div>
               <h2>Hola, <em>estrellita</em></h2>
-              <span class="bubble"><b>Miso:</b> <span id="catSays">miau. tomá agüita</span></span>
+              <span class="bubble"><b>Miso:</b> <span id="catSays">miau. tomá agüita</span></span><button class="theme-btn" id="themeBtn" type="button"><svg><use href="#i-moon"/></svg><span>Modo noche</span></button>
               <svg class="cat" viewBox="0 0 64 64" role="img" aria-label="Miso, el gatito de la app. Tocalo.">
                 <path d="M50 60c9 0 12-9 7-14" fill="none" stroke="var(--cat)" stroke-width="4" stroke-linecap="round"/>
                 <path fill="var(--cat)" d="M13 61c-2-11 1-21 7-26l-3-17 10 9a20 20 0 0 1 10 0l10-9-3 17c6 5 9 15 7 26z"/>
@@ -1126,6 +1125,16 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
   addEventListener('hashchange', applyMode);
   addEventListener('resize', applyMode);
   applyMode();
+
+  /* ---------- Modo día / noche ---------- */
+  function setTheme(t) {
+    document.documentElement.dataset.theme = t;
+    $('#themeBtn').innerHTML = t === 'dark' ? '<svg><use href="#i-sun"/></svg><span>Modo día</span>' : '<svg><use href="#i-moon"/></svg><span>Modo noche</span>';
+    try { localStorage.setItem('mlos-theme', t); } catch (e) {}
+  }
+  let saved = 'light'; try { saved = localStorage.getItem('mlos-theme') || 'light'; } catch (e) {}
+  setTheme(saved);
+  $('#themeBtn').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
 
   /* ---------- Boot ---------- */
   renderRoutine(); renderTasks(); renderHabits(); renderGoals(); renderMoodScales(); renderEntries(); renderMoodWeek(); renderMonth(); renderDay();

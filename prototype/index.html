@@ -457,6 +457,8 @@ h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; font-stre
 .fav-item div { flex: 1; }
 .fav-item b { font-weight: 900; display: block; font-size: 14px; }
 .fav-item p { margin: 0; font-size: 12.5px; color: var(--muted); }
+.tip-edit { position: absolute; top: 18px; right: 18px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 0; display: grid; place-items: center; background: rgba(255,255,255,.4); color: inherit; padding: 0; }
+.tip-edit svg { width: 17px; height: 17px; }
 
 /* ---------- Closet ---------- */
 .look { padding: 12px; display: flex; flex-direction: column; gap: 4px; position: relative; overflow: hidden; }
@@ -743,6 +745,12 @@ textarea.field { resize: none; font: inherit; line-height: 1.5; }
 .meal .cam svg { width: 16px; height: 16px; }
 .meal .pen { position: absolute; right: 48px; bottom: 10px; width: 32px; height: 32px; border-radius: 50%; border: 0; padding: 0; display: grid; place-items: center; background: color-mix(in srgb, var(--card) 75%, transparent); box-shadow: var(--raise-sm); z-index: 2; color: var(--muted); }
 .meal .pen svg { width: 15px; height: 15px; }
+.kcal-card { display: flex; flex-direction: column; gap: 10px; }
+.kcal-big { display: flex; align-items: baseline; gap: 8px; }
+.kcal-big .num { font-family: var(--display); font-weight: 900; font-stretch: 62%; font-size: 52px; line-height: .9; }
+.kcal-big small { font-weight: 800; color: var(--muted); }
+.kcal-msg { font-weight: 700; font-size: 12.5px; }
+#mtCalc:disabled { opacity: .6; }
 .meal small { padding-right: 0; margin-bottom: 34px; }
 .meal.ph { background: linear-gradient(180deg, rgba(30,20,20,.08), rgba(30,20,20,.72)), var(--ph) center / cover; color: #fff; }
 .meal.ph small, .meal.ph .t { color: rgba(255,255,255,.88); }
@@ -1139,6 +1147,10 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
             </div>
             <div class="sec"><h3>Comidas de hoy</h3><span class="wide" id="mealCount"></span></div>
             <div class="meal-grid" id="meals"></div>
+            <div class="glass pad kcal-card" id="kcalCard"></div>
+            <div class="sec"><h3>Snacks y extras</h3><span class="wide" id="snackSum"></span></div>
+            <div class="list" id="snacks"></div>
+            <form class="add-row" id="snackForm"><input class="field" id="snackT" placeholder="Ej: 1 empanada, un café con leche…" maxlength="60" aria-label="Snack o algo extra"><input class="field" id="snackK" type="number" min="0" max="5000" placeholder="kcal" aria-label="Calorías (opcional)" style="max-width:84px;flex:none"><button class="btn sage icon-btn" type="submit" aria-label="Agregar snack"><svg><use href="#i-plus"/></svg></button></form>
             <div class="sec"><h3>Mi plato</h3><span class="wide">tocá cada parte</span></div>
             <div class="glass plate-card">
               <div class="plate"><svg viewBox="0 0 100 100" id="plateSvg"><path class="v" data-plate="v" d="M50 50 L50 8 A42 42 0 0 0 50 92 Z"/><path class="p" data-plate="p" d="M50 50 L50 8 A42 42 0 0 1 92 50 Z"/><path class="c" data-plate="c" d="M50 50 L92 50 A42 42 0 0 1 50 92 Z"/></svg></div>
@@ -1201,7 +1213,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 
           <!-- ===== TIPS ===== -->
           <section class="view" data-view="tips" hidden>
-            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Tips</h2></div><span class="wide muted" id="deckCount"></span></div>
+            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Tips</h2></div><div style="display:flex;align-items:center;gap:12px"><span class="wide muted" id="deckCount"></span><button class="press icon-btn" type="button" id="addTip" aria-label="Agregar un tip"><svg><use href="#i-plus"/></svg></button></div></div>
             <div class="chips" id="tipCats"></div>
             <div>
               <div class="deck" id="deck"></div>
@@ -1497,7 +1509,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
       ver: DATA_VER, day: todayKey, week: weekKey, hist: {},
       checklist: [],
       workoutDay: todayIdx, workoutDone: {},
-      water: 0, meals: [false, false, false, false], mealTxt: ['', '', '', ''], plate: { v: false, p: false, c: false },
+      water: 0, meals: [false, false, false, false], mealTxt: ['', '', '', ''], mealKcal: [0, 0, 0, 0], snacks: [], kcalGoal: 0, plate: { v: false, p: false, c: false },
       groceries: [],
       sleep: { bed: '23:00', wake: '07:00', q: 0, week: [0, 0, 0, 0, 0, 0, 0] },
       night: [['Preparar la ropa de mañana', false], ['Té de manzanilla', false], ['Skincare', false], ['Leer 15 minutos', false], ['Luces bajas y celular lejos', false]],
@@ -1519,7 +1531,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   // nuevo día: se reinicia lo diario; nueva semana: los hábitos
   function dailyReset(s) {
     if (s.day !== todayKey) {
-      s.day = todayKey; s.checklist.forEach(c => c.done = false); s.water = 0; s.meals = [false, false, false, false]; s.mealTxt = ['', '', '', ''];
+      s.day = todayKey; s.checklist.forEach(c => c.done = false); s.water = 0; s.meals = [false, false, false, false]; s.mealTxt = ['', '', '', '']; s.mealKcal = [0, 0, 0, 0]; s.snacks = [];
       s.plate = { v: false, p: false, c: false }; s.workoutDone = {}; s.workoutDay = todayIdx; s.night.forEach(n => n[1] = false);
       s.study.pomos = 0; s.study.minutes = 0; s.outfit = {}; s.skin.done = { am: [], pm: [] }; s.fired = {};
     }
@@ -1683,7 +1695,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   renderGreet();
   $('#todayLabel').textContent = `${DAYS[todayIdx]} ${now.getDate()} de ${MONTHS[now.getMonth()]}`;
   $('#clock').textContent = `${hr}:${String(now.getMinutes()).padStart(2, '0')}`;
-  const tipOfDay = TIPS[(now.getDate() + now.getMonth() * 31) % TIPS.length];
+  const dayTips = [...TIPS, ...(S.myTips || []).map(x => [x.cat, x.t, x.p])], tipOfDay = dayTips[(now.getDate() + now.getMonth() * 31) % dayTips.length];
   $('#tipDayC').textContent = CAT_NAME[tipOfDay[0]]; $('#tipDayT').textContent = tipOfDay[1]; $('#tipDayP').textContent = tipOfDay[2];
   $('#tipFlip').addEventListener('click', e => { const b = e.currentTarget; b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); buzz(8); });
 
@@ -1716,7 +1728,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
       ['closet', 'cream', 'hanger', 'Look', 'armá tu outfit', Object.values(S.outfit).filter(Boolean).length / 4], ...extraCards()
     ];
     $('#carousel').innerHTML = cards.map(([g, c, ic, b, s, f]) => `<button class="cc ${c}" type="button" data-go="${g}"><svg class="bgdaisy"><use href="#i-daisy"/></svg><span class="ic">${ICON(ic)}</span><b${b.length > 8 ? ' class="sm"' : ''}>${esc(b)}</b><small>${s}</small><span class="meter"><i style="width:${Math.round(f * 100)}%"></i></span></button>`).join('');
-    $('#mHab').textContent = `${S.habits.length} hábitos · ${hb} hoy`; $('#mClo').textContent = `${S.closet.length} prendas · ${S.looks.length} looks`; $('#mTip').textContent = `${TIPS.length} tips · ${S.favs.length} favoritos`;
+    $('#mHab').textContent = `${S.habits.length} hábitos · ${hb} hoy`; $('#mClo').textContent = `${S.closet.length} prendas · ${S.looks.length} looks`; $('#mTip').textContent = `${TIPS.length + (S.myTips || []).length} tips · ${S.favs.length} favoritos`;
     renderPlant(); moreLabels();
   }
 
@@ -1827,14 +1839,12 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   $('#wPlus').addEventListener('click', () => setWater(S.water + 1, $('#glassBtn')));
   $('#wMinus').addEventListener('click', () => setWater(S.water - 1));
   function renderMeals() {
-    $('#meals').innerHTML = MEALS.map(([t, n, s], i) => { const ph = PH[`meal-${todayKey}-${i}`]; return `<div class="meal${S.meals[i] ? ' on' : ''}${ph ? ' ph' : ''}"${ph ? ` style="--ph:url('${ph}')"` : ''}><button class="meal-hit" type="button" data-meal="${i}" aria-pressed="${S.meals[i]}" aria-label="${n}${S.mealTxt[i] ? ': ' + esc(S.mealTxt[i]) : ''}"></button><span class="mk">${ICON('check')}</span><span class="t">${t}</span><b>${n}</b><small>${S.mealTxt[i] ? esc(S.mealTxt[i]) : '¿Qué comiste?'}</small><button class="pen" type="button" data-mealtxt="${i}" aria-label="Anotar qué comiste en ${n}">${ICON('edit')}</button><label class="cam" aria-label="Foto de ${n}">${ICON('camera')}<input type="file" accept="image/*" data-mealphoto="${i}" hidden></label></div>`; }).join('');
+    $('#meals').innerHTML = MEALS.map(([t, n, s], i) => { const ph = PH[`meal-${todayKey}-${i}`]; return `<div class="meal${S.meals[i] ? ' on' : ''}${ph ? ' ph' : ''}"${ph ? ` style="--ph:url('${ph}')"` : ''}><button class="meal-hit" type="button" data-meal="${i}" aria-pressed="${S.meals[i]}" aria-label="${n}${S.mealTxt[i] ? ': ' + esc(S.mealTxt[i]) : ''}"></button><span class="mk">${ICON('check')}</span><span class="t">${t}${S.mealKcal[i] ? ` · ${S.mealKcal[i]} kcal` : ''}</span><b>${n}</b><small>${S.mealTxt[i] ? esc(S.mealTxt[i]) : '¿Qué comiste?'}</small><button class="pen" type="button" data-mealtxt="${i}" aria-label="Anotar qué comiste en ${n}">${ICON('edit')}</button><label class="cam" aria-label="Foto de ${n}">${ICON('camera')}<input type="file" accept="image/*" data-mealphoto="${i}" hidden></label></div>`; }).join('');
     $('#mealCount').textContent = `${S.meals.filter(Boolean).length}/4`;
+    renderKcal();
   }
   $('#meals').addEventListener('click', e => {
-    const pb = e.target.closest('[data-mealtxt]');
-    if (pb) { const i = +pb.dataset.mealtxt; return sheet(`<span class="wide muted">${MEALS[i][0]}</span><h3>${MEALS[i][1]}</h3><textarea class="field" id="mtTxt" rows="3" maxlength="80" placeholder="¿Qué comiste?" aria-label="Qué comiste">${esc(S.mealTxt[i] || '')}</textarea><div class="sheet-btns"><button class="btn" type="button" data-close>Cancelar</button><button class="btn rose" type="button" id="mtSave">Guardar</button></div>`, () => {
-      $('#mtSave').addEventListener('click', () => { S.mealTxt[i] = $('#mtTxt').value.trim(); if (S.mealTxt[i] && !S.meals[i]) S.meals[i] = true; save(); closeSheet(); renderMeals(); renderCarousel(); });
-    }); }
+    const pb = e.target.closest('[data-mealtxt]'); if (pb) mealSheet(+pb.dataset.mealtxt);
   });
   $('#meals').addEventListener('click', e => { const b = e.target.closest('[data-meal]'); if (!b) return; const i = +b.dataset.meal; S.meals[i] = !S.meals[i]; if (S.meals[i]) { burst(b, 8); buzz(10); } save(); renderMeals(); renderCarousel(); });
   function renderPlate() {
@@ -1958,28 +1968,59 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     S.habits.push({ id: uid(), n: v, c: S.habits.length % 2 ? 'sage' : 'rose', w: [0, 0, 0, 0, 0, 0, 0] }); $('#habInput').value = ''; save(); renderHabits(); buzz(8);
   });
 
-  /* ---------- Tips: mazo de cartas ---------- */
+  /* ---------- Tips: mazo de cartas (los de la app + los tuyos) ---------- */
   let tipCat = 'todos', undoStack = [];
-  const deckFor = () => TIPS.map((_, i) => i).filter(i => tipCat === 'todos' || TIPS[i][0] === tipCat);
+  // un tip se identifica por su número (los de la app) o por su id "u…" (los tuyos)
+  const tipKey = v => /^\d+$/.test(String(v)) ? +v : String(v);
+  const myTip = k => (S.myTips || []).find(x => x.id === k);
+  const tipOf = k => { if (typeof k === 'number') return TIPS[k] ? [...TIPS[k], false] : null; const m = myTip(k); return m ? [m.cat, m.t, m.p, true] : null; };
+  const allTipKeys = () => [...(S.myTips || []).map(x => x.id), ...TIPS.map((_, i) => i)];
+  const deckFor = () => allTipKeys().filter(k => { const t = tipOf(k); return tipCat === 'todos' || (tipCat === 'mios' ? t[3] : t[0] === tipCat); });
   function renderDeck() {
-    $('#tipCats').innerHTML = TIP_CATS.map(([k, n]) => `<button class="chip press" type="button" data-tc="${k}" aria-pressed="${k === tipCat}">${n}</button>`).join('');
-    const list = deckFor(), L = list.length, p = ((S.tipPos % L) + L) % L;
+    S.favs = S.favs.filter(k => tipOf(k));
+    const cats = [TIP_CATS[0], ['mios', `Míos${S.myTips && S.myTips.length ? ' · ' + S.myTips.length : ''}`], ...TIP_CATS.slice(1)];
+    $('#tipCats').innerHTML = cats.map(([k, n]) => `<button class="chip press" type="button" data-tc="${k}" aria-pressed="${k === tipCat}">${n}</button>`).join('');
+    const list = deckFor(), L = list.length;
+    if (!L) {
+      $('#deckCount').textContent = '0';
+      $('#deck').innerHTML = `<button class="tcard rose" type="button" id="tipFirst" style="border:0;text-align:left;cursor:pointer"><svg class="bd"><use href="#i-daisy"/></svg><span class="wide">Tus tips</span><b>Escribí tu primer tip</b><p>Algo que te funcione y no te quieras olvidar. Tocá acá o el + de arriba.</p></button>`;
+      $('#tLike').setAttribute('aria-pressed', 'false'); renderFavs(); return;
+    }
+    const p = ((S.tipPos % L) + L) % L;
     $('#deckCount').textContent = `${p + 1} / ${L}`;
-    $('#deck').innerHTML = [2, 1, 0].filter(d => d < L).map(depth => { const i = list[(p + depth) % L], [c, t, x] = TIPS[i];
-      return `<article class="tcard ${CAT_COL[c]}" data-depth="${depth}" data-tip="${i}"><svg class="bd"><use href="#i-daisy"/></svg><span class="wide">${CAT_NAME[c]}${S.favs.includes(i) ? ' · guardado' : ''}</span>
-        <span class="stamp like">Guardar</span><span class="stamp nope">Pasar</span><b>${t}</b><p>${x}</p></article>`; }).join('');
+    $('#deck').innerHTML = [2, 1, 0].filter(d => d < L).map(depth => { const i = list[(p + depth) % L], [c, t, x, mine] = tipOf(i);
+      return `<article class="tcard ${CAT_COL[c]}" data-depth="${depth}" data-tip="${i}"><svg class="bd"><use href="#i-daisy"/></svg><span class="wide">${CAT_NAME[c]}${mine ? ' · mío' : ''}${S.favs.includes(i) ? ' · guardado' : ''}</span>
+        ${mine && depth === 0 ? `<button class="tip-edit" type="button" data-tipedit="${i}" aria-label="Editar este tip">${ICON('edit')}</button>` : ''}
+        <span class="stamp like">Guardar</span><span class="stamp nope">Pasar</span><b>${esc(t)}</b><p>${esc(x)}</p></article>`; }).join('');
     $('#tLike').setAttribute('aria-pressed', S.favs.includes(list[p]));
     renderFavs();
   }
   function renderFavs() {
     $('#favCount').textContent = S.favs.length;
-    $('#favList').innerHTML = S.favs.length ? S.favs.map(i => `<div class="fav-item">${ICON('heart')}<div><b>${TIPS[i][1]}</b><p>${TIPS[i][2]}</p></div><button class="del" type="button" data-unfav="${i}" aria-label="Quitar de favoritos">${ICON('x')}</button></div>`).join('') : '<p class="hint" style="margin:0">Deslizá un tip a la derecha para guardarlo acá.</p>';
+    $('#favList').innerHTML = S.favs.length ? S.favs.map(i => { const [, t, x] = tipOf(i); return `<div class="fav-item">${ICON('heart')}<div><b>${esc(t)}</b><p>${esc(x)}</p></div><button class="del" type="button" data-unfav="${i}" aria-label="Quitar de favoritos">${ICON('x')}</button></div>`; }).join('') : '<p class="hint" style="margin:0">Deslizá un tip a la derecha para guardarlo acá.</p>';
     renderCarousel();
+  }
+  function tipSheet(k) {
+    const m = k != null ? myTip(k) : null; let cat = m ? m.cat : (tipCat !== 'todos' && tipCat !== 'mios' ? tipCat : 'mente');
+    sheet(`<h3>${m ? 'Editar tip' : 'Nuevo tip'}</h3>
+      <label class="lb">Categoría</label><div class="chips wrap">${TIP_CATS.slice(1).map(([c, n]) => `<button class="chip press" type="button" data-tcat="${c}" aria-pressed="${c === cat}">${n}</button>`).join('')}</div>
+      <input class="field" id="tipT" maxlength="40" placeholder="Título (ej: Agua antes del café)" value="${m ? esc(m.t) : ''}" aria-label="Título del tip">
+      <textarea class="field" id="tipP" rows="3" maxlength="200" placeholder="El tip completo" aria-label="Texto del tip">${m ? esc(m.p) : ''}</textarea>
+      <div class="sheet-btns">${m ? '<button class="btn" type="button" id="tipDel">Borrar</button>' : '<button class="btn" type="button" data-close>Cancelar</button>'}<button class="btn rose" type="button" id="tipSave">Guardar</button></div>`, b => {
+      b.addEventListener('click', e => { const c = e.target.closest('[data-tcat]'); if (c) { cat = c.dataset.tcat; $$('[data-tcat]', b).forEach(x => x.setAttribute('aria-pressed', x === c)); } });
+      $('#tipSave').addEventListener('click', () => {
+        const t = $('#tipT').value.trim(), p = $('#tipP').value.trim(); if (!t) return toast('Ponele un título');
+        S.myTips = S.myTips || [];
+        if (m) Object.assign(m, { cat, t, p }); else { S.myTips.unshift({ id: 'u' + uid(), cat, t, p }); tipCat = 'mios'; S.tipPos = 0; award(2); }
+        save(); closeSheet(); renderDeck(); toast(m ? 'Tip guardado' : '¡Tip agregado!');
+      });
+      const del = $('#tipDel'); if (del) del.addEventListener('click', () => { S.myTips = S.myTips.filter(x => x !== m); S.favs = S.favs.filter(x => x !== k); save(); closeSheet(); renderDeck(); toast('Tip borrado'); });
+    });
   }
   let flying = false;
   function swipeTip(dir) {
     const top = $('#deck [data-depth="0"]'); if (!top || flying) return; flying = true;
-    const i = +top.dataset.tip;
+    const i = tipKey(top.dataset.tip);
     if (dir > 0 && !S.favs.includes(i)) { S.favs.push(i); burst($('#tLike'), 10); toast('Guardado en favoritos'); }
     buzz(dir > 0 ? [10, 30, 10] : 8);
     undoStack.push(S.tipPos);
@@ -1988,7 +2029,8 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     S.tipPos++; save(); setTimeout(() => { flying = false; renderDeck(); }, 330);
   }
   let td = null;
-  $('#deck').addEventListener('pointerdown', e => { const c = e.target.closest('[data-depth="0"]'); if (!c || flying) return; td = { c, x: e.clientX, y: e.clientY, dx: 0 }; c.classList.add('dragging'); c.setPointerCapture(e.pointerId); });
+  $('#deck').addEventListener('click', e => { const ed = e.target.closest('[data-tipedit]'); if (ed) return tipSheet(tipKey(ed.dataset.tipedit)); if (e.target.closest('#tipFirst')) tipSheet(null); });
+  $('#deck').addEventListener('pointerdown', e => { if (e.target.closest('button')) return; const c = e.target.closest('[data-depth="0"]'); if (!c || flying) return; td = { c, x: e.clientX, y: e.clientY, dx: 0 }; c.classList.add('dragging'); c.setPointerCapture(e.pointerId); });
   $('#deck').addEventListener('pointermove', e => {
     if (!td) return; const dx = (e.clientX - td.x) / zoom(), dy = (e.clientY - td.y) / zoom(); td.dx = dx;
     td.c.style.transform = `translate(${dx}px, ${dy * .3}px) rotate(${dx / 14}deg)`;
@@ -1997,11 +2039,12 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   const endTip = () => { if (!td) return; const { c, dx } = td; td = null; c.classList.remove('dragging');
     if (Math.abs(dx) > 90) swipeTip(Math.sign(dx)); else { c.style.transform = ''; c.querySelectorAll('.stamp').forEach(s => s.style.opacity = 0); } };
   $('#deck').addEventListener('pointerup', endTip); $('#deck').addEventListener('pointercancel', endTip);
+  $('#addTip').addEventListener('click', () => tipSheet(null));
   $('#tLike').addEventListener('click', () => swipeTip(1));
   $('#tNope').addEventListener('click', () => swipeTip(-1));
   $('#tUndo').addEventListener('click', () => { if (!undoStack.length) return toast('No hay nada para volver'); S.tipPos = undoStack.pop(); save(); renderDeck(); });
   $('#tipCats').addEventListener('click', e => { const b = e.target.closest('[data-tc]'); if (!b) return; tipCat = b.dataset.tc; S.tipPos = 0; undoStack = []; renderDeck(); buzz(6); });
-  $('#favList').addEventListener('click', e => { const b = e.target.closest('[data-unfav]'); if (!b) return; S.favs = S.favs.filter(x => x !== +b.dataset.unfav); save(); renderDeck(); });
+  $('#favList').addEventListener('click', e => { const b = e.target.closest('[data-unfav]'); if (!b) return; S.favs = S.favs.filter(x => x !== tipKey(b.dataset.unfav)); save(); renderDeck(); });
 
   /* ---------- Closet: probador ---------- */
   const ROWS = [['up', ['top', 'dress'], 'Arriba'], ['down', ['bottom'], 'Abajo'], ['feet', ['shoes'], 'Zapatos'], ['extra', ['coat', 'acc'], 'Extra']];
@@ -2166,7 +2209,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
       fin: { budget: 0, exp: [], goals: [] },
       skin: { products: [], done: { am: [], pm: [] }, log: {} },
       rem: { agua: { on: true, every: 2 }, dormir: { on: true, t: '23:00' }, habitos: { on: true, t: '20:30' }, skin: { on: false, t: '22:00' }, pomodoro: { on: true } },
-      fired: {}, sound: { vol: 60, timer: 30 }, alarm: { on: false, t: '07:00' }
+      fired: {}, sound: { vol: 60, timer: 30 }, alarm: { on: false, t: '07:00' }, myTips: []
     };
   }
 
@@ -2473,7 +2516,9 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   /* ---------- Comida: fotos de platos, recetas y menú ---------- */
   document.addEventListener('change', async e => {
     const inp = e.target.closest('[data-mealphoto]'); if (!inp || !inp.files[0]) return;
-    try { await setPhoto(`meal-${todayKey}-${inp.dataset.mealphoto}`, await shrink(inp.files[0])); renderMeals(); award(1); toast('¡Qué rico se ve!'); } catch (err) { toast('No pude leer esa foto'); }
+    const i = +inp.dataset.mealphoto;
+    try { await setPhoto(`meal-${todayKey}-${i}`, await shrink(inp.files[0])); renderMeals(); award(1); toast('¡Qué rico se ve!'); } catch (err) { return toast('No pude leer esa foto'); }
+    if (aiReady() && !S.mealKcal[i]) { toast('Calculando calorías de la foto…'); const r = await estimateKcal({ text: S.mealTxt[i], photoKey: `meal-${todayKey}-${i}`, meal: MEALS[i][1] }); if (r && r.total) { S.mealKcal[i] = r.total; if (!S.mealTxt[i] && r.desc) S.mealTxt[i] = r.desc; if (!S.meals[i]) S.meals[i] = true; save(); renderMeals(); renderCarousel(); toast(`≈ ${r.total} kcal${r.ai ? '' : ' (aproximado)'}`); } }
   });
   const RCOL = ['rose', 'sage', 'cream'];
   function renderRecipes() {
@@ -3057,6 +3102,96 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     });
   }
 
+
+  /* ---------- Calorías: meta diaria, comidas, snacks y cálculo ---------- */
+  // Tabla aproximada para estimar sin IA (porción típica en Costa Rica)
+  const FOODS = [
+    ['gallo pinto', 300, 'taza'], ['casado', 750], ['chifrijo', 650], ['olla de carne', 450], ['arroz con pollo', 600], ['arroz con leche', 280], ['arroz', 205, 'taza'],
+    ['frijoles', 225, 'taza'], ['huevo', 75], ['pollo', 250], ['carne', 280], ['bistec', 280], ['cerdo', 300], ['chuleta', 300], ['pescado', 200], ['atun', 130], ['salchicha', 150], ['jamon', 45],
+    ['platano maduro', 220], ['maduro', 220], ['patacon', 120], ['papa', 160], ['yuca', 330], ['tortilla', 70], ['arepa', 220], ['empanada', 270], ['tamal', 300], ['pan', 80], ['tostada', 70],
+    ['queso', 110], ['natilla', 60], ['mantequilla', 100], ['aguacate', 240], ['ensalada', 80], ['picadillo', 150], ['sopa', 180], ['pasta', 300], ['espagueti', 300], ['pizza', 285, 'porción'],
+    ['hamburguesa', 550], ['papas fritas', 365], ['hot dog', 290], ['taco', 200], ['burrito', 500], ['sandwich', 350], ['sushi', 45, 'pieza'],
+    ['cafe con leche', 90], ['capuchino', 120], ['cafe', 5], ['te', 5], ['leche', 120, 'vaso'], ['jugo', 110, 'vaso'], ['batido', 250], ['fresco', 110, 'vaso'], ['gaseosa', 150], ['refresco', 150], ['cerveza', 150], ['vino', 125, 'copa'],
+    ['yogur', 120], ['avena', 150], ['granola', 200], ['cereal', 150], ['banano', 105], ['manzana', 95], ['naranja', 60], ['papaya', 60], ['pina', 80], ['sandia', 50], ['mango', 100], ['fresa', 4], ['uva', 3],
+    ['galleta', 50], ['chocolate', 230], ['helado', 210], ['queque', 300], ['pastel', 350], ['dona', 250], ['repostería', 250], ['reposteria', 250], ['churro', 120], ['mani', 160], ['nueces', 185], ['almendras', 165]
+  ];
+  const norm = t => String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const NUMW = { un: 1, una: 1, uno: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, media: .5, medio: .5 };
+  function localKcal(text) {
+    let rest = ' ' + norm(text) + ' ', total = 0; const items = [];
+    for (const [f, k] of FOODS) {
+      const at = rest.indexOf(f); if (at < 0) continue;
+      const before = rest.slice(Math.max(0, at - 14), at).trim().split(/\s+/).filter(w => w !== 'de' && w !== 'con' && w !== 'y'), w = before[before.length - 1] || '';
+      const q = /^\d+([.,]\d+)?$/.test(w) ? parseFloat(w.replace(',', '.')) : NUMW[w] || 1;
+      total += Math.round(k * q); items.push(f); rest = rest.slice(0, at) + ' '.repeat(f.length) + rest.slice(at + f.length);
+    }
+    return total ? { total, desc: '', ai: false, items } : null;
+  }
+  const aiReady = () => !!(cloud.sb && cloud.uid && navigator.onLine);
+  const blobToB64 = blob => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(String(fr.result).split(',')[1] || ''); fr.readAsDataURL(blob); });
+  async function estimateKcal({ text, photoKey, meal }) {
+    if (aiReady()) {
+      try {
+        let image = '';
+        if (photoKey) { const all = await IDB.all(); if (all[photoKey]) image = await blobToB64(all[photoKey]); }
+        if (text || image) {
+          const { data, error } = await cloud.sb.functions.invoke('calorias', { body: { text: text || '', image, meal: meal || '' } });
+          if (!error && data && typeof data.total_kcal === 'number') return { total: Math.round(data.total_kcal), desc: (data.items || []).map(x => x.name).join(', '), note: data.note, items: data.items || [], ai: true };
+        }
+      } catch (e) {}
+      if (!text) { toast('No pude calcular con la foto. ¿Ya está activada la función de IA?'); return null; }
+    } else if (!text) { toast(cloud.uid ? 'Sin internet: escribí qué comiste para calcular' : 'Para calcular con foto, entrá a Sincronizar y activá la IA'); return null; }
+    const r = localKcal(text); if (!r) toast('No reconocí esa comida. Escribí las calorías a mano'); return r;
+  }
+  const kcalToday = () => S.mealKcal.reduce((a, b) => a + (+b || 0), 0) + S.snacks.reduce((a, x) => a + (+x.kcal || 0), 0);
+  function renderKcal() {
+    const tot = kcalToday(), g = S.kcalGoal, f = g ? Math.min(1, tot / g) : 0;
+    $('#kcalCard').innerHTML = `<div class="row-head"><b>Calorías de hoy</b><button class="link" type="button" id="kcalGoalBtn">${g ? `Meta: ${g.toLocaleString('es-CR')}` : 'Poner meta'}</button></div>
+      <div class="kcal-big"><span class="num" id="kcalNum">${tot.toLocaleString('es-CR')}</span><small>${g ? `de ${g.toLocaleString('es-CR')} kcal` : 'kcal'}</small></div>
+      <div class="bar-in"><i style="width:${Math.round(f * 100)}%;background:${g && tot > g ? 'var(--rose)' : 'var(--sage)'}"></i></div>
+      <small class="muted kcal-msg">${!g ? 'Tocá “Poner meta” para anotar cuántas calorías querés comer por día.' : tot > g ? `Te pasaste ${(tot - g).toLocaleString('es-CR')} kcal de tu meta` : `Te quedan ${(g - tot).toLocaleString('es-CR')} kcal`}</small>`;
+    $('#snacks').innerHTML = S.snacks.map(x => `<div class="item"><div class="sw-fg"><span class="fin-ic">${ICON('bowl')}</span><div class="txt"><b>${esc(x.t)}</b></div><span class="amt">${x.kcal ? x.kcal + ' kcal' : '—'}</span><button class="del" type="button" data-snackdel="${x.id}" aria-label="Borrar ${esc(x.t)}">${ICON('x')}</button></div></div>`).join('');
+    const ss = S.snacks.reduce((a, x) => a + (+x.kcal || 0), 0); $('#snackSum').textContent = ss ? `${ss} kcal` : '';
+  }
+  $('#kcalCard').addEventListener('click', e => {
+    if (!e.target.closest('#kcalGoalBtn')) return;
+    sheet(`<h3>Meta diaria de calorías</h3><div class="amount"><input id="kgIn" inputmode="numeric" type="number" min="500" max="6000" value="${S.kcalGoal || ''}" placeholder="Ej: 1800" aria-label="Calorías por día"><span style="font-size:22px">kcal</span></div>
+      <p class="note-sm">Si no sabés cuánto te corresponde, una nutricionista te puede ayudar a definirlo según tu edad, actividad y objetivos.</p>
+      <div class="sheet-btns"><button class="btn" type="button" data-close>Cancelar</button><button class="btn rose" type="button" id="kgSave">Guardar</button></div>`, () => {
+      $('#kgSave').addEventListener('click', () => { const v = Math.round(+$('#kgIn').value || 0); if (v && (v < 500 || v > 6000)) return toast('Poné un número entre 500 y 6000'); S.kcalGoal = v; save(); closeSheet(); renderKcal(); toast(v ? 'Meta guardada' : 'Meta borrada'); });
+    });
+  });
+  function mealSheet(i) {
+    const key = `meal-${todayKey}-${i}`, ph = PH[key];
+    sheet(`${ph ? `<img class="sheet-img" src="${ph}" alt="">` : ''}<span class="wide muted">${MEALS[i][0]}</span><h3>${MEALS[i][1]}</h3>
+      <textarea class="field" id="mtTxt" rows="3" maxlength="120" placeholder="¿Qué comiste? Ej: gallo pinto con 2 huevos y café" aria-label="Qué comiste">${esc(S.mealTxt[i] || '')}</textarea>
+      <div class="add-row"><div class="amount" style="flex:1;padding:4px 14px"><input id="mtK" type="number" min="0" max="5000" inputmode="numeric" value="${S.mealKcal[i] || ''}" placeholder="0" aria-label="Calorías" style="font-size:34px"><span style="font-size:20px">kcal</span></div>
+        <button class="btn sage" type="button" id="mtCalc">${ICON('spark')}Calcular</button></div>
+      <p class="note-sm" id="mtNote">${aiReady() ? `Calcula con IA usando lo que escribiste${ph ? ' y la foto' : ''}.` : 'Sin IA: calcula un aproximado con lo que escribiste. Siempre podés corregir el número.'}</p>
+      <div class="sheet-btns"><button class="btn" type="button" data-close>Cancelar</button><button class="btn rose" type="button" id="mtSave">Guardar</button></div>`, () => {
+      $('#mtCalc').addEventListener('click', async () => {
+        const btn = $('#mtCalc'); btn.disabled = true; btn.innerHTML = ICON('spark') + 'Calculando…';
+        const r = await estimateKcal({ text: $('#mtTxt').value.trim(), photoKey: ph ? key : '', meal: MEALS[i][1] });
+        if (!$('#mtCalc')) return; btn.disabled = false; btn.innerHTML = ICON('spark') + 'Calcular';
+        if (!r) return;
+        $('#mtK').value = r.total; if (!$('#mtTxt').value.trim() && r.desc) $('#mtTxt').value = r.desc;
+        $('#mtNote').textContent = r.ai ? (r.items.map(x => `${x.name} (${x.portion}): ${x.kcal}`).join(' · ') + (r.note ? ` — ${r.note}` : '')) : `Aproximado con: ${r.items.join(', ')}. Corregilo si hace falta.`;
+      });
+      $('#mtSave').addEventListener('click', () => {
+        S.mealTxt[i] = $('#mtTxt').value.trim(); S.mealKcal[i] = Math.max(0, Math.round(+$('#mtK').value || 0));
+        if ((S.mealTxt[i] || S.mealKcal[i]) && !S.meals[i]) S.meals[i] = true;
+        save(); closeSheet(); renderMeals(); renderCarousel();
+      });
+    });
+  }
+  $('#snackForm').addEventListener('submit', async e => {
+    e.preventDefault(); const t = $('#snackT').value.trim(); if (!t) return;
+    let kcal = Math.max(0, Math.round(+$('#snackK').value || 0));
+    $('#snackT').value = ''; $('#snackK').value = '';
+    const item = { id: uid(), t, kcal }; S.snacks.push(item); save(); renderKcal(); buzz(8);
+    if (!kcal) { const r = await estimateKcal({ text: t, meal: 'Snack' }); if (r && r.total) { item.kcal = r.total; save(); renderKcal(); toast(`${t}: ≈ ${r.total} kcal`); } }
+  });
+  $('#snacks').addEventListener('click', e => { const d = e.target.closest('[data-snackdel]'); if (!d) return; S.snacks = S.snacks.filter(x => x.id !== d.dataset.snackdel); save(); renderKcal(); });
   let curView = 'hoy';
   function onView(v) { curView = v; ({ ejercicio: renderWorkExtras, diario: renderDiary, plata: renderFin, skin: renderSkin, metas: renderVision, ajustes: renderSettings, comida: renderRecipes, sueno: () => { renderSounds(); renderAlarm(); }, closet: renderClosetExtras })[v]?.(); }
   function bootExtras() {

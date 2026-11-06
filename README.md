@@ -35,7 +35,7 @@ Tocá **Go Live** (Live Server). Abre la carpeta y te lleva directo a la app.
 | E | **Hábitos** | **Mantené apretada la flor** para marcar hoy, tocá los días para los anteriores. Rachas con fueguito y un mapa de la semana. |
 | F | **Aprender** | Pomodoro de 15, 25 o 50 min, **tarjetas de repaso** que se dan vuelta ("¡La sabía!" / "Repasar"), materias con progreso y pendientes. |
 | G | **Closet** | **Probador**: pasá prendas con las flechas o deslizando (arriba, abajo, zapatos, extra), "Sorprendeme" como tragamonedas y "Guardar look". Ropa por tipo y agregar prendas. |
-| H | **Tips** | **Mazo de cartas**: deslizá → para guardar, ← para pasar, botón para volver. Filtros por categoría y lista de favoritos. |
+| H | **Tips** | Podés agregar los tuyos con el +. **Mazo de cartas**: deslizá → para guardar, ← para pasar, botón para volver. Filtros por categoría y lista de favoritos. |
 
 | I | **Ánimo y diario** | Cómo te sentís (5 florcitas), diario del día y "tres cosas lindas". Cruza tu ánimo con el sueño, el ejercicio y el agua ("los días que dormís 7½ h o más tu ánimo es 4,3") y muestra un gráfico de 14 días. |
 | J | **Plata** | Gastos del día en colones (₡) por categoría, presupuesto del mes con lo que te queda por día, gastos del mes por categoría y metas de ahorro. |
@@ -70,6 +70,13 @@ La app guarda todo en el dispositivo y, si la conectás a tu proyecto de Supabas
 **En cada dispositivo**: Ajustes → Sincronizar → tu email y contraseña → *Crear cuenta* (la primera vez) o *Entrar*. El circulito de la nube en Hoy se pone verde cuando está sincronizado.
 
 **Cómo se juntan los datos**: cada parte de la app (checklist, plata, closet, diario…) guarda la hora de su último cambio. Si cambiás el checklist en el celular y la plata en la tablet, se conservan las dos cosas. Si cambiás la misma parte en los dos sin internet, queda la versión que cambiaste último. La primera vez que entrás en un dispositivo nuevo, se trae lo que ya tenías en la nube. Las fotos van al bucket `mlos-photos`, en una carpeta por persona.
+
+**Calorías con IA (opcional)**: la app calcula un aproximado con lo que escribís aunque no actives nada. Para que también lea las **fotos** de tus comidas (y estime mejor), activá la función `calorias`, que usa Claude:
+
+1. Creá una clave de API en [console.anthropic.com](https://console.anthropic.com) → *API Keys* (necesita saldo cargado; cada cálculo con foto cuesta más o menos 1 a 2 centavos de dólar).
+2. En Supabase → **Edge Functions** → **Secrets** → *Add new secret*: nombre `ANTHROPIC_API_KEY`, valor tu clave. Nunca la pongas en `config.js`: el repo es público.
+3. **Edge Functions** → **Deploy a new function** → *Via Editor* → nombre `calorias` → pegá el contenido de [`supabase/functions/calorias/index.ts`](supabase/functions/calorias/index.ts) → **Deploy**.
+4. Listo: con la sesión iniciada en la app, al subir la foto de una comida se calculan solas las calorías, y en el lápiz de cada comida el botón *Calcular* usa la IA. Solo pueden usarla las personas con sesión en tu app.
 
 **Publicarla para abrirla en la tablet**: GitHub → Settings del repo → Pages → *Deploy from a branch* → elegí la rama y la carpeta `/ (root)`. La app queda en `https://TU-USUARIO.github.io/My-Life-OS/` (te lleva sola a `prototype/`).
 

@@ -2871,7 +2871,10 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   const NOSTAMP = new Set(['_t', '_uid']);
   let snap = {};
   function stamp() {
-    const t = Date.now(); let changed = false; S._t = S._t || {};
+    // cada cambio queda "después" de todo lo que este dispositivo ya vio, aunque los relojes de
+    // tus dispositivos no coincidan (si no, un celular con la hora adelantada pisaba lo nuevo)
+    S._t = S._t || {}; let changed = false;
+    const t = Math.max(Date.now(), ...Object.values(S._t).map(v => +v || 0).map(v => v + 1));
     for (const k of Object.keys(S)) {
       if (NOSTAMP.has(k)) continue;
       const j = JSON.stringify(S[k]);

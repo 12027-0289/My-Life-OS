@@ -2937,8 +2937,9 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   function saveLocal() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 
   const sbCfg = () => {
-    const f = window.MLOS_SUPABASE || {}; if (f.url && f.anonKey) return { url: f.url.trim(), anonKey: f.anonKey.trim(), fromFile: true };
-    try { const c = JSON.parse(localStorage.getItem('mlos-sb')); if (c && c.url && c.anonKey) return c; } catch (e) {}
+    const clean = u => String(u).trim().replace(/\/rest\/v1\/?$/, '').replace(/\/+$/, '');
+    const f = window.MLOS_SUPABASE || {}; if (f.url && f.anonKey) return { url: clean(f.url), anonKey: f.anonKey.trim(), fromFile: true };
+    try { const c = JSON.parse(localStorage.getItem('mlos-sb')); if (c && c.url && c.anonKey) return { ...c, url: clean(c.url) }; } catch (e) {}
     return null;
   };
   const cloud = { sb: null, uid: null, email: '', state: 'off', msg: '', last: 0, busy: false, again: false, timer: 0 };

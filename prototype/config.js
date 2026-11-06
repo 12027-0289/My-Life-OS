@@ -7,6 +7,6 @@
 // Nunca pongas acá la clave "service_role" ni la "secret".
 // Si lo dejás vacío, podés cargar los datos desde Ajustes → Sincronizar en cada dispositivo.
 window.MLOS_SUPABASE = {
-  url: '',
-  anonKey: ''
+  url: 'https://pmedkcicgwfjrhfzwxgp.supabase.co',
+  anonKey: '' // ← pegá acá tu clave sb_publishable_… (botón de copiar en Project Settings → API Keys)
 };

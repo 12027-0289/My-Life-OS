@@ -8,5 +8,5 @@
 // Si lo dejás vacío, podés cargar los datos desde Ajustes → Sincronizar en cada dispositivo.
 window.MLOS_SUPABASE = {
   url: 'https://pmedkcicgwfjrhfzwxgp.supabase.co',
-  anonKey: '' // ← pegá acá tu clave sb_publishable_… (botón de copiar en Project Settings → API Keys)
+  anonKey: 'sb_publishable_VzHruiggWvVuAYpvJFiVbg_ayKvIa9T' // ← pegá acá tu clave sb_publishable_… (botón de copiar en Project Settings → API Keys)
 };

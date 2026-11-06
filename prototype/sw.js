@@ -1,6 +1,6 @@
 // My Life OS: guarda la app para usarla sin internet y muestra los avisos.
-const CACHE = 'mlos-v4';
-const SHELL = ['./index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
+const CACHE = 'mlos-v5';
+const SHELL = ['./index.html', './config.js', './vendor/supabase.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

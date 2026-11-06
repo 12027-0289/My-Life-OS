@@ -52,7 +52,26 @@ Tocá **Go Live** (Live Server). Abre la carpeta y te lleva directo a la app.
 
 La barra de abajo flota y tiene **Hoy · Ejercicio · Comida · Sueño · Más**; en **Más** están Hábitos, Aprender, Closet y Tips.
 
-Todo se guarda en el navegador (localStorage; las fotos, achicadas, en IndexedDB). La primera vez te pregunta tu nombre y tus colores. Lo diario (checklist, agua, comidas, ejercicio, rutina de noche, estudio) se reinicia cada día; los hábitos, cada semana.
+Todo se guarda en el dispositivo (localStorage; las fotos, achicadas, en IndexedDB) y, si conectás Supabase, también en tu cuenta para verlo en todos tus dispositivos. La primera vez te pregunta tu nombre y tus colores. Lo diario (checklist, agua, comidas, ejercicio, rutina de noche, estudio) se reinicia cada día; los hábitos, cada semana.
+
+## Tus datos en todos tus dispositivos (Supabase)
+
+La app guarda todo en el dispositivo y, si la conectás a tu proyecto de Supabase, lo sincroniza: entrás con el mismo email y contraseña en el celular, la tablet o la compu y ves lo mismo. Funciona también sin internet: lo que hagas se sube cuando vuelve la conexión.
+
+**Una sola vez, en Supabase**
+
+1. **Crear la tabla y las fotos**: SQL Editor → New query → pegá el contenido de [`supabase/setup.sql`](supabase/setup.sql) → Run. Crea la tabla `mlos_state` y el bucket privado `mlos-photos`, con reglas para que cada persona solo vea y cambie lo suyo.
+2. **Login con email**: Authentication → Sign In / Providers → Email tiene que estar activado (viene así). Si no querés confirmar el email al crear la cuenta, podés apagar "Confirm email".
+3. **Dirección de la app**: Authentication → URL Configuration → en *Site URL* y *Redirect URLs* poné la dirección donde publiques la app (por ejemplo `https://TU-USUARIO.github.io/My-Life-OS/prototype/`). Sirve para los links de confirmar cuenta y de cambiar la contraseña.
+4. **Copiar los datos de conexión**: Project Settings → API → *Project URL* y la clave pública *anon* (o *publishable*). Pegalos en [`prototype/config.js`](prototype/config.js). La clave pública está hecha para ir dentro de la app; **nunca** pongas la `service_role` ni la `secret`.
+
+> Si no querés tocar `config.js`, también podés pegar esos dos datos en **Ajustes → Sincronizar** en cada dispositivo.
+
+**En cada dispositivo**: Ajustes → Sincronizar → tu email y contraseña → *Crear cuenta* (la primera vez) o *Entrar*. El circulito de la nube en Hoy se pone verde cuando está sincronizado.
+
+**Cómo se juntan los datos**: cada parte de la app (checklist, plata, closet, diario…) guarda la hora de su último cambio. Si cambiás el checklist en el celular y la plata en la tablet, se conservan las dos cosas. Si cambiás la misma parte en los dos sin internet, queda la versión que cambiaste último. La primera vez que entrás en un dispositivo nuevo, se trae lo que ya tenías en la nube. Las fotos van al bucket `mlos-photos`, en una carpeta por persona.
+
+**Publicarla para abrirla en la tablet**: GitHub → Settings del repo → Pages → *Deploy from a branch* → elegí la rama y la carpeta `/ (root)`. La app queda en `https://TU-USUARIO.github.io/My-Life-OS/` (te lleva sola a `prototype/`).
 
 ## Instalarla en el celular
 

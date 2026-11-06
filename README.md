@@ -1,6 +1,6 @@
 # My Life OS
 
-Una app para organizar toda tu vida desde un solo lugar: rutinas de mañana y noche, tareas, calendario y recordatorios, hábitos y metas, progreso semanal y un diario de ánimo.
+Una app para organizar toda tu vida desde un solo lugar: checklist diario, ejercicio, alimentación, sueño, hábitos, tips, closet y estudio.
 
 Este repositorio contiene, por ahora, el **diseño visual y un prototipo navegable**.
 
@@ -24,35 +24,37 @@ El archivo que se edita es `prototype/index.html`. Según cómo lo abras, se ve 
 
 Tocá **Go Live** (Live Server). Abre la carpeta y te lleva directo a la app.
 
-## Pantallas
+## Secciones
 
-Temática cute, cozy y misteriosa: noche de cacao, luz de vela, fases de la luna y Miso, el gatito de la app.
-
-| | Pantalla | Qué resuelve |
+| | Sección | Qué resuelve |
 |---|---|---|
-| A | **Hoy** | Arco del día (despertar → a soñar), carta del día para dar vuelta, rituales, recordatorio, pendientes, velitas y "¿Cómo te sentís hoy?". |
-| B | **Rituales** | Ritual del amanecer y ritual de la luna, paso a paso con horario, duración y racha. |
-| C | **Agenda lunar** | Calendario con las fases reales de la luna, planes del día elegido y botón + para pendientes con recordatorio. |
-| D | **Velitas y constelaciones** | Cada hábito es una velita que se enciende; cada meta es una constelación que se ilumina estrella por estrella. |
-| E | **Bola de cristal** | Puntaje semanal, día por día, estadísticas, lunas de la semana, un patrón detectado y "tu cielo" de 12 semanas. |
-| F | **Diario** | Ánimo en fases de la luna (Tormenta → Luna llena), etiquetas, texto libre, tres cositas lindas e historial. |
+| A | **Hoy** | Saludo según la hora, anillo de progreso, **checklist diario** (marcar, agregar, borrar), resumen de cada sección y tip del día. |
+| B | **Ejercicio** | Rutina para cada día de la semana (L a D) con series y repeticiones, marcar cada ejercicio y temporizador de descanso de 60 s. |
+| C | **Alimentación** | Agua (8 vasos), comidas del día, "mi plato" (½ verduras, ¼ proteína, ¼ carbos) y lista del súper. |
+| D | **Sueño** | Hora de acostarse y de despertarse (calcula las horas), calidad del sueño, gráfico de la semana con meta de 8 h y rutina de noche. |
+| E | **Hábitos** | Cada hábito con sus 7 días para marcar y racha automática. Se pueden agregar y borrar. |
+| F | **Aprender** | Pomodoro (25 min foco / 5 min pausa) que suma minutos de estudio, materias con temas vistos y pendientes de estudio. |
+| G | **Closet** | Prendas por tipo, outfit de hoy (tocá prendas para armarlo), botón "sorprendeme" y agregar prendas con tipo y color. |
+| H | **Tips** | 16 tips por categoría (ejercicio, comida, sueño, estudio, closet, mente) y favoritos con el corazón. |
+
+La barra de abajo tiene **Hoy · Ejercicio · Comida · Sueño · Más**; en **Más** están Hábitos, Aprender, Closet y Tips.
+
+Todo se guarda en el navegador (localStorage). El checklist, el agua, las comidas, el ejercicio y la rutina de noche se reinician cada día; los hábitos, cada semana.
 
 ## Sistema visual
 
-**Paleta base**
+**Estilo Soft-UI (neumorfismo)**: todo sale del mismo fondo crema. Dos sombras (luz arriba a la izquierda, sombra abajo a la derecha) levantan tarjetas y botones; sombras internas los hunden cuando están tocados, hechos o elegidos.
 
-| Nombre | Hex | Uso |
-|---|---|---|
-| Mushroom | `#A89A94` | Textos suaves, luna |
-| Blush Beige | `#D9C4BC` | Botones, completado |
-| Deep Cocoa | `#4A3835` | Tarjetas, noche |
+**Paleta**
 
-Modo día (por defecto): fondo beige rosado `#F5EAE5` con lunares, tarjetas `#FFF9F6` con sombra suave, texto y botones Deep Cocoa, luz de vela `#C47D4A`. Modo noche (botón "Modo noche"): fondo cacao `#2B201E`. La elección se recuerda en el navegador.
+| Nombre | Hex | Tinta | Uso |
+|---|---|---|---|
+| Dusty Rose | `#C9908F` | `#6B3F3F` | Acciones, ejercicio, estudio, rosa de acento |
+| Soft Sage | `#9CAF98` | `#3B5442` | Completado, agua, sueño, progreso |
+| Warm Cream | `#F3EADF` | `#6E645A` | Fondo de toda la app y superficies Soft-UI |
 
-**Pasteles** (combinan con la paleta y dan color a cada cosa): rosa `#E79AA8`, salvia `#93B784`, lavanda `#AC97D6`, manteca `#E9BF4F`, cielo `#84B2D6`, durazno `#EE9B74`. Cada hábito, meta y tipo de evento tiene su color.
+Modo noche (botón de la luna): fondo `#3D3331` con las mismas tintas. La elección se recuerda en el navegador.
 
-**Interacciones**: anillos de "Tu día" que se llenan con pendientes, velitas y rituales; contador de agüita (8 vasos enciende la velita); explosión de florcitas, corazones y estrellas al completar cosas; Miso salta y cambia lo que dice según tu ánimo; la tarjeta de ánimo toma el color de tu luna.
+**Tipografía**: Archivo condensada 800 en mayúsculas para títulos y Archivo expandida para etiquetas (como en la paleta), Nunito para el texto.
 
-**Tipografía**: Fraunces suave (títulos e itálicas del diario), Nunito (texto), DM Mono (horas y números).
-
-**Principios**: un refugio, no una oficina · rituales chiquitos de un toque · magia sin culpa.
+**Detalle**: la florcita de cinco pétalos de la paleta es el ícono de la app, el check de cada tarea y la calificación del sueño.

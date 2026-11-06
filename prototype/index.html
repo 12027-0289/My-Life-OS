@@ -3,592 +3,473 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-</head>
-<body>
 <title>My Life OS</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..800,0..100;1,9..144,400..800,0..100&family=Nunito:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
-/* Layout: a "cozy desk at night" board — rooms on the left, the phone glowing in the middle, the little book of spells (visual system) on the right. Dark-first: Deep Cocoa night is the default. */
+/* Soft-UI (neumorfismo): todo parece hecho de la misma masa crema, levantado con dos sombras
+   (luz arriba-izquierda, sombra abajo-derecha) o hundido con sombras internas.
+   Paleta: Dusty Rose #C9908F · Soft Sage #9CAF98 · Warm Cream #F3EADF */
 :root {
-  /* Color — from the user's palette: Mushroom #A89A94, Blush Beige #D9C4BC, Deep Cocoa #4A3835.
-     Day (default) is a soft blush room with cocoa ink; "Modo noche" switches to cocoa night. */
-  --bg: #F5EAE5;
-  --surface: #FFF9F6;
-  --surface-2: #F1E2DB;
-  --ink: #4A3835;         /* Deep Cocoa */
-  --muted: #8C7871;
-  --line: #E8D6CE;
-  --accent: #4A3835;      /* botones cacao */
-  --accent-ink: #FFF5F1;
-  --accent-soft: #EBD7CF;
-  --candle: #C47D4A;      /* luz de vela */
-  --candle-soft: #FAE6D6;
-  --moon: #9A8780;        /* Mushroom */
-  --moon-soft: #EFE4E0;
-  --alert: #C4604F;
-  --alert-soft: #F9E0D9;
-  --star: rgba(168, 154, 148, .45);
-  --dot: rgba(168, 154, 148, .22);
-  --cat: #4A3835;
-  --bezel: #4A3835;
-  --glow: rgba(232, 168, 120, .38);
-  --shadow: 0 10px 26px -16px rgba(74, 56, 53, .45);
-  /* pasteles que combinan con la paleta */
-  --rose: #E79AA8; --rose-soft: #FBE1E5;
-  --sage: #93B784; --sage-soft: #E3EFDB;
-  --lav: #AC97D6; --lav-soft: #ECE4F8;
-  --butter: #E9BF4F; --butter-soft: #FCF0CC;
-  --sky: #84B2D6; --sky-soft: #DFEDF8;
-  --peach: #EE9B74; --peach-soft: #FDE3D6;
-  --m1: var(--lav); --m2: var(--sky); --m3: var(--sage); --m4: var(--peach); --m5: var(--butter);
-
-  /* Type */
-  --display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --bg: #F3EADF;            /* Warm Cream */
+  --ink: #4E3B3A;
+  --muted: #8A7B72;
+  --rose: #C9908F;          /* Dusty Rose */
+  --rose-ink: #6B3F3F;
+  --rose-soft: #EDD9D3;
+  --sage: #9CAF98;          /* Soft Sage */
+  --sage-ink: #3B5442;
+  --sage-soft: #DDE3D3;
+  --cream-ink: #6E645A;
+  --sand: #DCC8B2;
+  --track: #E6DBCE;
+  --sh-d: rgba(166, 135, 115, .38);
+  --sh-l: rgba(255, 255, 255, .9);
+  --raise: 7px 7px 16px var(--sh-d), -7px -7px 16px var(--sh-l);
+  --raise-sm: 4px 4px 9px var(--sh-d), -4px -4px 9px var(--sh-l);
+  --inset: inset 4px 4px 9px var(--sh-d), inset -4px -4px 9px var(--sh-l);
+  --inset-sm: inset 2px 2px 5px var(--sh-d), inset -2px -2px 5px var(--sh-l);
+  --bezel: #6B5753;
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
   --body: "Nunito", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
-
-  --r-lg: 26px; --r-md: 18px; --r-sm: 12px;
+  --r-xl: 30px; --r-lg: 24px; --r-md: 18px; --r-sm: 13px;
   color-scheme: light;
 }
 :root[data-theme="dark"] {
-  --bg: #2B201E; --surface: #3A2C29; --surface-2: #4A3835; --ink: #F2E7E2; --muted: #A89A94; --line: #5B4844;
-  --accent: #D9C4BC; --accent-ink: #4A3835; --accent-soft: #574440;
-  --candle: #E8B98C; --candle-soft: #4F3B2E; --moon: #BFAFA9; --moon-soft: #463733;
-  --alert: #E0907F; --alert-soft: #55332E; --star: rgba(217, 196, 188, .5); --dot: rgba(217, 196, 188, .05);
-  --cat: #1C1412; --bezel: #150F0E; --glow: rgba(232, 185, 140, .45); --shadow: 0 0 0 transparent;
-  --rose: #DE8E9C; --rose-soft: #4B3237; --sage: #96B689; --sage-soft: #33402F; --lav: #AF9DD8; --lav-soft: #3B3349;
-  --butter: #E5BE5E; --butter-soft: #463C22; --sky: #8BB4D6; --sky-soft: #2D3A45; --peach: #EC9C7A; --peach-soft: #4A3229;
-  --m1: var(--lav); --m2: var(--sky); --m3: var(--sage); --m4: var(--peach); --m5: var(--butter);
+  --bg: #3D3331; --ink: #F3EADF; --muted: #BBA99F;
+  --rose: #D19D9C; --rose-ink: #3E2323; --rose-soft: #5A4442;
+  --sage: #A8BBA4; --sage-ink: #22352A; --sage-soft: #45503F;
+  --cream-ink: #E7DCCD; --sand: #8E7A66; --track: #4A3F3C;
+  --sh-d: rgba(0, 0, 0, .42); --sh-l: rgba(255, 240, 230, .07);
+  --bezel: #221B1A;
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
+html, body { margin: 0; }
 body {
-  background-color: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5;
-  background-image:
-    radial-gradient(1.5px 1.5px at 12% 18%, var(--star) 50%, transparent 51%),
-    radial-gradient(1px 1px at 38% 62%, var(--star) 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 71% 27%, var(--star) 50%, transparent 51%),
-    radial-gradient(1px 1px at 88% 79%, var(--star) 50%, transparent 51%),
-    radial-gradient(1px 1px at 55% 8%, var(--star) 50%, transparent 51%),
-    radial-gradient(2px 2px at 23% 88%, var(--star) 50%, transparent 51%);
-  background-size: 420px 420px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
-  padding-block: 28px 48px;
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding: 28px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px));
 }
-button, input, textarea { font: inherit; color: inherit; }
-button { cursor: pointer; }
-:focus-visible { outline: 2px solid var(--candle); outline-offset: 2px; }
-.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
-h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; text-wrap: balance; margin: 0; font-weight: 600; }
-.eyebrow { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 62%; text-transform: uppercase; letter-spacing: .005em; line-height: .95; text-wrap: balance; }
+.wide { font-family: var(--display); font-stretch: 125%; font-weight: 400; text-transform: uppercase; letter-spacing: .09em; font-size: 11px; }
+.num { font-family: var(--display); font-variant-numeric: tabular-nums; font-stretch: 100%; }
+.muted { color: var(--muted); }
+
+/* ---------- Soft-UI base ---------- */
+.neu { background: var(--bg); border-radius: var(--r-lg); box-shadow: var(--raise); }
+.neu-in { background: var(--bg); border-radius: var(--r-md); box-shadow: var(--inset); }
+.pad { padding: 16px; }
+.press { border: 0; background: var(--bg); box-shadow: var(--raise-sm); transition: box-shadow .18s, transform .18s, color .18s, background .18s; }
+.press:active, .press[aria-pressed="true"] { box-shadow: var(--inset-sm); }
+.btn { border: 0; border-radius: 16px; padding: 12px 16px; font-weight: 800; background: var(--bg); box-shadow: var(--raise-sm); display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: box-shadow .18s; }
+.btn:active { box-shadow: var(--inset-sm); }
+.btn svg { width: 18px; height: 18px; }
+.btn.rose { background: var(--rose); color: var(--rose-ink); }
+.btn.sage { background: var(--sage); color: var(--sage-ink); }
+.icon-btn { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; flex: none; padding: 0; }
+.icon-btn svg { width: 19px; height: 19px; }
+.field { width: 100%; border: 0; border-radius: 14px; padding: 12px 14px; background: var(--bg); box-shadow: var(--inset); outline-offset: 2px; }
+.field::placeholder { color: var(--muted); }
+
+/* Check: botón redondo que se hunde y florece */
+.check { width: 32px; height: 32px; flex: none; border-radius: 50%; border: 0; padding: 0; background: var(--bg); box-shadow: var(--raise-sm); display: grid; place-items: center; transition: box-shadow .2s; }
+.check svg { width: 20px; height: 20px; color: var(--sage-ink); opacity: 0; transform: scale(.4) rotate(-60deg); transition: opacity .2s, transform .3s cubic-bezier(.3,.7,.3,1.4); }
+.check[aria-pressed="true"] { box-shadow: var(--inset-sm); }
+.check[aria-pressed="true"] svg { opacity: 1; transform: none; }
+.check.rose svg { color: var(--rose); }
+
+.chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -18px; padding: 6px 18px 12px; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 0; border-radius: 20px; padding: 8px 14px; font-size: 13px; font-weight: 800; color: var(--muted); }
+.chip[aria-pressed="true"] { color: var(--ink); }
 
 /* ---------- Board ---------- */
-.board-head { max-width: 1240px; margin: 0 auto 28px; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 32px; }
-.board-head h1 { font-size: clamp(38px, 5.4vw, 60px); font-weight: 700; letter-spacing: -.02em; line-height: .95; display: flex; align-items: center; gap: 14px; }
-.board-head h1 em { font-style: italic; font-weight: 500; color: var(--candle); }
-.board-head h1 svg { width: .8em; height: .8em; color: var(--accent); }
-.board-head p { margin: 0; max-width: 44ch; color: var(--muted); }
-.board { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 230px minmax(0, 400px) minmax(0, 1fr); gap: 40px; align-items: start; }
+.board-head { max-width: 1240px; margin: 0 auto 32px; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 14px 32px; }
+.board-head h1 { font-size: clamp(46px, 6vw, 76px); display: flex; align-items: center; gap: 16px; }
+.board-head h1 svg { width: .75em; height: .75em; color: var(--rose); }
+.board-head p { margin: 0; max-width: 46ch; color: var(--muted); }
+.board { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 220px minmax(0, 400px) minmax(0, 1fr); gap: 44px; align-items: start; }
 .panel { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
-.panel h2 { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-family: var(--body); font-weight: 800; color: var(--muted); }
-
-.screen-index { display: flex; flex-direction: column; gap: 2px; list-style: none; margin: 0; padding: 0; }
-.screen-index button { width: 100%; text-align: left; background: none; border: 0; border-radius: var(--r-sm); padding: 9px 10px; display: grid; grid-template-columns: 22px 1fr; gap: 2px 10px; }
-.screen-index button:hover { background: var(--surface); }
-.screen-index button[aria-current="true"] { background: var(--surface); box-shadow: 0 0 0 1px var(--line); }
-.screen-index .idx { color: var(--candle); padding-top: 1px; display: grid; place-items: center; height: 22px; }
-.screen-index .idx svg { width: 16px; height: 16px; }
-.screen-index b { font-weight: 700; }
-.screen-index small { grid-column: 2; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
-.note { font-size: 13px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 16px; margin: 0; }
+.panel > h2 { font-family: var(--display); font-stretch: 125%; font-weight: 500; font-size: 12px; letter-spacing: .1em; color: var(--muted); }
+.screen-index { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.screen-index button { width: 100%; text-align: left; border: 0; border-radius: 16px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; font-weight: 800; background: var(--bg); box-shadow: var(--raise-sm); }
+.screen-index button[aria-current="true"] { box-shadow: var(--inset-sm); color: var(--rose-ink); }
+.screen-index svg { width: 18px; height: 18px; color: var(--rose); }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+.solo-link { display: inline-flex; align-items: center; gap: 6px; border-radius: 20px; padding: 8px 14px; color: var(--rose-ink); font-weight: 800; text-decoration: none; font-size: 13px; background: var(--bg); box-shadow: var(--raise-sm); }
 
 /* ---------- Phone ---------- */
-.phone-wrap { display: flex; justify-content: center; }
-.phone { width: 390px; max-width: 100%; height: 820px; background: var(--bezel); border-radius: 52px; padding: 11px; box-shadow: 0 0 0 1px var(--line), 0 40px 90px -30px var(--glow); }
-.app { position: relative; height: 100%; border-radius: 42px; overflow: hidden; background: var(--bg); display: flex; flex-direction: column; }
-.status { display: flex; justify-content: space-between; align-items: center; padding: 14px 28px 6px; font-size: 13px; font-weight: 700; flex: none; }
+.phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.phone { width: 390px; max-width: 100%; height: 820px; background: var(--bezel); border-radius: 54px; padding: 11px; box-shadow: 18px 18px 40px var(--sh-d), -14px -14px 34px var(--sh-l); }
+.app { position: relative; height: 100%; border-radius: 44px; overflow: hidden; background: var(--bg); display: flex; flex-direction: column; }
+.status { display: flex; justify-content: space-between; align-items: center; padding: 14px 28px 4px; font-size: 13px; font-weight: 800; flex: none; }
 .status .island { width: 96px; height: 26px; background: var(--bezel); border-radius: 20px; }
-.status .sig { display: flex; gap: 4px; align-items: end; height: 11px; }
-.status .sig i { display: block; width: 3px; background: var(--ink); border-radius: 1px; }
+.status .sig { display: flex; gap: 3px; align-items: end; height: 11px; }
+.status .sig i { width: 3px; background: var(--ink); border-radius: 1px; }
 .views { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; }
 .views::-webkit-scrollbar { display: none; }
-.view { padding: 8px 18px 28px; display: flex; flex-direction: column; gap: 18px; }
-.view-head { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding-top: 6px; }
-.view-head h2 { font-size: 30px; letter-spacing: -.01em; line-height: 1.05; }
-.view-head h2 em { font-style: italic; font-weight: 500; color: var(--candle); }
-.view-head .sub { color: var(--muted); font-size: 13.5px; margin-top: 4px; }
-.icon-btn { width: 38px; height: 38px; flex: none; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; }
-.icon-btn svg { width: 18px; height: 18px; }
-.back { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; color: var(--muted); font-size: 13.5px; padding: 0; font-weight: 600; }
+.view { padding: 10px 18px 32px; display: flex; flex-direction: column; gap: 20px; }
+.view-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 6px; }
+.view-head h2 { font-size: 40px; }
+.view-head .wide { color: var(--muted); display: block; margin-bottom: 6px; }
+.sec { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: -6px; }
+.sec h3 { font-size: 22px; }
+.sec .wide { color: var(--muted); font-size: 10px; }
+.back { border: 0; background: none; color: var(--muted); font-weight: 800; font-size: 13px; padding: 0; display: inline-flex; align-items: center; gap: 4px; }
+.back svg { width: 16px; height: 16px; }
 
-.card { background: var(--surface); border-radius: var(--r-lg); padding: 16px; }
-.sec-title { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-.sec-title h3 { font-size: 19px; }
-.sec-title button.link { font-size: 13px; color: var(--candle); background: none; border: 0; padding: 0; font-weight: 700; }
+/* Hero tarjeta tipo paleta */
+.hero { position: relative; border-radius: var(--r-xl); padding: 20px 20px 18px; overflow: hidden; box-shadow: var(--raise); display: flex; flex-direction: column; gap: 6px; }
+.hero.rose { background: var(--rose); color: var(--rose-ink); }
+.hero.sage { background: var(--sage); color: var(--sage-ink); }
+.hero.cream { background: var(--bg); color: var(--cream-ink); }
+.hero h3 { font-size: 36px; max-width: 72%; }
+.hero .wide { opacity: .85; }
+.hero .daisy { position: absolute; right: 16px; top: 50%; width: 82px; height: 82px; transform: translateY(-50%); animation: spin 26s linear infinite; }
+.hero p { margin: 4px 0 0; font-size: 13.5px; max-width: 68%; font-weight: 600; }
+@keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
 
 /* Tab bar */
-.tabbar { flex: none; display: grid; grid-template-columns: repeat(5, 1fr); background: var(--surface); border-top: 1px solid var(--line); padding: 8px 8px 22px; }
-.tabbar button { background: none; border: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10.5px; font-weight: 700; color: var(--muted); padding: 4px 0; }
-.tabbar svg { width: 22px; height: 22px; }
-.tabbar button[aria-current="true"] { color: var(--ink); }
-.tabbar button[aria-current="true"] .tab-ic { background: var(--accent-soft); }
-.tab-ic { width: 46px; height: 28px; border-radius: 14px; display: grid; place-items: center; }
-
-/* Checks — little flowers that bloom */
-.check { width: 26px; height: 26px; flex: none; border-radius: 50%; border: 2px dashed var(--line); background: transparent; display: grid; place-items: center; padding: 0; transition: background .2s, border-color .2s, transform .2s; }
-.check svg { width: 16px; height: 16px; color: var(--accent-ink); opacity: 0; transition: opacity .2s; }
-.check[aria-pressed="true"] { background: var(--accent); border: 2px solid var(--accent); transform: rotate(-18deg); }
-.check[aria-pressed="true"] svg { opacity: 1; }
+.tabbar { flex: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 10px 12px 22px; background: var(--bg); box-shadow: 0 -8px 20px -12px var(--sh-d); position: relative; z-index: 2; }
+.tabbar button { border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 800; color: var(--muted); padding: 2px 0; }
+.tab-ic { width: 48px; height: 32px; border-radius: 16px; display: grid; place-items: center; transition: box-shadow .2s; }
+.tabbar svg { width: 21px; height: 21px; }
+.tabbar button[aria-current="true"] { color: var(--rose-ink); }
+:root[data-theme="dark"] .check svg { color: var(--sage); }
+:root[data-theme="dark"] .check.rose svg { color: var(--rose); }
+:root[data-theme="dark"] :is(.sim-bar a, .solo-link, .screen-index button[aria-current="true"]) { color: var(--rose); }
+:root[data-theme="dark"] .tabbar button[aria-current="true"] { color: var(--rose); }
+.tabbar button[aria-current="true"] .tab-ic { box-shadow: var(--inset-sm); }
 
 /* ---------- Hoy ---------- */
-.hello { position: relative; }
-.cat { position: absolute; right: 2px; top: -6px; width: 70px; height: 70px; cursor: pointer; }
-.cat .eye { fill: var(--candle); animation: blink 5s infinite; transform-origin: center 34px; transform-box: view-box; }
-@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
-.bubble { display: inline-block; margin-top: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px 14px 14px 4px; padding: 6px 11px; font-size: 12px; font-weight: 700; color: var(--muted); line-height: 1.3; max-width: calc(100% - 80px); }
-.bubble b { color: var(--candle); }
-.hello h2 { font-size: 30px; padding-right: 70px; }
-.hello h2 em { font-style: italic; font-weight: 500; color: var(--candle); }
-.hello .eyebrow { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; padding-right: 76px; }
-.hello .eyebrow svg { width: 14px; height: 14px; }
+.hello { display: flex; justify-content: space-between; align-items: start; gap: 12px; padding-top: 6px; }
+.hello h2 { font-size: 44px; }
+.hello h2 span { color: var(--rose); }
+.hello .wide { color: var(--muted); display: block; margin-bottom: 8px; }
+.progress-card { display: grid; grid-template-columns: 104px 1fr; gap: 16px; align-items: center; }
+.ring-wrap { width: 104px; height: 104px; border-radius: 50%; box-shadow: var(--raise-sm); display: grid; place-items: center; position: relative; }
+.ring-wrap svg { width: 92px; height: 92px; transform: rotate(-90deg); }
+.ring-wrap circle { fill: none; stroke-width: 9; stroke-linecap: round; }
+.ring-wrap .tr { stroke: var(--track); }
+.ring-wrap .fg { stroke: var(--sage); transition: stroke-dashoffset .6s cubic-bezier(.3,.7,.3,1.1); }
+.ring-wrap .pct { position: absolute; font-family: var(--display); font-weight: 800; font-stretch: 70%; font-size: 26px; }
+.progress-card b { font-family: var(--display); font-stretch: 62%; font-weight: 800; text-transform: uppercase; font-size: 24px; line-height: 1; display: block; }
+.progress-card p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
 
-.arc-card { background: linear-gradient(180deg, var(--moon-soft), var(--surface) 75%); border-radius: var(--r-lg); padding: 14px 14px 10px; }
-.arc-card svg { display: block; width: 100%; height: auto; }
-.arc-legend { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); padding: 0 4px; }
-.twinkle { animation: tw 3s ease-in-out infinite; }
-.twinkle:nth-child(2n) { animation-delay: 1.2s; }
-.twinkle:nth-child(3n) { animation-delay: 2.1s; }
-@keyframes tw { 50% { opacity: .2; } }
+.list { display: flex; flex-direction: column; gap: 12px; }
+.item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--r-md); background: var(--bg); box-shadow: var(--raise-sm); transition: box-shadow .2s; }
+.item .txt { flex: 1; min-width: 0; }
+.item .txt b { display: block; font-weight: 700; }
+.item .txt small { color: var(--muted); font-size: 12.5px; }
+.item.done { box-shadow: var(--inset-sm); }
+.item.done .txt b { text-decoration: line-through; text-decoration-color: var(--rose); color: var(--muted); }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.del { border: 0; background: none; color: var(--muted); padding: 4px; display: grid; place-items: center; opacity: .6; }
+.del svg { width: 15px; height: 15px; }
+.add-row { display: flex; gap: 10px; }
+.add-row .field { flex: 1; min-width: 0; }
 
-.routine-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.routine-tile { border: 0; text-align: left; border-radius: var(--r-lg); padding: 14px; display: flex; flex-direction: column; gap: 8px; min-height: 138px; }
-.routine-tile.sun { background: linear-gradient(140deg, var(--butter-soft), var(--peach-soft)); }
-.routine-tile.moon { background: linear-gradient(140deg, var(--lav-soft), var(--sky-soft)); }
-.routine-tile .rt-top { display: flex; justify-content: space-between; align-items: center; }
-.routine-tile .rt-top svg { width: 24px; height: 24px; }
-.routine-tile.sun .rt-top svg { color: var(--candle); }
-.routine-tile.moon .rt-top svg { color: var(--lav); }
-.routine-tile b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 17px; font-weight: 600; line-height: 1.15; }
-.routine-tile small { color: var(--muted); font-size: 12px; }
-.meter { height: 6px; border-radius: 3px; background: var(--bg); overflow: hidden; margin-top: auto; }
-.meter i { display: block; height: 100%; border-radius: 3px; transition: width .3s; }
-.sun .meter i { background: var(--peach); }
-.moon .meter i { background: var(--lav); }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.tile { border: 0; text-align: left; border-radius: var(--r-lg); padding: 14px; display: flex; flex-direction: column; gap: 4px; min-height: 112px; background: var(--bg); box-shadow: var(--raise-sm); transition: box-shadow .18s; }
+.tile:active { box-shadow: var(--inset-sm); }
+.tile .ic { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; margin-bottom: auto; }
+.tile .ic svg { width: 19px; height: 19px; }
+.tile .ic.rose { background: var(--rose); color: var(--rose-ink); }
+.tile .ic.sage { background: var(--sage); color: var(--sage-ink); }
+.tile .ic.cream { box-shadow: var(--inset-sm); color: var(--cream-ink); }
+.tile b { font-family: var(--display); font-stretch: 70%; font-weight: 800; font-size: 22px; line-height: 1.05; margin-top: 10px; }
+.tile small { color: var(--muted); font-size: 12px; font-weight: 700; }
 
-.tarot-row { display: grid; grid-template-columns: 86px 1fr; gap: 14px; align-items: center; background: var(--surface); border-radius: var(--r-lg); padding: 14px; }
-.tarot { width: 86px; height: 132px; perspective: 600px; border: 0; padding: 0; background: none; }
-.tarot-in { position: relative; display: block; width: 100%; height: 100%; transition: transform .6s cubic-bezier(.3,.7,.3,1.2); transform-style: preserve-3d; }
-.tarot[aria-pressed="true"] .tarot-in { transform: rotateY(180deg); }
-.face { position: absolute; inset: 0; border-radius: 10px; backface-visibility: hidden; display: grid; place-items: center; border: 2px solid var(--candle); }
-.face.back { background: repeating-linear-gradient(45deg, var(--surface-2) 0 6px, var(--moon-soft) 6px 12px); }
-.face.back svg { width: 34px; height: 34px; color: var(--candle); background: var(--surface); border-radius: 50%; padding: 6px; }
-.face.front { background: var(--surface-2); transform: rotateY(180deg); padding: 8px 4px; align-content: space-between; }
-.face.front svg { width: 44px; height: 44px; color: var(--candle); filter: drop-shadow(0 0 6px var(--glow)); }
-.face.front span { font-family: var(--display); font-style: italic; font-size: 12px; text-align: center; }
-.face.front .roman { font-family: var(--mono); font-size: 10px; color: var(--muted); font-style: normal; }
-.tarot-copy b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 18px; font-weight: 600; display: block; }
-.tarot-copy p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.tip-card { display: flex; gap: 14px; align-items: start; }
+.tip-card .daisy-sm { width: 34px; height: 34px; flex: none; color: var(--sage); }
+.tip-card b { display: block; font-weight: 800; }
+.tip-card p { margin: 2px 0 0; font-size: 13.5px; color: var(--muted); }
+.theme-btn { padding: 0; }
 
-.list { display: flex; flex-direction: column; }
-.row { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px dashed var(--line); }
-.row:last-child { border-bottom: 0; padding-bottom: 2px; }
-.row:first-child { padding-top: 2px; }
-.row .txt { flex: 1; min-width: 0; }
-.row .txt b { font-weight: 600; display: block; }
-.row .txt small { color: var(--muted); font-size: 12.5px; }
-.row.done .txt b { text-decoration: line-through; text-decoration-color: var(--candle); color: var(--muted); }
-.tag { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; background: var(--surface-2); color: var(--muted); white-space: nowrap; }
-.tag.alert { background: var(--alert-soft); color: var(--alert); }
-.tag.green { background: var(--accent-soft); color: var(--ink); }
-.tag.sun { background: var(--candle-soft); color: var(--candle); }
-.tag.moon { background: var(--moon-soft); color: var(--moon); }
+/* ---------- Ejercicio ---------- */
+.week-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; }
+.wd { border: 0; border-radius: 14px; padding: 8px 0 7px; display: flex; flex-direction: column; align-items: center; gap: 1px; font-weight: 800; font-size: 12px; color: var(--muted); }
+.wd .num { font-size: 15px; color: var(--ink); }
+.wd[aria-pressed="true"] { color: var(--rose-ink); }
+.wd.today::after { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--rose); margin-top: 2px; }
+.ex .txt b { font-size: 15px; }
+.sets { font-family: var(--display); font-stretch: 80%; font-weight: 700; font-size: 13px; color: var(--cream-ink); padding: 4px 10px; border-radius: 10px; box-shadow: var(--inset-sm); white-space: nowrap; }
+.timer-card { display: flex; align-items: center; gap: 16px; }
+.mini-ring { width: 70px; height: 70px; border-radius: 50%; box-shadow: var(--inset); display: grid; place-items: center; position: relative; flex: none; }
+.mini-ring svg { width: 58px; height: 58px; transform: rotate(-90deg); position: absolute; }
+.mini-ring circle { fill: none; stroke-width: 6; stroke-linecap: round; }
+.mini-ring .fg { stroke: var(--rose); transition: stroke-dashoffset .9s linear; }
+.mini-ring .num { font-weight: 800; font-size: 17px; position: relative; }
+.timer-card .txt { flex: 1; }
+.timer-card b { font-weight: 800; display: block; }
+.timer-card small { color: var(--muted); font-size: 12.5px; }
 
-.reminder { display: flex; gap: 12px; align-items: center; background: var(--surface); border-radius: var(--r-md); padding: 12px 14px; }
-.reminder .bell { width: 38px; height: 38px; border-radius: 50%; background: var(--alert-soft); color: var(--alert); display: grid; place-items: center; flex: none; }
-.reminder .bell svg { width: 19px; height: 19px; }
-.reminder .txt { flex: 1; min-width: 0; }
-.reminder .txt b { font-weight: 700; }
-.reminder .txt small { color: var(--muted); font-size: 12.5px; display: block; }
+/* ---------- Comida ---------- */
+.water { display: flex; flex-direction: column; gap: 12px; }
+.water-head { display: flex; justify-content: space-between; align-items: baseline; }
+.water-head b { font-weight: 800; }
+.drops { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+.drop { border: 0; height: 44px; border-radius: 14px; padding: 0; display: grid; place-items: center; }
+.drop svg { width: 18px; height: 22px; }
+.drop path { fill: transparent; stroke: var(--sage-ink); stroke-width: 1.8; opacity: .45; transition: fill .2s, opacity .2s; }
+.drop.on { box-shadow: var(--inset-sm); }
+.drop.on path { fill: var(--sage); stroke: var(--sage-ink); opacity: 1; }
+.plate-card { display: grid; grid-template-columns: 128px 1fr; gap: 16px; align-items: center; }
+.plate { width: 128px; height: 128px; border-radius: 50%; box-shadow: var(--raise-sm); display: grid; place-items: center; }
+.plate svg { width: 104px; height: 104px; }
+.plate path { fill: var(--track); stroke: var(--bg); stroke-width: 2.5; transition: fill .3s; }
+.plate .on.v { fill: var(--sage); } .plate .on.p { fill: var(--rose); } .plate .on.c { fill: var(--sand); }
+.plate-opts { display: flex; flex-direction: column; gap: 8px; }
+.plate-opts .chip { text-align: left; display: flex; align-items: center; gap: 8px; }
+.plate-opts .chip i { width: 10px; height: 10px; border-radius: 50%; }
+.meal .txt small { display: block; }
+.meal-time { font-family: var(--display); font-stretch: 80%; font-weight: 700; font-size: 12px; color: var(--muted); width: 40px; flex: none; }
 
-.habit-chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: 0 -18px; padding: 0 18px 4px; }
-.habit-chip { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 18px; padding: 10px 12px 10px 8px; display: flex; align-items: center; gap: 8px; text-align: left; }
-.habit-chip .mini-candle { width: 18px; height: 28px; overflow: visible; }
-.habit-chip b { font-size: 13.5px; font-weight: 700; display: block; }
-.habit-chip small { font-size: 11.5px; color: var(--muted); }
-.habit-chip[aria-pressed="true"] { background: var(--cs, var(--candle-soft)); border-color: var(--c, var(--candle)); }
-
-/* Candles */
-.candle .wax { fill: var(--surface-2); stroke: var(--line); stroke-width: 1.2; }
-.candle .wick { stroke: var(--muted); stroke-width: 1.4; stroke-linecap: round; }
-.candle .flame { fill: var(--candle); opacity: 0; transform-origin: 12px 13px; transform-box: view-box; transition: opacity .25s; }
-.candle .halo { fill: var(--glow); opacity: 0; transition: opacity .25s; }
-.candle.lit .flame { opacity: 1; animation: flicker 1.6s ease-in-out infinite; }
-.candle.lit .halo { opacity: .6; }
-.candle.lit .wax { fill: var(--cs, var(--candle-soft)); stroke: var(--c, var(--candle)); }
-@keyframes flicker { 0%, 100% { transform: scale(1) rotate(-2deg); } 50% { transform: scale(.9, 1.08) rotate(3deg); } }
-
-.mood-prompt { background: linear-gradient(150deg, var(--moon-soft), var(--candle-soft)); border-radius: var(--r-lg); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
-.mood-prompt h3 { font-size: 20px; }
-.mood-prompt p { margin: 0; font-size: 13px; color: var(--muted); }
-
-/* Mood scale: moon phases */
-.mood-scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
-.mood-scale button { border: 0; background: transparent; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; padding: 8px 0 6px; border-radius: 14px; color: inherit; }
-.mood-scale svg { width: 32px; height: 32px; transition: transform .2s, filter .2s; overflow: visible; }
-.mood-scale button[aria-pressed="true"] { background: var(--surface); }
-.mood-scale button[aria-pressed="true"] svg { transform: scale(1.18); filter: drop-shadow(0 0 7px var(--glow)); }
-.moon-base { fill: var(--surface-2); stroke: var(--line); stroke-width: 1; }
-
-/* ---------- Rituales ---------- */
-.segmented { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface); border-radius: 16px; padding: 4px; gap: 4px; }
-.segmented button { border: 0; background: none; border-radius: 12px; padding: 9px; font-weight: 700; font-size: 14px; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 6px; }
-.segmented button svg { width: 16px; height: 16px; }
-.segmented button[aria-pressed="true"] { background: var(--surface-2); color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
-.routine-hero { display: flex; align-items: center; gap: 16px; border-radius: var(--r-lg); padding: 16px; }
-.routine-hero.sun { background: linear-gradient(140deg, var(--butter-soft), var(--peach-soft)); }
-.routine-hero.moon { background: linear-gradient(140deg, var(--lav-soft), var(--sky-soft)); }
-.ring { width: 78px; height: 78px; flex: none; }
-.ring circle { fill: none; stroke-width: 7; }
-.ring .bg { stroke: var(--bg); }
-.ring .fg { stroke-linecap: round; transition: stroke-dashoffset .35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
-.sun .ring .fg { stroke: var(--peach); }
-.moon .ring .fg { stroke: var(--lav); }
-.ring text { font-family: var(--mono); font-size: 16px; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
-.routine-hero b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 600; font-size: 20px; display: block; }
-.routine-hero small { color: var(--muted); font-size: 13px; }
-.steps { display: flex; flex-direction: column; gap: 8px; }
-.step { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: var(--r-md); padding: 12px 14px; }
-.step .time { font-family: var(--mono); font-size: 12px; color: var(--muted); width: 44px; flex: none; }
-.step .txt { flex: 1; min-width: 0; }
-.step .txt b { font-weight: 600; }
-.step .txt small { display: block; color: var(--muted); font-size: 12.5px; }
-.step.done .txt b { text-decoration: line-through; color: var(--muted); }
-.sun-steps .check[aria-pressed="true"] { background: var(--peach); border-color: var(--peach); }
-.moon-steps .check[aria-pressed="true"] { background: var(--lav); border-color: var(--lav); }
-.tip { font-size: 13px; color: var(--muted); display: flex; gap: 10px; align-items: start; }
-.tip svg { width: 18px; height: 18px; color: var(--candle); flex: none; margin-top: 2px; }
-
-/* ---------- Agenda ---------- */
-.month { background: var(--surface); border-radius: var(--r-lg); padding: 14px 12px 10px; }
-.month-head { display: flex; justify-content: space-between; align-items: center; padding: 0 4px 10px; }
-.month-head b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 18px; font-weight: 600; }
-.month-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
-.month-grid .dow { font-size: 11px; color: var(--muted); font-weight: 700; padding-bottom: 4px; }
-.day { border: 0; background: none; height: 46px; border-radius: 14px; font-family: var(--mono); font-size: 13px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 0; position: relative; }
-.day:hover { background: var(--surface-2); }
-.day .ph { width: 10px; height: 10px; }
-.day .ph.none { visibility: hidden; }
-.day .dots { position: absolute; top: 5px; right: 6px; display: flex; gap: 2px; }
-.day .dots i { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
-.day .dots i.sun { background: var(--candle); }
-.day .dots i.alert { background: var(--alert); }
-.day.today { color: var(--candle); font-weight: 700; }
-.day[aria-pressed="true"] { background: var(--surface-2); box-shadow: inset 0 0 0 1.5px var(--candle); }
-.moon-legend { display: flex; justify-content: center; gap: 14px; font-size: 11px; color: var(--muted); padding-top: 10px; border-top: 1px dashed var(--line); margin-top: 8px; flex-wrap: wrap; }
-.moon-legend span { display: inline-flex; align-items: center; gap: 4px; }
-.moon-legend svg { width: 12px; height: 12px; }
-.timeline { display: flex; flex-direction: column; }
-.slot { display: grid; grid-template-columns: 50px 1fr; gap: 12px; }
-.slot .t { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 12px; }
-.event { border-radius: var(--r-md); padding: 10px 12px; margin-bottom: 8px; background: var(--surface); display: flex; gap: 10px; align-items: center; }
-.event::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; box-shadow: 0 0 8px var(--accent); }
-.event.sun::before { background: var(--candle); box-shadow: 0 0 8px var(--candle); }
-.event.moon::before { background: var(--moon); box-shadow: 0 0 8px var(--moon); }
-.event.alert::before { background: var(--alert); box-shadow: 0 0 8px var(--alert); }
-.event b { font-weight: 700; display: block; font-size: 14px; }
-.event small { color: var(--muted); font-size: 12.5px; }
-.empty { color: var(--muted); font-size: 13.5px; text-align: center; padding: 18px; background: var(--surface); border-radius: var(--r-md); }
-
-.fab { position: absolute; right: 20px; bottom: 96px; width: 58px; height: 58px; border-radius: 50%; border: 0; background: linear-gradient(135deg, var(--rose), var(--peach)); color: #FFFFFF; display: grid; place-items: center; box-shadow: 0 0 0 6px var(--rose-soft), 0 14px 28px -10px var(--glow); }
-.fab svg { width: 24px; height: 24px; }
-.sheet-scrim { position: absolute; inset: 0; background: rgba(20, 13, 12, .55); display: flex; align-items: flex-end; z-index: 5; }
-.sheet { width: 100%; background: var(--surface); border-radius: 28px 28px 0 0; padding: 10px 18px 28px; display: flex; flex-direction: column; gap: 14px; animation: up .25s ease-out; }
-@keyframes up { from { transform: translateY(40px); opacity: .6; } }
-.grabber { width: 40px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 4px; }
-.field { display: flex; flex-direction: column; gap: 6px; }
-.field label { font-size: 12px; font-weight: 700; color: var(--muted); }
-.field input, .field textarea { width: 100%; border: 1px solid var(--line); background: var(--surface-2); border-radius: 14px; padding: 11px 12px; }
-.field textarea { resize: none; min-height: 100px; line-height: 1.55; }
-.choice-row { display: flex; gap: 6px; flex-wrap: wrap; }
-.choice { border: 1px solid var(--line); background: transparent; border-radius: 20px; padding: 6px 12px; font-size: 13px; font-weight: 600; }
-.choice[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-.btn { border: 0; border-radius: 16px; padding: 13px; font-weight: 800; background: var(--accent); color: var(--accent-ink); }
-.btn.ghost { background: var(--surface-2); color: var(--ink); }
-
-/* ---------- Velitas y constelaciones ---------- */
-.candles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; background: var(--surface); border-radius: var(--r-lg); padding: 16px 8px 12px; }
-.candle-btn { border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0; font-size: 11.5px; font-weight: 700; text-align: center; line-height: 1.2; }
-.candle-btn svg { width: 34px; height: 56px; overflow: visible; }
-.candle-btn small { font-family: var(--mono); font-size: 10.5px; color: color-mix(in srgb, var(--c, var(--candle)) 60%, var(--ink)); font-weight: 500; }
-.habit-week { background: var(--surface); border-radius: var(--r-lg); padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-.hw-row { display: grid; grid-template-columns: 92px repeat(7, 1fr); gap: 4px; align-items: center; font-size: 12.5px; }
-.hw-row b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hw-row.head span { font-size: 10.5px; color: var(--muted); text-align: center; font-weight: 700; }
-.hw-row i { justify-self: center; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--line); }
-.hw-row i.on { background: var(--c, var(--candle)); border-color: var(--c, var(--candle)); }
-.goal { background: linear-gradient(160deg, var(--cs, var(--surface)), var(--surface) 55%); border-radius: var(--r-lg); padding: 14px; display: flex; flex-direction: column; gap: 6px; }
-.goal-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
-.goal-top b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 600; font-size: 17px; }
-.goal-top .num { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
-.goal svg { display: block; width: 100%; height: auto; }
-.goal .ln { stroke: var(--line); stroke-width: 1.2; stroke-dasharray: 3 3; }
-.goal .ln.on { stroke: var(--c, var(--candle)); stroke-dasharray: none; opacity: .85; }
-.goal .st { fill: var(--line); }
-.goal .st.on { filter: drop-shadow(0 0 4px var(--glow)); }
-.goal .st.next { fill: none; stroke: var(--c, var(--candle)); stroke-width: 1.3; stroke-dasharray: 2 2; }
-.goal small { color: var(--muted); font-size: 12.5px; }
-
-/* ---------- Bola de cristal ---------- */
-.orb-card { display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: center; background: var(--surface); border-radius: var(--r-lg); padding: 14px 16px; }
-.orb-card svg { width: 130px; height: auto; display: block; }
-.orb-card .big { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 700; }
-.orb-card p { margin: 0; font-size: 13.5px; color: var(--muted); }
-.orb-card .delta { font-family: var(--mono); font-size: 12px; display: inline-block; padding: 3px 9px; border-radius: 20px; background: var(--candle-soft); color: var(--candle); margin-bottom: 8px; white-space: nowrap; }
-.orb-card b.lead { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 19px; font-weight: 600; display: block; margin-bottom: 4px; line-height: 1.2; }
+/* ---------- Sueño ---------- */
+.sleep-times { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+.time-box { display: flex; flex-direction: column; gap: 6px; padding: 14px; min-width: 0; overflow: hidden; }
+.time-box label { font-size: 12px; font-weight: 800; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+.time-box label svg { width: 15px; height: 15px; }
+.time-box input { border: 0; background: transparent; font-family: var(--display); font-weight: 800; font-stretch: 70%; font-size: 24px; padding: 0; width: 100%; min-width: 0; cursor: pointer; }
+.time-box input::-webkit-calendar-picker-indicator { display: none; -webkit-appearance: none; }
+.time-box input::-webkit-datetime-edit { padding: 0; }
+.quality { display: flex; justify-content: space-between; gap: 6px; }
+.q { border: 0; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; padding: 0; }
+.q svg { width: 26px; height: 26px; color: var(--track); transition: color .2s, transform .25s; }
+.q.on svg { color: var(--rose); }
+.q[aria-pressed="true"] svg { transform: scale(1.2) rotate(30deg); }
 .chart svg { display: block; width: 100%; height: auto; }
-.chart .grid { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 4; }
-.chart .lbl { font-family: var(--mono); font-size: 10px; fill: var(--muted); }
-.chart .bar-r { fill: var(--moon-soft); }
-.chart .bar-r.hi { fill: var(--candle); }
-.chart .val { font-family: var(--mono); font-size: 10px; fill: var(--ink); text-anchor: middle; }
-.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.stat { background: var(--surface); border-radius: var(--r-md); padding: 14px; display: flex; flex-direction: column; gap: 2px; }
-.stat .k { font-size: 12px; color: var(--muted); font-weight: 700; }
-.stat .v { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 28px; font-weight: 700; }
-.stat .v small { font-size: 14px; color: var(--muted); font-weight: 500; font-family: var(--body); }
-.stat .d { font-family: var(--mono); font-size: 11.5px; }
-.up { color: var(--candle); } .down { color: var(--alert); }
-.mood-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
-.mood-week span { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); font-weight: 700; }
-.mood-week svg { width: 28px; height: 28px; overflow: visible; }
-.sky { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(7, 16px); grid-auto-flow: column; gap: 3px; background: linear-gradient(180deg, var(--moon-soft), var(--surface)); border-radius: var(--r-md); padding: 10px; }
-.sky i { place-self: center; border-radius: 50%; display: block; width: 3px; height: 3px; background: var(--line); }
-.sky i.l1 { width: 5px; height: 5px; background: var(--m2); }
-.sky i.l2 { width: 7px; height: 7px; background: var(--m4); }
-.sky i.l3 { width: 9px; height: 9px; background: var(--candle); box-shadow: 0 0 8px var(--glow); }
-.sky-legend { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; color: var(--muted); margin-top: 8px; }
-.insight { display: flex; gap: 12px; background: var(--moon-soft); border-radius: var(--r-md); padding: 14px; font-size: 13.5px; }
-.insight svg { width: 22px; height: 22px; color: var(--candle); flex: none; margin-top: 1px; }
+.chart .lbl { font-family: var(--display); font-size: 10px; font-weight: 700; fill: var(--muted); text-anchor: middle; }
+.chart .val { font-family: var(--display); font-size: 10px; font-weight: 800; fill: var(--ink); text-anchor: middle; }
+.chart .goal { stroke: var(--rose); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.chart .bar { fill: var(--sage); }
+.chart .bar.low { fill: var(--rose); }
+.chart .bar.today { fill: var(--sage-ink); }
+.chart .bar-bg { fill: var(--track); }
 
-/* ---------- Diario ---------- */
-.journal-date { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-.page { background: var(--surface); border-radius: var(--r-lg); padding: 16px; display: flex; flex-direction: column; gap: 16px; position: relative; }
-.sleepy { position: absolute; right: 12px; top: -30px; width: 84px; height: 46px; }
-.sleepy .z { font-family: var(--display); font-style: italic; fill: var(--moon); font-size: 11px; animation: zz 3s ease-in-out infinite; }
-.sleepy .z + .z { animation-delay: 1s; }
-@keyframes zz { 0% { opacity: 0; transform: translateY(4px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(-6px); } }
-.page textarea { background: repeating-linear-gradient(180deg, transparent 0 25px, var(--line) 25px 26px); background-color: var(--surface-2); line-height: 26px; padding-top: 6px; font-family: var(--display); font-variation-settings: "SOFT" 100; font-style: italic; font-size: 15px; }
-.gratitude { display: flex; flex-direction: column; gap: 6px; }
-.gratitude div { display: flex; align-items: center; gap: 10px; }
-.gratitude svg { width: 15px; height: 15px; color: var(--candle); flex: none; }
-.gratitude input { flex: 1; min-width: 0; border: 0; border-bottom: 1px dashed var(--line); background: transparent; padding: 7px 2px; }
-.entry { background: var(--surface); border-radius: var(--r-md); padding: 12px 14px; display: grid; grid-template-columns: 30px 1fr; gap: 2px 12px; align-items: start; }
-.entry svg { grid-row: span 2; width: 28px; height: 28px; overflow: visible; }
-.entry .meta { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
-.entry .meta b { color: var(--ink); font-weight: 700; }
-.entry p { margin: 0; font-size: 13.5px; font-family: var(--display); font-variation-settings: "SOFT" 100; font-style: italic; }
-.toast { position: absolute; left: 50%; bottom: 100px; transform: translateX(-50%); background: var(--surface-2); border: 1px solid var(--candle); color: var(--ink); padding: 10px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; z-index: 6; white-space: nowrap; box-shadow: 0 0 24px -6px var(--glow); }
+/* ---------- Hábitos ---------- */
+.habit { display: flex; flex-direction: column; gap: 12px; }
+.habit-top { display: flex; align-items: center; gap: 10px; }
+.habit-top b { flex: 1; font-weight: 800; }
+.streak { font-family: var(--display); font-stretch: 80%; font-weight: 800; font-size: 13px; padding: 4px 10px; border-radius: 10px; display: inline-flex; align-items: center; gap: 4px; }
+.streak svg { width: 13px; height: 13px; }
+.streak.rose { background: var(--rose-soft); color: var(--rose-ink); }
+.streak.sage { background: var(--sage-soft); color: var(--sage-ink); }
+:root[data-theme="dark"] .streak { color: var(--ink); }
+.hdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.hd { border: 0; height: 40px; border-radius: 12px; padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; color: var(--muted); gap: 1px; }
+.hd svg { width: 14px; height: 14px; opacity: 0; transition: opacity .2s; }
+.hd[aria-pressed="true"] svg { opacity: 1; }
+.hd.rose svg { color: var(--rose); } .hd.sage svg { color: var(--sage-ink); }
+:root[data-theme="dark"] .hd.sage svg { color: var(--sage); }
+.hd:disabled { opacity: .4; cursor: default; box-shadow: none; }
+.hd.today { color: var(--ink); }
 
-/* ---------- Spellbook panel ---------- */
-.palette { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.pal { border-radius: var(--r-lg); padding: 16px 14px; display: flex; flex-direction: column; gap: 2px; min-height: 120px; justify-content: flex-end; position: relative; box-shadow: inset 0 0 0 1px var(--line); }
-.pal svg { position: absolute; top: 12px; right: 12px; width: 30px; height: 30px; }
-.pal b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 700; font-size: 17px; line-height: 1.1; }
-.pal span { font-family: var(--mono); font-size: 11.5px; opacity: .8; }
-.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
-.swatch { display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
-.swatch i { display: block; height: 44px; border-radius: 50% 50% 14px 14px; box-shadow: inset 0 0 0 1px var(--line); margin-bottom: 4px; }
-.swatch b { font-weight: 700; }
-.swatch span { color: var(--muted); font-size: 11.5px; }
-.type-spec { display: flex; flex-direction: column; gap: 10px; background: var(--surface); border-radius: var(--r-lg); padding: 18px; }
-.type-spec .d1 { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 40px; font-weight: 700; line-height: 1.05; }
-.type-spec .d1 em { font-style: italic; font-weight: 500; color: var(--candle); }
-.type-spec .d2 { font-family: var(--display); font-variation-settings: "SOFT" 100; font-size: 22px; font-weight: 600; }
-.type-spec .d3 { font-family: var(--display); font-variation-settings: "SOFT" 100; font-style: italic; font-size: 16px; }
-.type-spec .b1 { font-size: 15px; max-width: 52ch; }
-.type-spec .m1 { font-family: var(--mono); font-size: 13px; color: var(--muted); }
-.type-spec .lbl { font-size: 11px; color: var(--muted); font-family: var(--mono); margin-top: 4px; }
-.principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
-.principle { background: var(--surface); border-radius: var(--r-md); padding: 14px; display: flex; flex-direction: column; gap: 6px; }
-.principle svg { width: 22px; height: 22px; color: var(--candle); }
-.principle b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 600; font-size: 17px; }
+/* ---------- Tips ---------- */
+.tip { display: flex; flex-direction: column; gap: 8px; position: relative; }
+.tip .cat { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+.tip .cat i { width: 8px; height: 8px; border-radius: 50%; }
+.tip b { font-family: var(--display); font-stretch: 70%; font-weight: 800; text-transform: uppercase; font-size: 21px; line-height: 1.05; padding-right: 48px; }
+.tip p { margin: 0; font-size: 14px; color: var(--muted); }
+.fav { position: absolute; top: 14px; right: 14px; width: 38px; height: 38px; }
+.fav svg { color: var(--muted); width: 17px; height: 17px; }
+.fav[aria-pressed="true"] svg { color: var(--rose); }
+
+/* ---------- Closet ---------- */
+.outfit { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.slot { border-radius: 18px; box-shadow: var(--inset); aspect-ratio: 1 / 1.15; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 6px 4px; text-align: center; }
+.slot svg { width: 46px; height: 46px; }
+.slot small { font-size: 10.5px; font-weight: 800; color: var(--muted); line-height: 1.15; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.slot .empty-ic { width: 26px; height: 26px; color: var(--track); }
+.garments { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.garment { border: 0; border-radius: 18px; padding: 12px 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; text-align: center; line-height: 1.2; background: var(--bg); box-shadow: var(--raise-sm); transition: box-shadow .18s; }
+.garment svg { width: 50px; height: 50px; }
+.garment[aria-pressed="true"] { box-shadow: var(--inset-sm); }
+.garment.add { color: var(--muted); justify-content: center; }
+.garment.add svg { width: 26px; height: 26px; color: var(--rose); }
+.g-shape { stroke: rgba(60, 40, 38, .35); stroke-width: 1.4; stroke-linejoin: round; }
+
+/* ---------- Aprender ---------- */
+.pomo { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 20px 16px; }
+.pomo-ring { width: 190px; height: 190px; border-radius: 50%; box-shadow: var(--raise); display: grid; place-items: center; position: relative; }
+.pomo-ring::before { content: ""; position: absolute; inset: 22px; border-radius: 50%; box-shadow: var(--inset); }
+.pomo-ring svg { position: absolute; width: 170px; height: 170px; transform: rotate(-90deg); }
+.pomo-ring circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+.pomo-ring .tr { stroke: var(--track); }
+.pomo-ring .fg { stroke: var(--rose); transition: stroke-dashoffset 1s linear; }
+.pomo.break .pomo-ring .fg { stroke: var(--sage); }
+.pomo-time { position: relative; text-align: center; }
+.pomo-time .num { font-weight: 800; font-stretch: 70%; font-size: 46px; line-height: 1; display: block; }
+.pomo-time .wide { color: var(--muted); font-size: 9.5px; }
+.pomo-ctrl { display: flex; gap: 14px; align-items: center; }
+.pomo-ctrl .play { width: 62px; height: 62px; border-radius: 50%; padding: 0; }
+.pomo-ctrl .play svg { width: 24px; height: 24px; }
+.subject { display: flex; flex-direction: column; gap: 10px; }
+.subject-top { display: flex; align-items: center; gap: 10px; }
+.subject-top b { flex: 1; font-weight: 800; }
+.subject-top .num { font-size: 13px; color: var(--muted); font-weight: 700; }
+.bar-in { height: 12px; border-radius: 8px; box-shadow: var(--inset-sm); padding: 2px; }
+.bar-in i { display: block; height: 100%; border-radius: 6px; transition: width .4s; }
+.plus { width: 34px; height: 34px; }
+.plus svg { width: 16px; height: 16px; }
+
+/* ---------- Más ---------- */
+.more-grid { display: flex; flex-direction: column; gap: 16px; }
+.more-card { border: 0; text-align: left; position: relative; overflow: hidden; border-radius: var(--r-xl); padding: 22px 20px; min-height: 120px; display: flex; flex-direction: column; justify-content: center; gap: 4px; box-shadow: var(--raise); transition: box-shadow .2s, transform .2s; }
+.more-card:active { transform: scale(.98); }
+.more-card.rose { background: var(--rose); color: var(--rose-ink); }
+.more-card.sage { background: var(--sage); color: var(--sage-ink); }
+.more-card.cream { background: var(--bg); color: var(--cream-ink); }
+.more-card b { font-family: var(--display); font-stretch: 62%; font-weight: 800; text-transform: uppercase; font-size: 40px; line-height: .95; }
+.more-card .wide { opacity: .85; }
+.more-card svg { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); width: 76px; height: 76px; }
+
+/* Sheet & toast */
+.sheet-scrim { position: absolute; inset: 0; background: rgba(60, 40, 38, .4); display: flex; align-items: flex-end; z-index: 5; }
+.sheet { width: 100%; background: var(--bg); border-radius: 30px 30px 0 0; padding: 12px 18px 28px; display: flex; flex-direction: column; gap: 14px; animation: up .25s ease-out; }
+@keyframes up { from { transform: translateY(40px); opacity: .6; } }
+.grabber { width: 42px; height: 6px; border-radius: 3px; box-shadow: var(--inset-sm); margin: 0 auto 4px; }
+.sheet h3 { font-size: 28px; }
+.sheet label.lb { font-size: 12px; font-weight: 800; color: var(--muted); margin-bottom: -6px; }
+.color-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.sw { width: 34px; height: 34px; border-radius: 50%; border: 0; padding: 0; box-shadow: var(--raise-sm); position: relative; }
+.sw[aria-pressed="true"]::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; box-shadow: 0 0 0 2px var(--rose); }
+.toast { position: absolute; left: 50%; bottom: 104px; transform: translateX(-50%); background: var(--bg); color: var(--ink); padding: 11px 18px; border-radius: 20px; font-size: 13px; font-weight: 800; z-index: 6; white-space: nowrap; box-shadow: var(--raise); display: flex; gap: 8px; align-items: center; }
+.toast svg { width: 16px; height: 16px; color: var(--rose); }
+.particle { position: absolute; width: 16px; height: 16px; pointer-events: none; z-index: 7; }
+
+/* ---------- Panel sistema ---------- */
+.pal-stack { display: flex; flex-direction: column; gap: 14px; }
+.pal { position: relative; border-radius: var(--r-xl); padding: 20px 22px; min-height: 108px; display: flex; flex-direction: column; justify-content: center; box-shadow: var(--raise); }
+.pal b { font-family: var(--display); font-stretch: 62%; font-weight: 800; font-size: 44px; line-height: .9; text-transform: uppercase; }
+.pal span { font-family: var(--display); font-stretch: 125%; font-size: 15px; letter-spacing: .06em; }
+.pal svg { position: absolute; right: 22px; top: 50%; transform: translateY(-50%); width: 64px; height: 64px; }
+.pal.rose { background: #C9908F; color: #6B3F3F; }
+.pal.sage { background: #9CAF98; color: #3B5442; }
+.pal.cream { background: #F3EADF; color: #6E645A; }
+.demo { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; padding: 20px; }
+.demo .lbl { width: 100%; font-size: 12px; color: var(--muted); font-weight: 700; margin-top: -6px; }
+.type-spec { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.type-spec .d1 { font-family: var(--display); font-stretch: 62%; font-weight: 800; font-size: 52px; line-height: .9; text-transform: uppercase; }
+.type-spec .d2 { font-family: var(--display); font-stretch: 125%; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; }
+.type-spec .lbl { font-size: 11.5px; color: var(--muted); font-weight: 700; }
+.principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.principle { padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.principle svg { width: 26px; height: 26px; color: var(--rose); }
+.principle b { font-family: var(--display); font-stretch: 70%; font-weight: 800; text-transform: uppercase; font-size: 20px; }
 .principle p { margin: 0; font-size: 13px; color: var(--muted); }
-.components { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; background: var(--surface); border-radius: var(--r-lg); padding: 16px; }
-.mood-key { background: var(--surface); border-radius: var(--r-lg); padding: 10px; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
   .board { grid-template-columns: minmax(0, 400px) minmax(0, 1fr); }
   .panel.left { grid-column: 1 / -1; }
-  .screen-index { flex-direction: row; flex-wrap: wrap; gap: 6px; }
-  .screen-index button { width: auto; grid-template-columns: auto auto; background: var(--surface); }
-  .screen-index small { display: none; }
+  .screen-index { flex-direction: row; flex-wrap: wrap; }
+  .screen-index button { width: auto; }
 }
 @media (max-width: 760px) {
   body { padding-block: 16px 32px; }
-  .board { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-  .phone { width: 100%; max-width: 400px; height: 760px; border-radius: 40px; padding: 8px; }
-  .app { border-radius: 33px; }
-  .palette { grid-template-columns: 1fr; }
-  .pal { min-height: 80px; }
+  .board { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .phone { width: 100%; max-width: 400px; height: 760px; border-radius: 42px; padding: 8px; }
+  .app { border-radius: 35px; }
 }
-/* ---------- Tres vistas según la dirección ----------
-   index.html            → web: la app a pantalla completa (para el navegador / Live Server)
-   index.html#celular    → celular con marco, como un simulador (para la vista previa de VS Code)
-   index.html#tablero    → tablero de diseño con pantallas y sistema visual */
-.phone-wrap { flex-direction: column; align-items: center; gap: 14px; }
-.sim-bar { display: none; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px 14px; font-size: 12.5px; width: 390px; max-width: 100%; }
-.sim-bar .lights { display: flex; gap: 6px; }
-.sim-bar .lights i { width: 11px; height: 11px; border-radius: 50%; display: block; }
-.sim-bar b { font-weight: 700; }
-.sim-bar small { color: var(--muted); display: block; font-size: 11px; }
-.sim-bar a, .solo-link { margin-left: auto; color: var(--candle); font-weight: 700; text-decoration: none; font-size: 12.5px; }
-.solo-link { margin-left: 0; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 20px; padding: 6px 12px; background: var(--surface); }
 
-/* Celular */
-:root.solo body { padding-block: 16px; background-image: none; }
+/* ---------- Tres vistas según la dirección ----------
+   index.html            → web: la app a pantalla completa
+   index.html#celular    → celular con marco (vista previa de VS Code)
+   index.html#tablero    → tablero de diseño con pantallas y sistema visual */
+.sim-bar { display: none; align-items: center; gap: 10px; border-radius: 16px; padding: 9px 14px; font-size: 12.5px; width: 390px; max-width: 100%; }
+.sim-bar b { font-weight: 800; }
+.sim-bar small { color: var(--muted); display: block; font-size: 11px; }
+.sim-bar a { margin-left: auto; color: var(--rose-ink); font-weight: 800; text-decoration: none; }
+:root.solo body { padding-block: 16px; }
 :root.solo .board-head, :root.solo .panel { display: none; }
 :root.solo .board { display: flex; justify-content: center; }
 :root.solo .sim-bar { display: flex; }
-:root.solo .phone { width: 390px; height: 820px; border-radius: 52px; padding: 11px; }
-:root.solo .app { border-radius: 42px; }
-
-/* Web */
+:root.solo .phone { width: 390px; height: 820px; border-radius: 54px; padding: 11px; }
+:root.solo .app { border-radius: 44px; }
 :root.web, :root.web body { height: 100%; }
-:root.web body { padding: 0; margin: 0; overflow: hidden; background-image: none; }
+:root.web body { padding: 0; overflow: hidden; }
 :root.web .board-head, :root.web .panel, :root.web .sim-bar, :root.web .status { display: none; }
 :root.web .board { display: block; max-width: none; height: 100%; }
 :root.web .phone-wrap { display: block; height: 100%; }
 :root.web .phone { width: 100%; max-width: none; height: 100%; border-radius: 0; padding: 0; background: none; box-shadow: none; }
 :root.web .app { border-radius: 0; }
-:root.web .view { padding-top: 20px; max-width: 640px; margin: 0 auto; }
-:root.web .tabbar { padding: 8px max(8px, calc((100% - 640px) / 2)) max(10px, env(safe-area-inset-bottom, 0px)); }
-:root.web .fab { bottom: 84px; right: max(20px, calc((100% - 640px) / 2 + 20px)); }
-
-/* ---------- Cozy extras ---------- */
-.app { background-image: radial-gradient(var(--dot) 1.3px, transparent 1.8px); background-size: 22px 22px; }
-.card, .arc-card, .tarot-row, .reminder, .routine-tile, .step, .goal, .stat, .entry, .page, .habit-week, .candles, .orb-card, .month, .habit-chip, .mood-prompt, .event, .insight, .segmented { box-shadow: var(--shadow); }
-.theme-btn { display: inline-flex; align-items: center; gap: 6px; margin: 8px 0 0 6px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 20px; padding: 5px 11px; font-size: 12px; font-weight: 700; vertical-align: top; }
-.theme-btn svg { width: 14px; height: 14px; color: var(--candle); }
-.hello::before { content: ""; position: absolute; right: -30px; top: -40px; width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, var(--candle-soft), transparent 70%); z-index: -1; }
-.hello { z-index: 0; }
-
-/* Colores por cosa */
-.tag.sage { background: var(--sage-soft); color: color-mix(in srgb, var(--sage) 50%, var(--ink)); }
-.tag.lav { background: var(--lav-soft); color: color-mix(in srgb, var(--lav) 50%, var(--ink)); }
-.tag.peach { background: var(--peach-soft); color: color-mix(in srgb, var(--peach) 50%, var(--ink)); }
-.tag.sky { background: var(--sky-soft); color: color-mix(in srgb, var(--sky) 50%, var(--ink)); }
-.tag.rose { background: var(--rose-soft); color: color-mix(in srgb, var(--rose) 50%, var(--ink)); }
-.row .check[aria-pressed="true"] { background: var(--c, var(--accent)); border-color: var(--c, var(--accent)); }
-.stat:nth-child(1) { background: var(--rose-soft); }
-.stat:nth-child(2) { background: var(--sage-soft); }
-.stat:nth-child(3) { background: var(--lav-soft); }
-.stat:nth-child(4) { background: var(--sky-soft); }
-.event.sun { background: linear-gradient(90deg, var(--butter-soft), var(--surface) 75%); }
-.event.moon { background: linear-gradient(90deg, var(--lav-soft), var(--surface) 75%); }
-.event.alert { background: linear-gradient(90deg, var(--alert-soft), var(--surface) 75%); }
-.event.rose { background: linear-gradient(90deg, var(--rose-soft), var(--surface) 75%); }
-.event.sage { background: linear-gradient(90deg, var(--sage-soft), var(--surface) 75%); }
-.event.peach { background: linear-gradient(90deg, var(--peach-soft), var(--surface) 75%); }
-.event.rose::before { background: var(--rose); box-shadow: 0 0 8px var(--rose); }
-.event.sage::before { background: var(--sage); box-shadow: 0 0 8px var(--sage); }
-.event.peach::before { background: var(--peach); box-shadow: 0 0 8px var(--peach); }
-.event.moon::before { background: var(--lav); box-shadow: 0 0 8px var(--lav); }
-.tabbar button:nth-child(1)[aria-current="true"] .tab-ic { background: var(--peach-soft); }
-.tabbar button:nth-child(2)[aria-current="true"] .tab-ic { background: var(--sky-soft); }
-.tabbar button:nth-child(3)[aria-current="true"] .tab-ic { background: var(--butter-soft); }
-.tabbar button:nth-child(4)[aria-current="true"] .tab-ic { background: var(--lav-soft); }
-.tabbar button:nth-child(5)[aria-current="true"] .tab-ic { background: var(--rose-soft); }
-.mood-prompt { transition: background .4s; }
-
-/* Anillos del día */
-.day-card { display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; background: var(--surface); border-radius: var(--r-lg); padding: 14px 16px; box-shadow: var(--shadow); }
-.rings { width: 96px; height: 96px; transform: rotate(-90deg); }
-.rings circle { fill: none; stroke-width: 8; stroke-linecap: round; }
-.rings .rf { transition: stroke-dashoffset .7s cubic-bezier(.3, .7, .3, 1.2); }
-.day-copy b { font-family: var(--display); font-variation-settings: "SOFT" 100; font-weight: 600; font-size: 17px; display: block; margin: 2px 0 8px; line-height: 1.2; }
-.day-copy b .big { font-weight: 700; font-size: 26px; }
-.legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; color: var(--muted); }
-.legend li { display: flex; align-items: center; gap: 6px; }
-.legend i { width: 9px; height: 9px; border-radius: 50%; }
-.legend .num { margin-left: auto; color: var(--ink); }
-
-/* Agüita */
-.water { background: linear-gradient(135deg, var(--sky-soft), var(--surface) 80%); border-radius: var(--r-lg); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow); }
-.water .num { font-size: 12.5px; color: var(--muted); }
-.drops { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
-.drop { border: 0; background: none; padding: 0; display: grid; place-items: center; height: 40px; }
-.drop svg { width: 24px; height: 30px; overflow: visible; }
-.drop path { fill: var(--surface); stroke: var(--sky); stroke-width: 1.6; transition: fill .2s; }
-.drop.on path { fill: var(--sky); }
-.drop.on svg { animation: pop .35s; }
-@keyframes pop { 50% { transform: scale(1.3); } }
-
-/* Decoración y reacciones */
-.deco { position: absolute; width: 18px; height: 18px; pointer-events: none; animation: sway 4s ease-in-out infinite; }
-@keyframes sway { 50% { transform: rotate(28deg) translateY(-3px); } }
-.cat.hop { animation: hop .55s ease; }
-@keyframes hop { 30% { transform: translateY(-12px) rotate(-6deg); } 60% { transform: translateY(0) rotate(4deg); } }
-.particle { position: absolute; width: 16px; height: 16px; pointer-events: none; z-index: 7; }
-.routine-tile, .habit-chip, .candle-btn, .day, .mood-scale button, .drop, .tarot, .fab, .btn, .choice, .icon-btn { transition: transform .15s ease; }
-:is(.routine-tile, .habit-chip, .candle-btn, .day, .mood-scale button, .drop, .tarot, .fab, .btn, .choice, .icon-btn):active { transform: scale(.92); }
-@media (hover: hover) { .routine-tile:hover, .habit-chip:hover { transform: translateY(-2px); } }
+:root.web .view { padding-top: 24px; max-width: 640px; margin: 0 auto; }
+:root.web .tabbar { padding: 10px max(12px, calc((100% - 640px) / 2)) max(12px, env(safe-area-inset-bottom, 0px)); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 </style>
+</head>
+<body>
 
-<!-- Reusable symbols -->
+<!-- Íconos -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="i-flower" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M12 2.2a4 4 0 0 1 3.9 4.9 4 4 0 0 1 2.4 7.3 4 4 0 0 1-6.3 4.6 4 4 0 0 1-6.3-4.6 4 4 0 0 1 2.4-7.3A4 4 0 0 1 12 2.2zm0 7.5a2.3 2.3 0 1 0 0 4.6 2.3 2.3 0 0 0 0-4.6z"/></symbol>
+    <mask id="daisyHole" maskContentUnits="userSpaceOnUse"><rect width="24" height="24" fill="#fff"/><circle cx="12" cy="12" r="2.3" fill="#000"/></mask>
+    <symbol id="i-daisy" viewBox="0 0 24 24"><g fill="currentColor" mask="url(#daisyHole)"><circle cx="12" cy="6.4" r="4.4"/><circle cx="17.3" cy="10.3" r="4.4"/><circle cx="15.3" cy="16.5" r="4.4"/><circle cx="8.7" cy="16.5" r="4.4"/><circle cx="6.7" cy="10.3" r="4.4"/><circle cx="12" cy="12" r="4"/></g></symbol>
     <symbol id="i-heart" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.2 0 3.6 1.2 5.3 3.1 1.7-1.9 3.1-3.1 5.3-3.1 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></symbol>
-    <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5l2.3 6.4 6.7.2-5.3 4.1 1.9 6.5L12 15.9l-5.6 3.8 1.9-6.5L3 9.1l6.7-.2z"/></symbol>
     <symbol id="i-spark" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c.6 4.8 2.2 6.4 7 7-4.8.6-6.4 2.2-7 7-.6-4.8-2.2-6.4-7-7 4.8-.6 6.4-2.2 7-7z"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M9.5 15.5l1.8 1.8 3.4-3.6"/></g></symbol>
+    <symbol id="i-dumbbell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5v11M3.5 9v6M17.5 6.5v11M20.5 9v6M6.5 12h11"/></g></symbol>
+    <symbol id="i-bowl" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18a9 9 0 0 1-18 0zM8 21h8"/><path d="M12 12c0-4 2-6 5-7M9 12c-.5-2 .5-4 2.5-5"/></g></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 13.5A8 8 0 1 1 10.5 4a6.3 6.3 0 0 0 9.5 9.5z"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></symbol>
-    <symbol id="i-candle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c2 2.5 2.5 3.6 2.5 4.6a2.5 2.5 0 0 1-5 0C9.5 5.6 10 4.5 12 2z"/><rect x="8" y="11" width="8" height="10" rx="1.5"/></g></symbol>
-    <symbol id="i-orb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="7"/><path d="M7 20h10M8.5 17l-1 3M15.5 17l1 3M9 8a3 3 0 0 1 3-2.5"/></g></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="2.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="2.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="2.5"/></g></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c0-9 5-14 15-15 0 10-5 15-14 15z"/><path d="M5 19l8-8"/></g></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></g></symbol>
+    <symbol id="i-hanger" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6.5a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.2V11l8.6 5.6c1 .7.5 2.4-.8 2.4H4.2c-1.3 0-1.8-1.7-.8-2.4L12 11"/></g></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></g></symbol>
-    <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="4"/><path d="M3 10h18M8 3v4M16 3v4"/></g></symbol>
-    <symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M14.5 13.5a3 3 0 1 1-3.3-3 2.4 2.4 0 0 0 3.3 3z"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.8l-10-6.5A1 1 0 0 0 8 5.5z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><g fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></g></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/></g></symbol>
+    <symbol id="i-shuffle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h3.5c4 0 6 10 10 10H21M3 17h3.5c1.6 0 2.8-1.5 3.8-3.3M14 9.3C15 7.6 16 7 17 7h4M18 4l3 3-3 3M18 14l3 3-3 3"/></g></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-fire" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c1 3.5 5.5 6 5.5 11a5.5 5.5 0 0 1-11 0c0-2.4 1.2-4 2.5-5.2.2 1.7 1 2.7 2 3.2C10.4 8 11 5 12 2z"/></symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V10M10 2.5h4"/></g></symbol>
   </defs>
 </svg>
 
 <header class="board-head">
-  <h1><svg><use href="#i-flower"/></svg><span>My Life <em>OS</em></span></h1>
-  <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start"><p>Mi refugio para la vida de todos los días: rituales de mañana y de noche, agenda con fases de la luna, velitas para los hábitos, constelaciones para las metas y un diario. Tocá cualquier cosa.</p><a class="solo-link" href="#celular">Ver solo el celular</a></div>
+  <h1><svg><use href="#i-daisy"/></svg><span>My Life OS</span></h1>
+  <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+    <p>Todo tu día en un solo lugar: checklist, ejercicio, comida, sueño, hábitos, tips, closet y estudio. Diseño Soft-UI en Dusty Rose, Soft Sage y Warm Cream. Tocá cualquier cosa.</p>
+    <a class="solo-link" href="#celular">Ver solo el celular</a>
+  </div>
 </header>
 
 <div class="board">
-  <!-- ======= Left: rooms ======= -->
   <aside class="panel left">
-    <h2>Rincones de la app</h2>
+    <h2>Secciones</h2>
     <ul class="screen-index" id="screenIndex">
-      <li><button type="button" data-go="hoy"><span class="idx"><svg><use href="#i-home"/></svg></span><b>Hoy</b><small>El arco del día, la carta del día, rituales, pendientes y Miso.</small></button></li>
-      <li><button type="button" data-go="rutinas"><span class="idx"><svg><use href="#i-sun"/></svg></span><b>Rituales</b><small>Mañana y noche, paso a paso, con tiempos.</small></button></li>
-      <li><button type="button" data-go="agenda"><span class="idx"><svg><use href="#i-cal"/></svg></span><b>Agenda lunar</b><small>Calendario con fases de la luna, planes y recordatorios.</small></button></li>
-      <li><button type="button" data-go="habitos"><span class="idx"><svg><use href="#i-candle"/></svg></span><b>Velitas y constelaciones</b><small>Hábitos que se encienden y metas que se dibujan en el cielo.</small></button></li>
-      <li><button type="button" data-go="progreso"><span class="idx"><svg><use href="#i-orb"/></svg></span><b>Bola de cristal</b><small>Cómo fue tu semana, sin culpa.</small></button></li>
-      <li><button type="button" data-go="diario"><span class="idx"><svg><use href="#i-book"/></svg></span><b>Diario</b><small>Cómo te sentís, en fases de la luna.</small></button></li>
+      <li><button type="button" data-go="hoy"><svg><use href="#i-home"/></svg>Hoy · checklist</button></li>
+      <li><button type="button" data-go="ejercicio"><svg><use href="#i-dumbbell"/></svg>Ejercicio</button></li>
+      <li><button type="button" data-go="comida"><svg><use href="#i-bowl"/></svg>Alimentación</button></li>
+      <li><button type="button" data-go="sueno"><svg><use href="#i-moon"/></svg>Sueño</button></li>
+      <li><button type="button" data-go="habitos"><svg><use href="#i-leaf"/></svg>Hábitos</button></li>
+      <li><button type="button" data-go="aprender"><svg><use href="#i-book"/></svg>Aprender</button></li>
+      <li><button type="button" data-go="closet"><svg><use href="#i-hanger"/></svg>Closet</button></li>
+      <li><button type="button" data-go="tips"><svg><use href="#i-bulb"/></svg>Tips</button></li>
     </ul>
-    <p class="note">Datos de ejemplo. Semana del 26 de octubre al 1 de noviembre de 2026. Las fases de la luna se calculan de verdad.</p>
+    <p class="note">Lo que marcás se guarda en este navegador. El checklist, el agua y las comidas se reinician cada día.</p>
   </aside>
 
-  <!-- ======= Center: phone ======= -->
   <div class="phone-wrap" id="phoneWrap">
-    <div class="sim-bar"><span class="lights"><i style="background:#FF5F57"></i><i style="background:#FEBC2E"></i><i style="background:#28C840"></i></span><span><b>My Life OS</b><small>iPhone · vista previa en vivo</small></span><a href="#tablero">Ver tablero</a></div>
+    <div class="sim-bar neu"><span><b>My Life OS</b><small>iPhone · vista previa en vivo</small></span><a href="#tablero">Ver tablero</a></div>
     <div class="phone">
       <div class="app" id="app">
         <div class="status">
-          <span class="num">8:12</span>
+          <span class="num" id="clock">8:12</span>
           <span class="island" aria-hidden="true"></span>
           <span class="sig" aria-hidden="true"><i style="height:4px"></i><i style="height:6px"></i><i style="height:8px"></i><i style="height:11px"></i></span>
         </div>
@@ -597,276 +478,156 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
           <!-- ===== HOY ===== -->
           <section class="view" data-view="hoy">
             <div class="hello">
-              <div class="eyebrow"><svg id="todayMoon" viewBox="0 0 24 24"></svg><span id="todayLabel">Domingo 1 de noviembre</span></div>
-              <h2>Hola, <em>estrellita</em></h2>
-              <span class="bubble"><b>Miso:</b> <span id="catSays">miau. tomá agüita</span></span><button class="theme-btn" id="themeBtn" type="button"><svg><use href="#i-moon"/></svg><span>Modo noche</span></button>
-              <svg class="deco" style="right:84px;top:4px;color:var(--rose)" aria-hidden="true"><use href="#i-flower"/></svg>
-              <svg class="deco" style="right:4px;top:72px;width:14px;height:14px;color:var(--butter);animation-delay:-1.3s" aria-hidden="true"><use href="#i-flower"/></svg>
-              <svg class="deco" style="right:70px;top:44px;width:12px;height:12px;color:var(--lav);animation-delay:-2.4s" aria-hidden="true"><use href="#i-flower"/></svg>
-              <svg class="cat" viewBox="0 0 64 64" role="img" aria-label="Miso, el gatito de la app. Tocalo.">
-                <path d="M50 60c9 0 12-9 7-14" fill="none" stroke="var(--cat)" stroke-width="4" stroke-linecap="round"/>
-                <path fill="var(--cat)" d="M13 61c-2-11 1-21 7-26l-3-17 10 9a20 20 0 0 1 10 0l10-9-3 17c6 5 9 15 7 26z"/>
-                <ellipse class="eye" cx="25" cy="34" rx="2.6" ry="3.4"/>
-                <ellipse class="eye" cx="39" cy="34" rx="2.6" ry="3.4"/>
-                <path d="M30 40l2 1.5 2-1.5" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="20" cy="40" r="2.2" fill="var(--alert)" opacity=".5"/><circle cx="44" cy="40" r="2.2" fill="var(--alert)" opacity=".5"/>
-              </svg>
+              <div><span class="wide" id="todayLabel">Viernes 6 de noviembre</span><h2 id="greet">Buen día, <span>linda</span></h2></div>
+              <button class="press icon-btn theme-btn" id="themeBtn" type="button" aria-label="Cambiar a modo noche"><svg><use href="#i-moon"/></svg></button>
             </div>
 
-            <div class="day-card">
-              <svg class="rings" viewBox="0 0 90 90" role="img" aria-label="Progreso de hoy: pendientes, velitas y rituales">
-                <circle cx="45" cy="45" r="38" style="stroke:var(--rose-soft)"/><circle class="rf" id="ringT" cx="45" cy="45" r="38" style="stroke:var(--rose)"/>
-                <circle cx="45" cy="45" r="28" style="stroke:var(--sage-soft)"/><circle class="rf" id="ringH" cx="45" cy="45" r="28" style="stroke:var(--sage)"/>
-                <circle cx="45" cy="45" r="18" style="stroke:var(--lav-soft)"/><circle class="rf" id="ringR" cx="45" cy="45" r="18" style="stroke:var(--lav)"/>
-              </svg>
-              <div class="day-copy">
-                <span class="eyebrow">Tu día</span>
-                <b><span class="big num" id="dayPct">0%</span> <span id="dayMsg">recién empieza</span></b>
-                <ul class="legend">
-                  <li><i style="background:var(--rose)"></i>Pendientes <span class="num" id="lgT"></span></li>
-                  <li><i style="background:var(--sage)"></i>Velitas <span class="num" id="lgH"></span></li>
-                  <li><i style="background:var(--lav)"></i>Rituales <span class="num" id="lgR"></span></li>
-                </ul>
-              </div>
+            <div class="neu pad progress-card">
+              <div class="ring-wrap"><svg viewBox="0 0 90 90" aria-hidden="true"><circle class="tr" cx="45" cy="45" r="38"/><circle class="fg" id="dayRing" cx="45" cy="45" r="38"/></svg><span class="pct" id="dayPct">0%</span></div>
+              <div><span class="wide muted">Checklist de hoy</span><b id="dayMsg">Recién empieza</b><p id="dayCount">0 de 0 listas</p></div>
             </div>
 
-            <div class="arc-card">
-              <svg viewBox="0 0 320 132" role="img" aria-label="Arco del día: de 6:30 a 23:00, ahora son las 8:12">
-                <defs><linearGradient id="arcGrad" x1="0" x2="1"><stop offset="0" stop-color="var(--candle)"/><stop offset="1" stop-color="var(--moon)"/></linearGradient></defs>
-                <g id="arcStars"></g>
-                <path d="M20 118 A140 100 0 0 1 300 118" fill="none" stroke="var(--line)" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 9"/>
-                <path id="arcDone" d="M20 118 A140 100 0 0 1 300 118" fill="none" stroke="url(#arcGrad)" stroke-width="5" stroke-linecap="round"/>
-                <g id="arcEvents"></g>
-                <circle id="sunHalo" r="16" fill="var(--glow)" opacity=".5"/>
-                <circle id="sunDot" r="9" fill="var(--candle)" stroke="var(--surface)" stroke-width="3"/>
-                <text x="160" y="90" text-anchor="middle" style="font-family:var(--mono);font-size:10.5px;fill:var(--muted);letter-spacing:.1em">FALTAN PARA LA LUNA</text>
-                <text x="160" y="114" text-anchor="middle" style="font-family:var(--display);font-style:italic;font-size:23px;font-weight:500;fill:var(--ink)">14 h 48 min</text>
-              </svg>
-              <div class="arc-legend"><span class="num">06:30 despertar</span><span class="num">23:00 a soñar</span></div>
+            <div class="sec"><h3>Checklist diario</h3><span class="wide" id="clCount"></span></div>
+            <div class="list" id="checklist"></div>
+            <form class="add-row" id="clForm"><input class="field" id="clInput" placeholder="Agregar algo para hoy…" maxlength="60" aria-label="Nueva tarea"><button class="btn rose icon-btn" type="submit" aria-label="Agregar"><svg><use href="#i-plus"/></svg></button></form>
+
+            <div class="sec"><h3>Tu día</h3></div>
+            <div class="tiles">
+              <button class="tile" type="button" data-go="ejercicio"><span class="ic rose"><svg><use href="#i-dumbbell"/></svg></span><b id="tWork">Piernas</b><small id="tWorkS">0/5 ejercicios</small></button>
+              <button class="tile" type="button" data-go="comida"><span class="ic sage"><svg><use href="#i-bowl"/></svg></span><b id="tWater">3/8 vasos</b><small id="tWaterS">2/4 comidas</small></button>
+              <button class="tile" type="button" data-go="sueno"><span class="ic cream"><svg><use href="#i-moon"/></svg></span><b id="tSleep">7 h 45</b><small id="tSleepS">dormiste anoche</small></button>
+              <button class="tile" type="button" data-go="aprender"><span class="ic rose"><svg><use href="#i-book"/></svg></span><b id="tStudy">0 min</b><small>de estudio hoy</small></button>
             </div>
 
-            <div class="tarot-row">
-              <button class="tarot" type="button" id="tarot" aria-pressed="false" aria-label="Dar vuelta la carta del día">
-                <span class="tarot-in">
-                  <span class="face back"><svg><use href="#i-moon"/></svg></span>
-                  <span class="face front"><span class="roman">XVII</span><svg><use href="#i-star"/></svg><span>La Estrella</span></span>
-                </span>
-              </button>
-              <div class="tarot-copy" id="tarotCopy">
-                <span class="eyebrow">Carta del día</span>
-                <b>Tocala para darla vuelta</b>
-                <p>Una carta por día, para elegir una intención.</p>
-              </div>
-            </div>
+            <div class="neu pad tip-card"><svg class="daisy-sm"><use href="#i-daisy"/></svg><div><span class="wide muted">Tip del día</span><b id="tipDayT"></b><p id="tipDayP"></p></div></div>
+          </section>
 
-            <div class="routine-pair">
-              <button class="routine-tile sun" type="button" data-go="rutinas" data-routine="sun">
-                <span class="rt-top"><span class="tag sun">Ahora</span><svg><use href="#i-sun"/></svg></span>
-                <b>Ritual del amanecer</b>
-                <small><span class="num" data-count="sun">3/6</span> pasos · 45 min</small>
-                <span class="meter"><i data-meter="sun" style="width:50%"></i></span>
-              </button>
-              <button class="routine-tile moon" type="button" data-go="rutinas" data-routine="moon">
-                <span class="rt-top"><span class="tag moon">22:00</span><svg><use href="#i-moon"/></svg></span>
-                <b>Ritual de la luna</b>
-                <small><span class="num" data-count="moon">0/5</span> pasos · 40 min</small>
-                <span class="meter"><i data-meter="moon" style="width:0%"></i></span>
-              </button>
+          <!-- ===== EJERCICIO ===== -->
+          <section class="view" data-view="ejercicio" hidden>
+            <div class="view-head"><div><span class="wide">Rutinas de ejercicio</span><h2>Ejercicio</h2></div></div>
+            <div class="week-days" id="weekDays"></div>
+            <div class="hero rose"><span class="wide" id="wkDay">Lunes</span><h3 id="wkName">Piernas y glúteos</h3><p id="wkMeta">5 ejercicios · 40 min</p><svg class="daisy"><use href="#i-daisy"/></svg></div>
+            <div class="list" id="exercises"></div>
+            <div class="neu pad timer-card">
+              <div class="mini-ring"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="25" style="stroke:var(--track)"/><circle class="fg" id="restRing" cx="30" cy="30" r="25"/></svg><span class="num" id="restTime">60</span></div>
+              <div class="txt"><b>Descanso entre series</b><small id="restMsg">Tocá para contar 60 segundos</small></div>
+              <button class="press icon-btn" id="restBtn" type="button" aria-label="Iniciar descanso"><svg><use href="#i-play"/></svg></button>
             </div>
+          </section>
 
-            <div class="reminder">
-              <span class="bell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
-              <span class="txt"><b>Llamar a la abuela</b><small>Recordatorio · hoy 11:00</small></span>
-              <span class="tag alert">en 2 h 48</span>
-            </div>
-
-            <div class="water">
-              <div class="sec-title"><h3>Agüita</h3><span class="num" id="waterCount">3/8 vasos</span></div>
+          <!-- ===== COMIDA ===== -->
+          <section class="view" data-view="comida" hidden>
+            <div class="view-head"><div><span class="wide">Sección alimenticia</span><h2>Alimentación</h2></div></div>
+            <div class="neu pad water">
+              <div class="water-head"><b>Agua</b><span class="num muted" id="waterCount">3/8 vasos</span></div>
               <div class="drops" id="drops"></div>
             </div>
-
-            <div class="card">
-              <div class="sec-title" style="margin-bottom:8px"><h3>Pendientes de hoy</h3><button class="link" type="button" data-go="agenda"><span class="num" id="taskCount">1/4</span> listos</button></div>
-              <div class="list" id="todayTasks"></div>
-            </div>
-
-            <div>
-              <div class="sec-title" style="margin-bottom:10px"><h3>Velitas de hoy</h3><button class="link" type="button" data-go="habitos">Ver todas</button></div>
-              <div class="habit-chips" id="habitChips"></div>
-            </div>
-
-            <div class="mood-prompt">
-              <div>
-                <h3>¿Cómo te sentís hoy?</h3>
-                <p>Elegí tu luna. Después, si querés, le contás más al diario.</p>
+            <div class="sec"><h3>Comidas de hoy</h3><span class="wide" id="mealCount"></span></div>
+            <div class="list" id="meals"></div>
+            <div class="sec"><h3>Mi plato</h3><span class="wide">método del plato</span></div>
+            <div class="neu pad plate-card">
+              <div class="plate"><svg viewBox="0 0 100 100" aria-label="Plato balanceado"><path class="v" id="pv" d="M50 50 L50 8 A42 42 0 0 0 50 92 Z"/><path class="p" id="pp" d="M50 50 L50 8 A42 42 0 0 1 92 50 Z"/><path class="c" id="pc" d="M50 50 L92 50 A42 42 0 0 1 50 92 Z"/></svg></div>
+              <div class="plate-opts" id="plateOpts">
+                <button class="chip press" type="button" data-plate="v" aria-pressed="false"><i style="background:var(--sage)"></i>½ verduras</button>
+                <button class="chip press" type="button" data-plate="p" aria-pressed="false"><i style="background:var(--rose)"></i>¼ proteína</button>
+                <button class="chip press" type="button" data-plate="c" aria-pressed="false"><i style="background:var(--sand)"></i>¼ carbos</button>
               </div>
-              <div class="mood-scale" data-mood-scale="quick"></div>
             </div>
+            <div class="sec"><h3>Lista del súper</h3></div>
+            <div class="list" id="groceries"></div>
+            <form class="add-row" id="grForm"><input class="field" id="grInput" placeholder="Agregar al súper…" maxlength="40" aria-label="Nuevo producto"><button class="btn sage icon-btn" type="submit" aria-label="Agregar"><svg><use href="#i-plus"/></svg></button></form>
           </section>
 
-          <!-- ===== RITUALES ===== -->
-          <section class="view" data-view="rutinas" hidden>
-            <button class="back" type="button" data-go="hoy"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>Hoy</button>
-            <div class="view-head" style="padding-top:0">
-              <div><h2>Rituales</h2><div class="sub">Pequeñas cosas que hacen el día más suave.</div></div>
-              <button class="icon-btn" type="button" aria-label="Editar ritual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+          <!-- ===== SUEÑO ===== -->
+          <section class="view" data-view="sueno" hidden>
+            <div class="view-head"><div><span class="wide">Control de sueño</span><h2>Sueño</h2></div></div>
+            <div class="hero sage"><span class="wide">Anoche dormiste</span><h3 id="sleepHours">7 h 45 min</h3><p id="sleepNote">Muy cerca de tu meta de 8 h</p><svg class="daisy"><use href="#i-daisy"/></svg></div>
+            <div class="sleep-times">
+              <div class="neu time-box"><label for="bedT"><svg><use href="#i-moon"/></svg>Me acosté</label><input type="time" id="bedT" value="23:30"></div>
+              <div class="neu time-box"><label for="wakeT"><svg><use href="#i-sun"/></svg>Me desperté</label><input type="time" id="wakeT" value="07:15"></div>
             </div>
-            <div class="segmented" role="group" aria-label="Ritual">
-              <button type="button" data-routine-tab="sun" aria-pressed="true"><svg><use href="#i-sun"/></svg>Amanecer</button>
-              <button type="button" data-routine-tab="moon" aria-pressed="false"><svg><use href="#i-moon"/></svg>Luna</button>
-            </div>
-            <div class="routine-hero sun" id="routineHero">
-              <svg class="ring" viewBox="0 0 80 80"><circle class="bg" cx="40" cy="40" r="32"/><circle class="fg" id="ringFg" cx="40" cy="40" r="32" stroke-dasharray="201.06" stroke-dashoffset="100"/><text x="40" y="40" id="ringTxt">50%</text></svg>
-              <div><b id="routineName">Ritual del amanecer</b><small id="routineMeta">06:30 a 07:15 · 12 mañanas seguidas</small></div>
-            </div>
-            <div class="steps" id="steps"></div>
-            <div class="tip"><svg><use href="#i-flower"/></svg><span>Si un día hacés la mitad, igual cuenta. La racha no se corta mientras completes al menos 3 pasos.</span></div>
+            <div class="sec"><h3>¿Cómo dormiste?</h3><span class="wide" id="qLabel"></span></div>
+            <div class="quality" id="quality"></div>
+            <div class="sec"><h3>Esta semana</h3><span class="wide" id="sleepAvg"></span></div>
+            <div class="neu pad chart" id="sleepChart"></div>
+            <div class="sec"><h3>Rutina de noche</h3></div>
+            <div class="list" id="nightList"></div>
           </section>
 
-          <!-- ===== AGENDA ===== -->
-          <section class="view" data-view="agenda" hidden>
-            <div class="view-head">
-              <div><h2>Agenda <em>lunar</em></h2><div class="sub">Planes, pendientes y recordatorios</div></div>
-              <button class="icon-btn" type="button" aria-label="Buscar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
-            </div>
-            <div class="month">
-              <div class="month-head">
-                <button class="icon-btn" type="button" aria-label="Mes anterior" style="width:32px;height:32px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></button>
-                <b>Noviembre 2026</b>
-                <button class="icon-btn" type="button" aria-label="Mes siguiente" style="width:32px;height:32px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg></button>
-              </div>
-              <div class="month-grid" id="monthGrid"></div>
-              <div class="moon-legend" id="moonLegend"></div>
-            </div>
-            <div class="sec-title"><h3 id="dayTitle">Domingo 1</h3><span class="tag green" id="dayCount">5 cosas</span></div>
-            <div class="timeline" id="timeline"></div>
-          </section>
-
-          <!-- ===== VELITAS Y CONSTELACIONES ===== -->
+          <!-- ===== HÁBITOS ===== -->
           <section class="view" data-view="habitos" hidden>
-            <div class="view-head">
-              <div><h2>Velitas</h2><div class="sub">Encendé una por cada hábito de hoy.</div></div>
-              <button class="icon-btn" type="button" aria-label="Nuevo hábito"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-            </div>
-            <div class="candles" id="candles"></div>
-            <div class="habit-week" id="habitWeek"></div>
-            <div class="view-head" style="padding-top:8px">
-              <div><h2>Constelaciones</h2><div class="sub">Cada paso hacia una meta enciende una estrella.</div></div>
-            </div>
-            <div class="steps" id="goals"></div>
+            <div class="view-head"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Hábitos</h2></div></div>
+            <div class="hero cream"><span class="wide">Esta semana</span><h3 id="habSum">12 de 30</h3><p>Tocá un día para marcarlo. Las rachas se cuentan solas.</p><svg class="daisy" style="color:var(--rose)"><use href="#i-daisy"/></svg></div>
+            <div class="list" id="habits" style="gap:16px"></div>
+            <form class="add-row" id="habForm"><input class="field" id="habInput" placeholder="Nuevo hábito…" maxlength="30" aria-label="Nuevo hábito"><button class="btn rose icon-btn" type="submit" aria-label="Agregar"><svg><use href="#i-plus"/></svg></button></form>
           </section>
 
-          <!-- ===== BOLA DE CRISTAL ===== -->
-          <section class="view" data-view="progreso" hidden>
-            <div class="view-head">
-              <div><h2>Bola de <em>cristal</em></h2><div class="sub">Semana 44 · 26 oct al 1 nov</div></div>
-              <button class="icon-btn" type="button" aria-label="Compartir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8h16v-8M12 3v13M7 8l5-5 5 5"/></svg></button>
-            </div>
-            <div class="orb-card">
-              <svg viewBox="0 0 130 140" role="img" aria-label="78 por ciento de lo planeado esta semana">
-                <defs>
-                  <radialGradient id="orbG" cx=".38" cy=".35" r=".75"><stop offset="0" stop-color="var(--surface)"/><stop offset=".55" stop-color="var(--moon-soft)"/><stop offset="1" stop-color="var(--moon)"/></radialGradient>
-                  <clipPath id="orbClip"><circle cx="65" cy="62" r="52"/></clipPath>
-                </defs>
-                <circle cx="65" cy="62" r="60" fill="var(--glow)" opacity=".35"/>
-                <circle cx="65" cy="62" r="52" fill="url(#orbG)"/>
-                <g clip-path="url(#orbClip)"><path d="M0 76 Q 32 66 65 76 T 130 76 V 130 H 0 z" fill="var(--candle)" opacity=".35"/></g>
-                <ellipse cx="46" cy="38" rx="12" ry="7" fill="var(--ink)" opacity=".18" transform="rotate(-30 46 38)"/>
-                <text x="65" y="70" text-anchor="middle" class="big" style="font-size:36px;fill:var(--ink)">78<tspan style="font-size:16px">%</tspan></text>
-                <path d="M34 112 h62 l8 18 h-78z" fill="var(--candle-soft)" stroke="var(--candle)" stroke-width="1.5" stroke-linejoin="round"/>
-                <use href="#i-spark" x="98" y="14" width="14" height="14" style="color:var(--candle)" class="twinkle"/>
-                <use href="#i-spark" x="14" y="88" width="10" height="10" style="color:var(--candle)" class="twinkle"/>
-              </svg>
-              <div>
-                <span class="delta">+6 vs. semana pasada</span>
-                <b class="lead">Una semana luminosa</b>
-                <p>Hiciste el 78 % de lo que planeaste. Lo que quedó no es un fracaso, pasa a la próxima.</p>
-              </div>
-            </div>
-            <div class="card chart">
-              <div class="sec-title" style="margin-bottom:6px"><h3>Día por día</h3><span class="eyebrow">% cumplido</span></div>
-              <svg viewBox="0 0 320 150" id="barChart" role="img" aria-label="Cumplimiento por día: lunes 72, martes 85, miércoles 64, jueves 90, viernes 78, sábado 55, domingo 81"></svg>
-            </div>
-            <div class="stats">
-              <div class="stat"><span class="k">Pendientes listos</span><span class="v num">23<small>/28</small></span><span class="d up">▲ 4 más</span></div>
-              <div class="stat"><span class="k">Velitas encendidas</span><span class="v num">81<small>%</small></span><span class="d up">▲ 9 pts</span></div>
-              <div class="stat"><span class="k">Rituales completos</span><span class="v num">11<small>/14</small></span><span class="d down">▼ 1</span></div>
-              <div class="stat"><span class="k">Horas de sueño</span><span class="v num">7:05<small> h</small></span><span class="d up">▲ 20 min</span></div>
-            </div>
-            <div class="card">
-              <div class="sec-title" style="margin-bottom:12px"><h3>Tus lunas de la semana</h3><button class="link" type="button" data-go="diario">Diario</button></div>
-              <div class="mood-week" id="moodWeek"></div>
-            </div>
-            <div class="insight">
-              <svg><use href="#i-spark"/></svg>
-              <span>La bola de cristal ve un patrón: las noches que hiciste el ritual de la luna, al día siguiente te sentiste <b>Brillo</b> en vez de <b>Calma</b>.</span>
-            </div>
-            <div class="card">
-              <div class="sec-title" style="margin-bottom:12px"><h3>Tu cielo</h3><span class="eyebrow">12 semanas de velitas</span></div>
-              <div class="sky" id="sky"></div>
-              <div class="sky-legend"><span>agosto</span><span>más velitas, más brilla</span><span>hoy</span></div>
-            </div>
+          <!-- ===== TIPS ===== -->
+          <section class="view" data-view="tips" hidden>
+            <div class="view-head"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Tips</h2></div></div>
+            <div class="chips" id="tipCats"></div>
+            <div class="list" id="tipList" style="gap:16px"></div>
           </section>
 
-          <!-- ===== DIARIO ===== -->
-          <section class="view" data-view="diario" hidden>
-            <div class="view-head">
-              <div><div class="journal-date">DOM 01.11.2026 · 08:12</div><h2>Querido <em>diario</em></h2></div>
-              <button class="icon-btn" type="button" aria-label="Calendario del diario"><svg><use href="#i-cal"/></svg></button>
+          <!-- ===== CLOSET ===== -->
+          <section class="view" data-view="closet" hidden>
+            <div class="view-head"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Closet</h2></div><button class="press icon-btn" type="button" id="shuffle" aria-label="Sorprendeme con un outfit"><svg><use href="#i-shuffle"/></svg></button></div>
+            <div class="sec"><h3>Outfit de hoy</h3><span class="wide">tocá prendas</span></div>
+            <div class="outfit" id="outfit"></div>
+            <div class="chips" id="closetCats"></div>
+            <div class="garments" id="garments"></div>
+          </section>
+
+          <!-- ===== APRENDER ===== -->
+          <section class="view" data-view="aprender" hidden>
+            <div class="view-head"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Aprender</h2></div></div>
+            <div class="neu pomo" id="pomo">
+              <div class="pomo-ring"><svg viewBox="0 0 170 170" aria-hidden="true"><circle class="tr" cx="85" cy="85" r="76"/><circle class="fg" id="pomoRing" cx="85" cy="85" r="76"/></svg><div class="pomo-time"><span class="num" id="pomoTime">25:00</span><span class="wide" id="pomoMode">Foco</span></div></div>
+              <div class="pomo-ctrl">
+                <button class="press icon-btn" type="button" id="pomoReset" aria-label="Reiniciar"><svg><use href="#i-reset"/></svg></button>
+                <button class="btn rose play" type="button" id="pomoPlay" aria-label="Empezar"><svg><use href="#i-play"/></svg></button>
+                <button class="press icon-btn" type="button" id="pomoSwitch" aria-label="Cambiar a pausa"><svg><use href="#i-timer"/></svg></button>
+              </div>
+              <small class="muted" id="pomoInfo">0 pomodoros hoy · 0 min</small>
             </div>
-            <div class="page" style="margin-top:24px">
-              <svg class="sleepy" viewBox="0 0 84 46" aria-hidden="true">
-                <text class="z" x="8" y="14">z</text><text class="z" x="16" y="8" style="font-size:9px">z</text>
-                <path fill="var(--cat)" d="M22 44c-4-14 8-22 26-22 6 0 10 1 13 3l3-7 3 9c3 3 5 8 5 17z"/>
-                <path fill="var(--cat)" d="M60 23l2-7 4 8z"/>
-                <path d="M62 37q3 2 6 0" fill="none" stroke="var(--candle)" stroke-width="1.6" stroke-linecap="round"/>
-                <path d="M22 44c-8 0-10-6-5-8" fill="none" stroke="var(--cat)" stroke-width="4" stroke-linecap="round"/>
-              </svg>
-              <div>
-                <h3 style="font-size:19px;margin-bottom:8px">¿Qué luna sos hoy?</h3>
-                <div class="mood-scale" data-mood-scale="journal"></div>
-              </div>
-              <div class="field">
-                <label>¿Qué tuvo que ver?</label>
-                <div class="choice-row" id="moodTags"></div>
-              </div>
-              <div class="field">
-                <label for="journalText">Contame</label>
-                <textarea id="journalText" placeholder="Lo que quieras. Esto queda entre vos y el diario.">Dormí bien por primera vez en la semana. Té, manta y Miso en los pies. Se nota.</textarea>
-              </div>
-              <div class="field">
-                <label>Tres cositas lindas de hoy</label>
-                <div class="gratitude">
-                  <div><svg><use href="#i-flower"/></svg><input id="g1" value="El café en el balcón con la niebla"></div>
-                  <div><svg><use href="#i-flower"/></svg><input id="g2" placeholder="…"></div>
-                  <div><svg><use href="#i-flower"/></svg><input id="g3" placeholder="…"></div>
-                </div>
-              </div>
-              <button class="btn" type="button" id="saveEntry">Guardar en el diario</button>
+            <div class="sec"><h3>Materias</h3><span class="wide">temas vistos</span></div>
+            <div class="list" id="subjects" style="gap:14px"></div>
+            <div class="sec"><h3>Pendientes de estudio</h3></div>
+            <div class="list" id="studyTasks"></div>
+            <form class="add-row" id="stForm"><input class="field" id="stInput" placeholder="Agregar pendiente…" maxlength="50" aria-label="Nuevo pendiente de estudio"><button class="btn rose icon-btn" type="submit" aria-label="Agregar"><svg><use href="#i-plus"/></svg></button></form>
+          </section>
+
+          <!-- ===== MÁS ===== -->
+          <section class="view" data-view="mas" hidden>
+            <div class="view-head"><div><span class="wide">Todo lo demás</span><h2>Más</h2></div></div>
+            <div class="more-grid">
+              <button class="more-card rose" type="button" data-go="habitos"><b>Hábitos</b><span class="wide" id="mHab">5 hábitos</span><svg><use href="#i-daisy"/></svg></button>
+              <button class="more-card sage" type="button" data-go="aprender"><b>Aprender</b><span class="wide">pomodoro · materias</span><svg><use href="#i-daisy"/></svg></button>
+              <button class="more-card cream" type="button" data-go="closet"><b>Closet</b><span class="wide" id="mClo">12 prendas</span><svg><use href="#i-daisy"/></svg></button>
+              <button class="more-card rose" type="button" data-go="tips"><b>Tips</b><span class="wide" id="mTip">16 tips</span><svg><use href="#i-daisy"/></svg></button>
             </div>
-            <div class="sec-title"><h3>Páginas anteriores</h3><span class="eyebrow num">31 días seguidos</span></div>
-            <div class="steps" id="entries"></div>
+            <button class="btn" type="button" id="resetAll"><svg><use href="#i-reset"/></svg>Volver a los datos de ejemplo</button>
           </section>
         </div>
 
-        <button class="fab" type="button" id="fab" aria-label="Agregar pendiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-
-        <nav class="tabbar" id="tabbar">
+        <nav class="tabbar" id="tabbar" aria-label="Secciones">
           <button type="button" data-go="hoy"><span class="tab-ic"><svg><use href="#i-home"/></svg></span>Hoy</button>
-          <button type="button" data-go="agenda"><span class="tab-ic"><svg><use href="#i-cal"/></svg></span>Agenda</button>
-          <button type="button" data-go="habitos"><span class="tab-ic"><svg><use href="#i-candle"/></svg></span>Velitas</button>
-          <button type="button" data-go="progreso"><span class="tab-ic"><svg><use href="#i-orb"/></svg></span>Cristal</button>
-          <button type="button" data-go="diario"><span class="tab-ic"><svg><use href="#i-book"/></svg></span>Diario</button>
+          <button type="button" data-go="ejercicio"><span class="tab-ic"><svg><use href="#i-dumbbell"/></svg></span>Ejercicio</button>
+          <button type="button" data-go="comida"><span class="tab-ic"><svg><use href="#i-bowl"/></svg></span>Comida</button>
+          <button type="button" data-go="sueno"><span class="tab-ic"><svg><use href="#i-moon"/></svg></span>Sueño</button>
+          <button type="button" data-go="mas"><span class="tab-ic"><svg><use href="#i-grid"/></svg></span>Más</button>
         </nav>
 
         <div class="sheet-scrim" id="sheet" hidden>
-          <form class="sheet" id="taskForm">
+          <form class="sheet" id="garForm">
             <div class="grabber"></div>
-            <h3 style="font-size:21px">Nuevo pendiente</h3>
-            <div class="field"><label for="taskTitle">¿Qué hay que hacer?</label><input id="taskTitle" placeholder="Ej: regar las plantas" required></div>
-            <div class="field"><label>Cuándo</label><div class="choice-row" id="whenChoices"><button type="button" class="choice" aria-pressed="true">Hoy</button><button type="button" class="choice" aria-pressed="false">Mañana</button><button type="button" class="choice" aria-pressed="false">Esta semana</button></div></div>
-            <div class="field"><label>Que Miso me avise</label><div class="choice-row" id="remindChoices"><button type="button" class="choice" aria-pressed="false">No</button><button type="button" class="choice" aria-pressed="true">1 h antes</button><button type="button" class="choice" aria-pressed="false">A las 9:00</button></div></div>
-            <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px"><button type="button" class="btn ghost" id="cancelSheet">Cancelar</button><button type="submit" class="btn">Agregar</button></div>
+            <h3>Nueva prenda</h3>
+            <input class="field" id="garName" placeholder="Ej: Blusa de lino" maxlength="30" required aria-label="Nombre de la prenda">
+            <label class="lb">Tipo</label>
+            <div class="chips" id="garCat" style="margin:0;padding:6px 2px 8px;flex-wrap:wrap"></div>
+            <label class="lb">Color</label>
+            <div class="color-row" id="garColor"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px"><button class="btn" type="button" id="garCancel">Cancelar</button><button class="btn rose" type="submit">Guardar</button></div>
           </form>
         </div>
         <div class="toast" id="toast" hidden></div>
@@ -874,53 +635,33 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
     </div>
   </div>
 
-  <!-- ======= Right: spellbook ======= -->
-  <aside class="panel">
-    <h2>Libro de hechizos (sistema visual)</h2>
+  <aside class="panel right">
+    <h2>Paleta</h2>
+    <div class="pal-stack">
+      <div class="pal rose"><b>Dusty Rose</b><span>#C9908F</span><svg><use href="#i-daisy"/></svg></div>
+      <div class="pal sage"><b>Soft Sage</b><span>#9CAF98</span><svg><use href="#i-daisy"/></svg></div>
+      <div class="pal cream"><b>Warm Cream</b><span>#F3EADF</span><svg><use href="#i-daisy"/></svg></div>
+    </div>
+    <h2>Soft-UI</h2>
+    <div class="neu demo">
+      <button class="btn" type="button" tabindex="-1">Levantado</button>
+      <button class="btn" type="button" tabindex="-1" style="box-shadow:var(--inset-sm)">Hundido</button>
+      <button class="btn rose" type="button" tabindex="-1">Acción</button>
+      <button class="check" type="button" aria-pressed="true" tabindex="-1"><svg><use href="#i-daisy"/></svg></button>
+      <button class="check" type="button" aria-pressed="false" tabindex="-1"><svg><use href="#i-daisy"/></svg></button>
+      <span class="lbl">Todo sale del mismo fondo crema: dos sombras lo levantan (sin tocar) y sombras internas lo hunden (tocado, hecho, elegido).</span>
+    </div>
+    <h2>Tipografía</h2>
+    <div class="neu type-spec">
+      <div class="d1">Buen día</div><div class="lbl">Archivo condensada 800 · títulos</div>
+      <div class="d2">Checklist de hoy</div><div class="lbl">Archivo expandida 400 · etiquetas</div>
+      <div>Nunito para el texto, redondita y fácil de leer en pantallas chicas.</div><div class="lbl">Nunito 400–800 · texto</div>
+    </div>
+    <h2>Principios</h2>
     <div class="principles">
-      <div class="principle"><svg><use href="#i-moon"/></svg><b>Un refugio, no una oficina</b><p>Cacao, beige y luz de vela. Abrir la app tiene que sentirse como taparse con una manta.</p></div>
-      <div class="principle"><svg><use href="#i-candle"/></svg><b>Rituales chiquitos</b><p>Todo se hace con un toque: encender una velita, elegir tu luna, dar vuelta una carta.</p></div>
-      <div class="principle"><svg><use href="#i-star"/></svg><b>Magia sin culpa</b><p>Lo que no hiciste pasa a mañana. Las metas son constelaciones que se van encendiendo, no barras que te retan.</p></div>
-    </div>
-
-    <h2>Tu paleta</h2>
-    <div class="palette">
-      <div class="pal" style="background:#A89A94;color:#4A3835"><svg><use href="#i-flower"/></svg><b>Mushroom</b><span>#A89A94 · textos suaves</span></div>
-      <div class="pal" style="background:#D9C4BC;color:#4A3835"><svg style="color:#6E5A55"><use href="#i-flower"/></svg><b>Blush Beige</b><span>#D9C4BC · botones, hecho</span></div>
-      <div class="pal" style="background:#4A3835;color:#D9C4BC"><svg><use href="#i-flower"/></svg><b>Deep Cocoa</b><span>#4A3835 · noche, tarjetas</span></div>
-    </div>
-    <div class="swatches">
-      <div class="swatch"><i style="background:var(--bg)"></i><b>Cacao profundo</b><span>Fondo de noche</span></div>
-      <div class="swatch"><i style="background:var(--candle)"></i><b>Luz de vela</b><span>Mañana, estrellas</span></div>
-      <div class="swatch"><i style="background:var(--moon)"></i><b>Hongo claro</b><span>Noche, misterio</span></div>
-      <div class="swatch"><i style="background:var(--alert)"></i><b>Coral polvo</b><span>Recordatorios</span></div>
-    </div>
-
-    <h2>Tu luna (escala de ánimo)</h2>
-    <div class="mood-key"><div class="mood-scale" data-mood-scale="key"></div></div>
-
-    <h2>Letras</h2>
-    <div class="type-spec">
-      <span class="lbl">Fraunces suave 700 + itálica · títulos</span>
-      <div class="d1">Hola, <em>estrellita</em></div>
-      <span class="lbl">Fraunces suave 600 · secciones</span>
-      <div class="d2">Ritual de la luna</div>
-      <span class="lbl">Fraunces itálica · lo que escribís en el diario</span>
-      <div class="d3">Té, manta y Miso en los pies.</div>
-      <span class="lbl">Nunito · texto</span>
-      <div class="b1">Encendé una velita por cada hábito de hoy.</div>
-      <span class="lbl">DM Mono · horas y números</span>
-      <div class="m1">06:30 · 23/28 · 12 mañanas seguidas</div>
-    </div>
-
-    <h2>Piezas</h2>
-    <div class="components">
-      <button class="check" type="button" aria-pressed="true" aria-label="Ejemplo marcado" tabindex="-1"><svg><use href="#i-flower"/></svg></button>
-      <button class="check" type="button" aria-pressed="false" aria-label="Ejemplo vacío" tabindex="-1"><svg><use href="#i-flower"/></svg></button>
-      <svg class="candle lit" viewBox="0 0 24 40" style="width:20px;height:34px;overflow:visible" aria-hidden="true"><circle class="halo" cx="12" cy="10" r="9"/><path class="flame" d="M12 2c3 4 4 6 4 8a4 4 0 0 1-8 0c0-2 1-4 4-8z"/><line class="wick" x1="12" y1="13" x2="12" y2="16"/><rect class="wax" x="6" y="16" width="12" height="22" rx="3"/></svg>
-      <svg class="candle" viewBox="0 0 24 40" style="width:20px;height:34px;overflow:visible" aria-hidden="true"><circle class="halo" cx="12" cy="10" r="9"/><path class="flame" d="M12 2c3 4 4 6 4 8a4 4 0 0 1-8 0c0-2 1-4 4-8z"/><line class="wick" x1="12" y1="13" x2="12" y2="16"/><rect class="wax" x="6" y="16" width="12" height="22" rx="3"/></svg>
-      <span class="tag sun">Ahora</span><span class="tag moon">22:00</span><span class="tag alert">Vence hoy</span><span class="tag green">Listo</span>
-      <button class="choice" type="button" aria-pressed="true" tabindex="-1">Hoy</button><button class="choice" type="button" aria-pressed="false" tabindex="-1">Mañana</button>
+      <div class="neu principle"><svg><use href="#i-daisy"/></svg><b>Suave al tacto</b><p>Cada botón se hunde al tocarlo, como algo de verdad.</p></div>
+      <div class="neu principle"><svg><use href="#i-leaf"/></svg><b>Un toque y listo</b><p>Marcar, sumar un vaso o un tema no lleva más de un toque.</p></div>
+      <div class="neu principle"><svg><use href="#i-heart"/></svg><b>Sin culpa</b><p>Los días que no salen también cuentan. Mañana se reinicia.</p></div>
     </div>
   </aside>
 </div>
@@ -929,302 +670,138 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  const FLOWER = '<svg><use href="#i-flower"/></svg>';
-  const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const DAISY = '<svg><use href="#i-daisy"/></svg>';
+  const X = '<svg><use href="#i-x"/></svg>';
+  const uid = () => Math.random().toString(36).slice(2, 9);
 
-  /* ---------- Moon phases ---------- */
-  // phase 0 = luna nueva, .5 = luna llena
-  const SYNODIC = 29.530588853, REF = Date.UTC(2000, 0, 6, 18, 14);
-  const phaseOf = (y, m, d) => { const p = ((Date.UTC(y, m, d, 12) - REF) / 864e5 / SYNODIC) % 1; return p < 0 ? p + 1 : p; };
-  function moonSVG(p, litColor) {
-    const r = 10, cx = 12, cy = 12, k = Math.cos(2 * Math.PI * p), rx = Math.abs(k) * r;
-    const waxing = p < .5;
-    const outer = waxing ? 1 : 0, inner = waxing ? (k > 0 ? 0 : 1) : (k > 0 ? 1 : 0);
-    const lit = p < .02 || p > .98 ? '' : `<path d="M${cx} ${cy - r} A${r} ${r} 0 0 ${outer} ${cx} ${cy + r} A${rx.toFixed(2)} ${r} 0 0 ${inner} ${cx} ${cy - r}z" fill="${litColor}"/>`;
-    return `<circle class="moon-base" cx="${cx}" cy="${cy}" r="${r}"/>${lit}`;
+  /* ---------- Fechas ---------- */
+  const now = new Date();
+  const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  const DS = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  const todayIdx = (now.getDay() + 6) % 7;
+  const todayKey = now.toISOString().slice(0, 10);
+  const monday = new Date(now); monday.setDate(now.getDate() - todayIdx);
+  const weekKey = monday.toISOString().slice(0, 10);
+  const dateOf = i => { const d = new Date(monday); d.setDate(monday.getDate() + i); return d.getDate(); };
+
+  /* ---------- Datos de ejemplo ---------- */
+  const PLAN = [
+    ['Piernas y glúteos', '40 min', [['Sentadillas', '3 × 15'], ['Puente de glúteo', '3 × 12'], ['Zancadas', '3 × 10 c/p'], ['Peso muerto con mancuernas', '3 × 12'], ['Elevación de talones', '3 × 20']]],
+    ['Cardio suave', '35 min', [['Caminata rápida', '20 min'], ['Saltos de tijera', '3 × 40 s'], ['Escaladores', '3 × 30 s'], ['Estirar todo el cuerpo', '8 min']]],
+    ['Tren superior', '40 min', [['Flexiones (de rodillas vale)', '3 × 10'], ['Remo con mancuerna', '3 × 12'], ['Press de hombros', '3 × 12'], ['Fondos en silla', '3 × 10'], ['Plancha', '3 × 40 s']]],
+    ['Yoga y movilidad', '30 min', [['Saludo al sol', '× 5'], ['Gato-vaca', '2 min'], ['Postura de la paloma', '1 min c/l'], ['Torsión acostada', '1 min c/l'], ['Respiración lenta', '5 min']]],
+    ['Full body', '35 min', [['Burpees', '3 × 8'], ['Sentadilla con salto', '3 × 12'], ['Plancha lateral', '3 × 30 s c/l'], ['Abdominales bicicleta', '3 × 20'], ['Superman', '3 × 12']]],
+    ['Caminata o bici', '45 min', [['Caminata o bici al aire libre', '45 min'], ['Estirar piernas', '5 min']]],
+    ['Descanso activo', '20 min', [['Paseo tranquilo', '15 min'], ['Estirar y respirar', '5 min']]]
+  ];
+  const MEALS = [['08:00', 'Desayuno', 'Avena con banana y canela'], ['13:00', 'Almuerzo', 'Bowl de quinoa, pollo y verduras'], ['17:00', 'Merienda', 'Yogur con frutos rojos'], ['21:00', 'Cena', 'Tortilla de espinaca y ensalada']];
+  const TIP_CATS = [['todos', 'Todos'], ['fav', 'Favoritos'], ['ejercicio', 'Ejercicio'], ['comida', 'Comida'], ['sueno', 'Sueño'], ['estudio', 'Estudio'], ['closet', 'Closet'], ['mente', 'Mente']];
+  const TIPS = [
+    ['ejercicio', 'Calentá 5 minutos', 'Movilidad de cadera, hombros y tobillos antes de entrenar evita lesiones y rendís más.'],
+    ['ejercicio', 'Mejor seguido que intenso', 'Tres entrenos cortos por semana ganan siempre a uno larguísimo cada tanto.'],
+    ['ejercicio', 'Sumá de a poquito', 'Cuando 3 series te queden cómodas, agregá 2 repeticiones o un poco de peso.'],
+    ['comida', 'Agua antes que café', 'Un vaso de agua al despertar te hidrata después de toda la noche sin tomar nada.'],
+    ['comida', 'Medio plato de verdes', 'La mitad del plato con verduras, un cuarto proteína y un cuarto carbohidratos.'],
+    ['comida', 'Prepará el domingo', 'Cociná granos y verduras para 3 días: la semana se vuelve mucho más fácil.'],
+    ['sueno', 'Misma hora todos los días', 'Acostarte y levantarte a la misma hora, incluso el finde, ordena tu reloj interno.'],
+    ['sueno', 'Pantallas lejos', 'Dejá el celular 30 minutos antes de dormir. Probá leer o escribir en papel.'],
+    ['sueno', 'Cuarto fresco y oscuro', 'Entre 18 y 20 °C y bien oscuro: tu cuerpo duerme más profundo.'],
+    ['estudio', 'Pomodoro', '25 minutos de foco total y 5 de pausa. Cada 4, una pausa larga de 15.'],
+    ['estudio', 'Explicalo en voz alta', 'Si podés explicarle un tema a alguien (o a tu planta), es que lo entendiste.'],
+    ['estudio', 'Repasá espaciado', 'Repasá a los 1, 3 y 7 días: recordás mucho más que estudiando todo junto.'],
+    ['closet', 'Regla del 3', 'Un color base, uno neutro y uno de acento: el outfit siempre combina.'],
+    ['closet', 'Prepará la ropa de noche', 'Elegir el outfit la noche anterior te ahorra decisiones a la mañana.'],
+    ['mente', 'Tres cosas lindas', 'Antes de dormir anotá tres cosas lindas del día, por chiquitas que sean.'],
+    ['mente', 'Respiración 4-7-8', 'Inhalá 4 segundos, sostené 7 y exhalá 8. Repetilo 4 veces para calmarte.']
+  ];
+  const TIP_COLOR = { ejercicio: 'var(--rose)', comida: 'var(--sage)', sueno: 'var(--cream-ink)', estudio: 'var(--rose)', closet: 'var(--sand)', mente: 'var(--sage)' };
+  const G_CATS = [['top', 'Arriba'], ['bottom', 'Abajo'], ['dress', 'Vestidos'], ['coat', 'Abrigos'], ['shoes', 'Calzado'], ['acc', 'Accesorios']];
+  const COLORS = [['Crema', '#F3EADF'], ['Rosa', '#C9908F'], ['Salvia', '#9CAF98'], ['Blanco', '#FFFFFF'], ['Negro', '#3A3330'], ['Jean', '#6F87A6'], ['Camel', '#C49A6C'], ['Bordó', '#7A3B3F'], ['Gris', '#A7A19B']];
+  const G_PATH = {
+    top: '<path class="g-shape" d="M17 8l-9 5 3 8 5-2v21h16V19l5 2 3-8-9-5c-1 3-4 5-7 5s-6-2-7-5z"/>',
+    bottom: '<path class="g-shape" d="M14 6h20l2 36h-9l-3-23-3 23h-9z"/>',
+    dress: '<path class="g-shape" d="M19 5h10l-1 9 10 28H10l10-28z"/>',
+    coat: '<path class="g-shape" d="M17 6h14l9 6-1 30h-9V22h-12v20H9L8 12z"/><path class="g-shape" d="M24 9v33" fill="none"/>',
+    shoes: '<path class="g-shape" d="M5 34c0-7 2-13 4-15h8c1 4 5 7 12 8l8 2c3 1 5 3 5 6v3H5z"/>',
+    acc: '<path class="g-shape" d="M17 18c0-5 3-9 7-9s7 4 7 9" fill="none" stroke-width="2.6"/><path class="g-shape" d="M9 18h30l-3 22H12z"/>'
+  };
+  const garmentSVG = (cat, color) => `<svg viewBox="0 0 48 48" aria-hidden="true" style="fill:${color}">${G_PATH[cat]}</svg>`;
+
+  function defaults() {
+    return {
+      day: todayKey, week: weekKey,
+      checklist: [
+        { id: uid(), t: 'Tomar un vaso de agua al despertar', c: 'sage', done: true },
+        { id: uid(), t: 'Tender la cama', c: 'cream', done: true },
+        { id: uid(), t: 'Entrenar', c: 'rose', done: false },
+        { id: uid(), t: 'Estudiar 2 pomodoros', c: 'rose', done: false },
+        { id: uid(), t: 'Comer frutas y verduras', c: 'sage', done: false },
+        { id: uid(), t: 'Elegir el outfit de mañana', c: 'cream', done: false },
+        { id: uid(), t: 'Skincare de noche', c: 'rose', done: false },
+        { id: uid(), t: 'Celular lejos a las 23', c: 'sage', done: false }
+      ],
+      workoutDay: todayIdx, workoutDone: {},
+      water: 3, meals: [true, false, false, false], plate: { v: true, p: true, c: false },
+      groceries: [{ id: uid(), t: 'Espinaca', done: false }, { id: uid(), t: 'Avena', done: true }, { id: uid(), t: 'Huevos', done: false }, { id: uid(), t: 'Frutos rojos', done: false }],
+      sleep: { bed: '23:30', wake: '07:15', q: 4, week: [7.5, 6.2, 8.1, 6.8, 7.4, 8.6, 7.9] },
+      night: [['Preparar la ropa de mañana', false], ['Té de manzanilla', false], ['Skincare', false], ['Leer 15 minutos', false], ['Luces bajas y celular lejos', false]],
+      habits: [
+        { id: uid(), n: 'Meditar 10 min', c: 'sage', w: [1, 1, 0, 1, 1, 0, 0] },
+        { id: uid(), n: 'Leer 20 páginas', c: 'rose', w: [1, 1, 1, 1, 0, 0, 0] },
+        { id: uid(), n: 'Sin azúcar agregada', c: 'sage', w: [1, 0, 1, 1, 1, 0, 0] },
+        { id: uid(), n: 'Caminar 8.000 pasos', c: 'rose', w: [0, 1, 1, 0, 1, 0, 0] },
+        { id: uid(), n: 'Skincare', c: 'rose', w: [1, 1, 1, 1, 1, 0, 0] }
+      ],
+      favs: [3, 9],
+      closet: [
+        ['Remera básica', 'top', '#FFFFFF'], ['Blusa de lino', 'top', '#F3EADF'], ['Suéter tejido', 'top', '#C9908F'], ['Camisa salvia', 'top', '#9CAF98'],
+        ['Jean recto', 'bottom', '#6F87A6'], ['Pantalón sastrero', 'bottom', '#C49A6C'], ['Falda midi', 'bottom', '#3A3330'],
+        ['Vestido floreado', 'dress', '#C9908F'], ['Trench', 'coat', '#C49A6C'], ['Zapatillas blancas', 'shoes', '#FFFFFF'],
+        ['Mocasines', 'shoes', '#7A3B3F'], ['Cartera de cuero', 'acc', '#3A3330']
+      ].map(([n, cat, color]) => ({ id: uid(), n, cat, color })),
+      outfit: {},
+      study: {
+        day: todayKey, pomos: 0, minutes: 0,
+        subjects: [{ id: uid(), n: 'Inglés', d: 7, t: 12, c: 'rose' }, { id: uid(), n: 'Matemática', d: 4, t: 10, c: 'sage' }, { id: uid(), n: 'Diseño UX', d: 9, t: 14, c: 'sand' }, { id: uid(), n: 'Historia del arte', d: 2, t: 8, c: 'rose' }],
+        tasks: [{ id: uid(), t: 'Resumen del capítulo 3', done: false }, { id: uid(), t: 'Ejercicios de fracciones', done: true }, { id: uid(), t: 'Vocabulario: 20 palabras', done: false }]
+      }
+    };
   }
-  const phaseName = p => p < .03 || p > .97 ? 'luna nueva' : p < .22 ? 'luna creciente' : p < .28 ? 'cuarto creciente' : p < .47 ? 'creciente gibosa' : p < .53 ? 'luna llena' : p < .72 ? 'menguante gibosa' : p < .78 ? 'cuarto menguante' : 'luna menguante';
+  const KEY = 'mlos-v2';
+  let S;
+  try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+  if (!S || !S.checklist) S = defaults();
+  // nuevo día: se reinicia lo diario
+  if (S.day !== todayKey) {
+    S.day = todayKey; S.checklist.forEach(c => c.done = false); S.water = 0; S.meals = [false, false, false, false];
+    S.plate = { v: false, p: false, c: false }; S.workoutDone = {}; S.workoutDay = todayIdx; S.night.forEach(n => n[1] = false);
+    S.study.pomos = 0; S.study.minutes = 0; S.outfit = {};
+  }
+  if (S.week !== weekKey) { S.week = weekKey; S.habits.forEach(h => h.w = [0, 0, 0, 0, 0, 0, 0]); }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 
-  /* ---------- Data ---------- */
-  const routines = {
-    sun: { name: 'Ritual del amanecer', meta: '06:30 a 07:15 · 12 mañanas seguidas', steps: [
-      ['06:30', 'Agua tibia con limón', '1 min', true], ['06:32', 'Estirarse como Miso', '10 min', true], ['06:45', 'Abrir las cortinas y respirar', '5 min', true],
-      ['06:50', 'Té y desayuno sin pantalla', '15 min', false], ['07:05', 'Dar vuelta la carta del día', '2 min', false], ['07:07', 'Elegir 3 cosas para hoy', '8 min', false]] },
-    moon: { name: 'Ritual de la luna', meta: '22:00 a 22:40 · 4 noches seguidas', steps: [
-      ['22:00', 'Encender una vela', '1 min', false], ['22:01', 'Té de manzanilla', '5 min', false], ['22:06', 'Escribir en el diario', '10 min', false],
-      ['22:16', 'Leer bajo la manta', '20 min', false], ['22:36', 'Celular lejos, luces off', '4 min', false]] }
-  };
-  const todayTasks = [
-    { t: 'Regar las plantas', s: 'La monstera y los potus', tag: ['Casa', 'sage'], c: 'sage', done: true },
-    { t: 'Terminar el capítulo 4', s: 'Club de lectura el martes', tag: ['Vence martes', 'alert'], c: 'rose', done: false },
-    { t: 'Comprar comida de Miso', s: 'La de salmón', tag: ['Miso', 'lav'], c: 'lav', done: false },
-    { t: 'Caminata de 4 km', s: 'Constelación: correr 10 km', tag: ['Meta', 'peach'], c: 'peach', done: false }
-  ];
-  const habits = [
-    { n: 'Meditar', c: 'lav', s: '10 min', streak: 12, week: [1,1,1,1,1,1,0], today: false },
-    { n: 'Agüita', c: 'sky', s: '8 vasos', streak: 5, week: [0,1,1,1,1,1,0], today: false },
-    { n: 'Leer', c: 'rose', s: '20 págs', streak: 23, week: [1,1,1,1,1,1,1], today: true },
-    { n: 'Moverme', c: 'sage', s: '30 min', streak: 2, week: [1,0,1,0,1,1,0], today: false },
-    { n: 'Sin pantallas', c: 'peach', s: 'desde las 22', streak: 4, week: [0,0,1,1,1,1,0], today: false }
-  ];
-  const goals = [
-    { n: 'Leer 12 libros', unit: 'libros', total: 12, done: 9, note: 'Ahora: “La sombra del viento”, pág. 212. Te falta 1 para ir al ritmo del año.', seed: 1.1, c: 'lav' },
-    { n: 'Correr 10 km', unit: 'semanas', total: 10, done: 6, note: 'Vas al día. Próxima estrella: 5 km el martes.', seed: 2.7, c: 'peach' },
-    { n: 'Viaje a Bariloche', unit: 'partes', total: 8, done: 5, note: '$500.000 de $800.000 ahorrados. Cada estrella son $100.000.', seed: 4.2, c: 'sky' }
-  ];
-  const moods = [ ['Tormenta', .06, '--m1'], ['Niebla', .15, '--m2'], ['Calma', .25, '--m3'], ['Brillo', .38, '--m4'], ['Luna llena', .5, '--m5'] ];
-  const agenda = {
-    1: [ ['06:30', 'Ritual del amanecer', '6 pasos · 45 min', 'sun'], ['09:00', 'Caminata por el bosque', 'Parque Saavedra', 'sage'], ['11:00', 'Llamar a la abuela', 'Recordatorio', 'alert'],
-         ['17:00', 'Tarde de té y capítulo 4', '2 h para mí', 'peach'], ['22:00', 'Ritual de la luna', '5 pasos · 40 min', 'moon'] ],
-    3: [ ['19:30', 'Club de lectura', 'En la librería de siempre', 'moon'] ],
-    5: [ ['12:00', 'Pagar la tarjeta', 'Vence hoy', 'alert'] ],
-    7: [ ['11:00', 'Feria de plantas', 'Llevar bolsa de tela', 'sage'] ],
-    10: [ ['15:00', 'Turno con la dentista', 'Dra. Ruiz', 'alert'] ],
-    14: [ ['20:00', 'Noche de pelis de terror', 'Con Juli y Tomi', 'moon'] ],
-    21: [ ['10:00', 'Brunch de cumple de Juli', 'Comprar velas aromáticas de regalo', 'rose'] ]
-  };
-  const entries = [
-    [3, 'Sábado 31 oct', 'Familia · Descanso', 'Halloween tranqui: sopa de calabaza y película vieja. Miso se asustó de su propia sombra.'],
-    [1, 'Viernes 30 oct', 'Trabajo · Sueño', 'Día largo, poca energía. Me acosté tarde y lo sentí.'],
-    [4, 'Jueves 29 oct', 'Movimiento · Logro', 'Corrí 5 km sin parar por primera vez. Encendí una estrella nueva.'],
-  ];
-
-  /* ---------- Navigation ---------- */
-  const tabFor = { hoy: 'hoy', rutinas: 'hoy', agenda: 'agenda', habitos: 'habitos', progreso: 'progreso', diario: 'diario' };
+  /* ---------- Navegación ---------- */
+  const tabFor = { hoy: 'hoy', ejercicio: 'ejercicio', comida: 'comida', sueno: 'sueno', mas: 'mas', habitos: 'mas', tips: 'mas', closet: 'mas', aprender: 'mas' };
   function go(view) {
-    if (!view) return;
     $$('.view').forEach(v => v.hidden = v.dataset.view !== view);
     $$('#tabbar button').forEach(b => b.setAttribute('aria-current', b.dataset.go === tabFor[view]));
     $$('#screenIndex button').forEach(b => b.setAttribute('aria-current', b.dataset.go === view));
-    $('#fab').hidden = !(view === 'hoy' || view === 'agenda');
     $('#views').scrollTop = 0;
   }
   document.addEventListener('click', e => {
-    const g = e.target.closest('[data-go]');
-    if (!g) return;
-    if (g.dataset.routine) setRoutine(g.dataset.routine);
+    const g = e.target.closest('[data-go]'); if (!g) return;
     go(g.dataset.go);
-    if (g.closest('#screenIndex') && window.innerWidth < 760) $('.phone').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (g.closest('#screenIndex') && innerWidth < 760) $('.phone').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
   function toast(msg) {
-    const t = $('#toast'); t.textContent = msg; t.hidden = false;
-    clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 2000);
+    const t = $('#toast'); t.innerHTML = DAISY + '<span>' + esc(msg) + '</span>'; t.hidden = false;
+    clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 2200);
   }
-
-  /* ---------- Today header ---------- */
-  const todayP = phaseOf(2026, 10, 1);
-  $('#todayMoon').innerHTML = moonSVG(todayP, 'var(--candle)');
-  $('#todayLabel').textContent = `Domingo 1 de noviembre · ${phaseName(todayP)}`;
-  const catLines = ['miau. tomá agüita', 'la luna está menguando: buen momento para soltar', 'prr… ¿un té?', 'te quiero (dame comida)', 'encendé una velita y yo te miro'];
-  let catI = 0;
-  $('.cat').addEventListener('click', () => {
-    catI = (catI + 1) % catLines.length; $('#catSays').textContent = catLines[catI];
-    const c = $('.cat'); c.classList.remove('hop'); void c.getBoundingClientRect(); c.classList.add('hop');
-    burst(c, 7, ['i-heart']);
-  });
-
-  /* ---------- Day arc ---------- */
-  (function arc() {
-    const start = 6.5, end = 23, now = 8.2;
-    const pt = h => { const t = (h - start) / (end - start), a = Math.PI * (1 - t); return [160 + 140 * Math.cos(a), 118 - 100 * Math.sin(a)]; };
-    const [x, y] = pt(now);
-    ['#sunDot', '#sunHalo'].forEach(s => { $(s).setAttribute('cx', x.toFixed(1)); $(s).setAttribute('cy', y.toFixed(1)); });
-    $('#arcDone').setAttribute('d', `M20 118 A140 100 0 0 1 ${x.toFixed(1)} ${y.toFixed(1)}`);
-    const ev = [[9, 'var(--candle)'], [11, 'var(--alert)'], [17, 'var(--accent)'], [22, 'var(--moon)']];
-    $('#arcEvents').innerHTML = ev.map(([h, c]) => { const [ex, ey] = pt(h); return `<circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="4.5" fill="${c}"/>`; }).join('');
-    const stars = [[232, 20, 7], [262, 44, 5], [214, 46, 4], [300, 70, 5], [246, 70, 4]];
-    $('#arcStars').innerHTML = stars.map(([sx, sy, s]) => `<use href="#i-spark" class="twinkle" x="${sx - s / 2}" y="${sy - s / 2}" width="${s}" height="${s}" style="color:var(--moon)"/>`).join('')
-      + `<g transform="translate(280 6) scale(.9)">${moonSVG(todayP, 'var(--moon)')}</g>`;
-  })();
-
-  /* ---------- Tarot ---------- */
-  $('#tarot').addEventListener('click', () => {
-    const t = $('#tarot'), open = t.getAttribute('aria-pressed') !== 'true';
-    t.setAttribute('aria-pressed', open); if (open) burst(t, 14, ['i-star', 'i-spark']);
-    $('#tarotCopy').innerHTML = open
-      ? '<span class="eyebrow">Carta del día · XVII</span><b>La Estrella</b><p>Esperanza y calma después de una semana movida. Intención: ir despacio y confiar.</p>'
-      : '<span class="eyebrow">Carta del día</span><b>Tocala para darla vuelta</b><p>Una carta por día, para elegir una intención.</p>';
-  });
-
-  /* ---------- Routines ---------- */
-  let routineKey = 'sun';
-  function setRoutine(k) { routineKey = k; renderRoutine(); }
-  const routineProgress = k => { const s = routines[k].steps; return [s.filter(x => x[3]).length, s.length]; };
-  function renderRoutine() {
-    const r = routines[routineKey], [d, n] = routineProgress(routineKey);
-    $$('[data-routine-tab]').forEach(b => b.setAttribute('aria-pressed', b.dataset.routineTab === routineKey));
-    $('#routineHero').className = `routine-hero ${routineKey}`;
-    $('#routineName').textContent = r.name; $('#routineMeta').textContent = r.meta;
-    $('#ringFg').setAttribute('stroke-dashoffset', (201.06 * (1 - d / n)).toFixed(1));
-    $('#ringTxt').textContent = `${Math.round(d / n * 100)}%`;
-    const box = $('#steps'); box.className = `steps ${routineKey}-steps`;
-    box.innerHTML = r.steps.map((s, i) => `<div class="step${s[3] ? ' done' : ''}"><span class="time">${s[0]}</span><span class="txt"><b>${s[1]}</b><small>${s[2]}</small></span><button class="check" type="button" data-step="${i}" aria-pressed="${s[3]}" aria-label="Completar ${s[1]}">${FLOWER}</button></div>`).join('');
-    ['sun', 'moon'].forEach(k => { const [dd, nn] = routineProgress(k); $(`[data-count="${k}"]`).textContent = `${dd}/${nn}`; $(`[data-meter="${k}"]`).style.width = `${dd / nn * 100}%`; });
-    updateDay();
-  }
-  $('#steps').addEventListener('click', e => {
-    const b = e.target.closest('[data-step]'); if (!b) return;
-    const s = routines[routineKey].steps[b.dataset.step]; s[3] = !s[3]; if (s[3]) burst(b, 8); renderRoutine();
-    if (s[3] && routineProgress(routineKey)[0] === routineProgress(routineKey)[1]) burst($('#routineHero'), 24);
-    const [d, n] = routineProgress(routineKey); if (d === n) toast(routineKey === 'sun' ? 'Ritual del amanecer completo. ¡Buen día!' : 'Ritual de la luna completo. Dulces sueños');
-  });
-  $$('[data-routine-tab]').forEach(b => b.addEventListener('click', () => setRoutine(b.dataset.routineTab)));
-
-  /* ---------- Tasks ---------- */
-  function renderTasks() {
-    $('#todayTasks').innerHTML = todayTasks.map((t, i) => `<div class="row${t.done ? ' done' : ''}" style="--c:var(--${t.c})"><button class="check" type="button" data-task="${i}" aria-pressed="${t.done}" aria-label="Completar ${esc(t.t)}">${FLOWER}</button><span class="txt"><b>${esc(t.t)}</b><small>${esc(t.s)}</small></span><span class="tag ${t.tag[1]}">${esc(t.tag[0])}</span></div>`).join('');
-    $('#taskCount').textContent = `${todayTasks.filter(t => t.done).length}/${todayTasks.length}`;
-    updateDay();
-  }
-  $('#todayTasks').addEventListener('click', e => {
-    const b = e.target.closest('[data-task]'); if (!b) return;
-    const t = todayTasks[b.dataset.task]; t.done = !t.done; if (t.done) burst(b, 9); renderTasks(); if (t.done) toast('Una florcita más');
-  });
-
-  /* ---------- Habits (candles) ---------- */
-  const candleSVG = (lit, cls = '') => `<svg class="candle ${lit ? 'lit' : ''} ${cls}" viewBox="0 0 24 40" aria-hidden="true"><circle class="halo" cx="12" cy="10" r="9"/><path class="flame" d="M12 2c3 4 4 6 4 8a4 4 0 0 1-8 0c0-2 1-4 4-8z"/><line class="wick" x1="12" y1="13" x2="12" y2="16"/><rect class="wax" x="6" y="16" width="12" height="22" rx="3"/></svg>`;
-  const streakOf = h => h.today && !h.week[6] ? h.streak + 1 : h.streak;
-  const DOW = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
-  function renderHabits() {
-    $('#habitChips').innerHTML = habits.map((h, i) => `<button class="habit-chip" type="button" data-habit="${i}" aria-pressed="${h.today}" style="${hv(h)}">${candleSVG(h.today, 'mini-candle')}<span><b>${h.n}</b><small>${h.today ? 'encendida' : h.s}</small></span></button>`).join('');
-    $('#candles').innerHTML = habits.map((h, i) => `<button class="candle-btn" type="button" style="${hv(h)}" data-habit="${i}" aria-pressed="${h.today}" aria-label="${h.today ? 'Apagar' : 'Encender'} ${h.n}">${candleSVG(h.today)}<span>${h.n}</span><small>${streakOf(h)} días</small></button>`).join('');
-    $('#habitWeek').innerHTML = `<div class="hw-row head"><span></span>${DOW.map(d => `<span>${d}</span>`).join('')}</div>` +
-      habits.map(h => `<div class="hw-row" style="${hv(h)}"><b>${h.n}</b>${h.week.slice(0, 6).concat(h.today ? 1 : 0).map(o => `<i class="${o ? 'on' : ''}"></i>`).join('')}</div>`).join('');
-    updateDay();
-  }
-  document.addEventListener('click', e => {
-    const b = e.target.closest('[data-habit]'); if (!b) return;
-    const h = habits[b.dataset.habit]; h.today = !h.today; if (h.today) burst(b, 10, ['i-flower', 'i-spark']); renderHabits();
-    if (h.today) toast(`Velita de ${h.n.toLowerCase()} encendida · ${streakOf(h)} días`);
-  });
-
-  /* ---------- Goals (constellations) ---------- */
-  function renderGoals() {
-    $('#goals').innerHTML = goals.map(g => {
-      const W = 300, H = 74, pts = Array.from({ length: g.total }, (_, i) => [16 + i * ((W - 32) / (g.total - 1)), 37 + Math.sin(i * 1.9 + g.seed) * 20 + Math.cos(i * .7 + g.seed) * 6]);
-      let s = '';
-      for (let i = 1; i < pts.length; i++) s += `<line class="ln${i < g.done ? ' on' : ''}" x1="${pts[i - 1][0].toFixed(1)}" y1="${pts[i - 1][1].toFixed(1)}" x2="${pts[i][0].toFixed(1)}" y2="${pts[i][1].toFixed(1)}"/>`;
-      pts.forEach(([x, y], i) => {
-        if (i < g.done) s += `<use href="#i-star" class="st on" x="${(x - 7).toFixed(1)}" y="${(y - 7).toFixed(1)}" width="14" height="14" style="color:var(--c)"/>`;
-        else s += `<circle class="st${i === g.done ? ' next' : ''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${i === g.done ? 5 : 2.5}"/>`;
-      });
-      return `<div class="goal" style="--c:var(--${g.c});--cs:var(--${g.c}-soft)"><div class="goal-top"><b>${g.n}</b><span class="num">${g.done}/${g.total} ${g.unit}</span></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${g.n}: ${g.done} de ${g.total} estrellas encendidas">${s}</svg><small>${g.note}</small></div>`;
-    }).join('');
-  }
-
-  /* ---------- Mood ---------- */
-  let mood = null;
-  const moodIcon = i => `<svg viewBox="0 0 24 24" aria-hidden="true">${moonSVG(moods[i][1], `var(${moods[i][2]})`)}</svg>`;
-  function renderMoodScales() {
-    $$('[data-mood-scale]').forEach(el => {
-      const key = el.dataset.moodScale === 'key';
-      el.innerHTML = moods.map(([label], i) => `<button type="button" data-mood="${i}" aria-pressed="${!key && mood === i}" ${key ? 'tabindex="-1"' : ''}>${moodIcon(i)}${label}</button>`).join('');
-    });
-  }
-  document.addEventListener('click', e => {
-    const b = e.target.closest('[data-mood]'); if (!b || b.closest('[data-mood-scale="key"]')) return;
-    burst(b, 8, ['i-heart', 'i-flower']); mood = +b.dataset.mood; renderMoodScales(); renderMoodWeek(); moodReact();
-    if (b.closest('[data-mood-scale="quick"]')) toast(`Tu luna de hoy: ${moods[mood][0]}`);
-  });
-  const moodTags = ['Sueño', 'Trabajo', 'Familia', 'Amigos', 'Movimiento', 'Salud', 'Miso', 'Descanso'];
-  $('#moodTags').innerHTML = moodTags.map((t, i) => `<button type="button" class="choice" aria-pressed="${i === 0 || i === 6}">${t}</button>`).join('');
-  document.addEventListener('click', e => {
-    const c = e.target.closest('.choice'); if (!c || c.closest('.components')) return;
-    const row = c.closest('#whenChoices, #remindChoices');
-    if (row) $$('.choice', row).forEach(x => x.setAttribute('aria-pressed', x === c));
-    else c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') !== 'true');
-  });
-  function renderEntries() {
-    $('#entries').innerHTML = entries.map(([m, d, tags, txt]) => `<div class="entry">${moodIcon(m)}<div class="meta"><b>${d}</b><span>${moods[m][0]} · ${tags}</span></div><p>${esc(txt)}</p></div>`).join('');
-  }
-  $('#saveEntry').addEventListener('click', () => {
-    if (mood === null) { toast('Primero elegí tu luna de hoy'); return; }
-    const tags = $$('#moodTags .choice[aria-pressed="true"]').map(c => c.textContent).join(' · ') || 'Sin etiquetas';
-    const txt = $('#journalText').value.trim() || 'Hoy sin palabras.';
-    if (entries[0][1].startsWith('Hoy')) entries.shift();
-    entries.unshift([mood, 'Hoy, 08:12', tags, txt]);
-    burst($('#saveEntry'), 16); renderEntries(); toast('Guardado. Miso no lo va a leer');
-  });
-
-  /* ---------- Crystal ball ---------- */
-  (function bars() {
-    const cols = ['--rose', '--peach', '--butter', '--sage', '--sky', '--lav', '--rose'];
-    const vals = [72, 85, 64, 90, 78, 55, 81], days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-    const L = 30, R = 312, T = 16, B = 126, h = v => B - (v / 100) * (B - T), bw = 24, step = (R - L) / 7;
-    let s = '';
-    [0, 50, 100].forEach(v => { s += `<line class="grid" x1="${L}" x2="${R}" y1="${h(v)}" y2="${h(v)}"/><text class="lbl" x="${L - 6}" y="${h(v) + 3}" text-anchor="end">${v}</text>`; });
-    vals.forEach((v, i) => {
-      const x = L + step * i + (step - bw) / 2;
-      s += `<rect class="bar-r" style="fill:var(${cols[i]})" x="${x}" y="${h(v)}" width="${bw}" height="${B - h(v)}" rx="12"/>`;
-      s += `<text class="val" x="${x + bw / 2}" y="${h(v) - 5}">${v}</text>`;
-      s += `<text class="lbl" x="${x + bw / 2}" y="${B + 16}" text-anchor="middle">${days[i]}</text>`;
-    });
-    $('#barChart').innerHTML = s;
-  })();
-  function renderMoodWeek() {
-    const wk = [3, 3, 2, 4, 1, 3, mood];
-    $('#moodWeek').innerHTML = wk.map((m, i) => `<span>${m === null ? '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="3 3"/></svg>' : moodIcon(m)}${DOW[i]}</span>`).join('');
-  }
-  (function sky() {
-    let seed = 7, out = '';
-    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-    for (let i = 0; i < 84; i++) { const r = rnd() + i / 84 * .6; out += `<i class="${r > 1.15 ? 'l3' : r > .85 ? 'l2' : r > .5 ? 'l1' : ''}"></i>`; }
-    $('#sky').innerHTML = out;
-  })();
-
-  /* ---------- Agenda ---------- */
-  let selDay = 1;
-  const keyPhases = [];
-  function renderMonth() {
-    let s = DOW.map(d => `<span class="dow">${d}</span>`).join('') + '<span></span>'.repeat(6); // 1 Nov 2026 is a Sunday
-    keyPhases.length = 0;
-    for (let d = 1; d <= 30; d++) {
-      const p = phaseOf(2026, 10, d), prev = phaseOf(2026, 10, d - 1);
-      const marks = [0, .25, .5, .75].filter(t => (t === 0 ? (prev > p) : (prev < t && p >= t)));
-      const show = marks.length > 0;
-      if (show) keyPhases.push([d, marks[0]]);
-      const ev = agenda[d] || [];
-      const dots = ev.slice(0, 3).map(e => `<i style="background:${DOTC[e[3]] || 'var(--accent)'}"></i>`).join('');
-      s += `<button type="button" class="day${d === 1 ? ' today' : ''}" data-day="${d}" aria-pressed="${d === selDay}" aria-label="${d} de noviembre${show ? ', ' + phaseName(marks[0]) : ''}">${d}<svg class="ph${show ? '' : ' none'}" viewBox="0 0 24 24">${show ? moonSVG(marks[0], 'var(--candle)') : ''}</svg><span class="dots">${dots}</span></button>`;
-    }
-    $('#monthGrid').innerHTML = s;
-    const names = { 0: 'Nueva', .25: 'Creciente', .5: 'Llena', .75: 'Menguante' };
-    $('#moonLegend').innerHTML = keyPhases.map(([d, t]) => `<span><svg viewBox="0 0 24 24">${moonSVG(t, 'var(--candle)')}</svg>${names[t]} ${d}</span>`).join('');
-  }
-  const DAYNAMES = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-  function renderDay() {
-    const ev = agenda[selDay] || [];
-    const kp = keyPhases.find(k => k[0] === selDay);
-    $('#dayTitle').textContent = `${DAYNAMES[(selDay - 1) % 7]} ${selDay}${selDay === 1 ? ' · hoy' : ''}`;
-    $('#dayCount').textContent = ev.length ? `${ev.length} ${ev.length === 1 ? 'cosa' : 'cosas'}` : 'libre';
-    const phaseEvent = { 0: 'Luna nueva · escribir intenciones', .25: 'Cuarto creciente · darle impulso a algo', .5: 'Luna llena · ritual de soltar', .75: 'Cuarto menguante · ordenar y descansar' };
-    let html = kp ? `<div class="slot"><span class="t">noche</span><div class="event moon"><span><b>${phaseEvent[kp[1]]}</b><small>Fase de la luna</small></span></div></div>` : '';
-    html += ev.map(([t, n, s, c]) => `<div class="slot"><span class="t">${t}</span><div class="event ${c}"><span><b>${esc(n)}</b><small>${esc(s)}</small></span></div></div>`).join('');
-    $('#timeline').innerHTML = html || '<div class="empty">Día libre. Ideal para no hacer nada con Miso. Tocá + si querés sumar algo.</div>';
-  }
-  $('#monthGrid').addEventListener('click', e => { const b = e.target.closest('[data-day]'); if (!b) return; selDay = +b.dataset.day; renderMonth(); renderDay(); });
-
-  /* ---------- Add task sheet ---------- */
-  $('#fab').addEventListener('click', () => { $('#sheet').hidden = false; setTimeout(() => $('#taskTitle').focus(), 50); });
-  $('#cancelSheet').addEventListener('click', () => $('#sheet').hidden = true);
-  $('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') $('#sheet').hidden = true; });
-  $('#taskForm').addEventListener('submit', e => {
-    e.preventDefault();
-    const title = $('#taskTitle').value.trim(); if (!title) return;
-    const when = $('#whenChoices [aria-pressed="true"]').textContent;
-    const remind = $('#remindChoices [aria-pressed="true"]').textContent;
-    if (when === 'Hoy') { todayTasks.push({ t: title, s: remind === 'No' ? 'Sin aviso' : `Miso avisa: ${remind}`, tag: ['Nuevo', 'sky'], c: 'sky', done: false }); renderTasks(); (agenda[1] = agenda[1] || []).push(['--:--', title, 'Pendiente nuevo', '']); }
-    else { const d = when === 'Mañana' ? 2 : 4; (agenda[d] = agenda[d] || []).push(['--:--', title, 'Pendiente nuevo', '']); }
-    renderMonth(); renderDay();
-    $('#taskTitle').value = ''; $('#sheet').hidden = true; toast(`Anotado para ${when.toLowerCase()}`);
-  });
-
-  /* ---------- Colores, reacciones y progreso del día ---------- */
-  const hv = h => `--c:var(--${h.c});--cs:var(--${h.c}-soft)`;
-  const DOTC = { sun: 'var(--butter)', moon: 'var(--lav)', alert: 'var(--alert)', rose: 'var(--rose)', sage: 'var(--sage)', peach: 'var(--peach)', sky: 'var(--sky)' };
-  const PASTELS = ['--rose', '--butter', '--lav', '--sage', '--sky', '--peach'];
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function burst(target, n = 10, shapes = ['i-flower', 'i-star', 'i-heart']) {
+  const PCOL = ['var(--rose)', 'var(--sage)', 'var(--sand)'];
+  function burst(target, n = 9) {
     if (calm || !target) return;
     const app = $('#app'), z = parseFloat($('#phoneWrap').style.zoom) || 1;
     const a = app.getBoundingClientRect(), r = target.getBoundingClientRect();
@@ -1232,89 +809,348 @@ h1, h2, h3 { font-family: var(--display); font-variation-settings: "SOFT" 100; t
     for (let i = 0; i < n; i++) {
       const el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       el.setAttribute('class', 'particle');
-      el.innerHTML = `<use href="#${shapes[i % shapes.length]}"/>`;
-      el.style.left = x + 'px'; el.style.top = y + 'px';
-      el.style.color = `var(${PASTELS[(i + Math.floor(Math.random() * 6)) % 6]})`;
+      el.innerHTML = `<use href="#${i % 3 === 2 ? 'i-heart' : 'i-daisy'}"/>`;
+      el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.color = PCOL[i % 3];
       app.appendChild(el);
-      const ang = Math.random() * Math.PI * 2, d = 36 + Math.random() * 54, sc = .6 + Math.random() * .7;
+      const ang = Math.random() * Math.PI * 2, d = 30 + Math.random() * 50;
       el.animate([
         { transform: 'translate(-50%, -50%) scale(.2)', opacity: 1 },
-        { transform: `translate(calc(-50% + ${Math.cos(ang) * d}px), calc(-50% + ${Math.sin(ang) * d - 20}px)) rotate(${Math.random() * 240 - 120}deg) scale(${sc})`, opacity: 0 }
-      ], { duration: 700 + Math.random() * 500, easing: 'cubic-bezier(.2, .8, .3, 1)' }).onfinish = () => el.remove();
+        { transform: `translate(calc(-50% + ${Math.cos(ang) * d}px), calc(-50% + ${Math.sin(ang) * d - 18}px)) rotate(${Math.random() * 200 - 100}deg) scale(${.6 + Math.random() * .6})`, opacity: 0 }
+      ], { duration: 700 + Math.random() * 400, easing: 'cubic-bezier(.2,.8,.3,1)' }).onfinish = () => el.remove();
     }
   }
-  const moodSoft = ['--lav-soft', '--sky-soft', '--sage-soft', '--peach-soft', '--butter-soft'];
-  const moodCat = ['vení, abrazo de gato', 'te traigo una mantita', 'todo tranqui, prr', '¡qué lindo verte así!', '¡brillás más que la luna!'];
-  function moodReact() {
-    $('.mood-prompt').style.background = `linear-gradient(150deg, var(${moodSoft[mood]}), var(--surface))`;
-    $('#catSays').textContent = moodCat[mood];
-  }
+  const DOT = { rose: 'var(--rose)', sage: 'var(--sage)', cream: 'var(--sand)', sand: 'var(--sand)' };
+  const itemHTML = (o, kind, extra = '') => `<div class="item${o.done ? ' done' : ''}">
+      <button class="check" type="button" data-toggle="${kind}" data-id="${o.id}" aria-pressed="${!!o.done}" aria-label="Marcar ${esc(o.t)}">${DAISY}</button>
+      <div class="txt"><b>${esc(o.t)}</b>${extra}</div>
+      ${o.c ? `<i class="dot" style="background:${DOT[o.c]}"></i>` : ''}
+      <button class="del" type="button" data-del="${kind}" data-id="${o.id}" aria-label="Borrar ${esc(o.t)}">${X}</button></div>`;
+  const lists = { cl: () => S.checklist, gr: () => S.groceries, st: () => S.study.tasks };
 
-  let water = 3;
-  const DROP = '<svg viewBox="0 0 24 30" aria-hidden="true"><path d="M12 2C12 2 4 12 4 19a8 8 0 0 0 16 0C20 12 12 2 12 2z"/></svg>';
-  function renderWater() {
-    $('#drops').innerHTML = Array.from({ length: 8 }, (_, i) => `<button type="button" class="drop${i < water ? ' on' : ''}" data-drop="${i}" aria-label="Vaso ${i + 1}">${DROP}</button>`).join('');
-    $('#waterCount').textContent = `${water}/8 vasos`;
-  }
-  $('#drops').addEventListener('click', e => {
-    const b = e.target.closest('[data-drop]'); if (!b) return;
-    const i = +b.dataset.drop; const prev = water;
-    water = i + 1 === water ? i : i + 1;
-    if (water > prev) burst(b, 5, ['i-spark', 'i-heart']);
-    renderWater();
-    const agua = habits.find(h => h.n === 'Agüita');
-    if (water === 8 && !agua.today) { agua.today = true; renderHabits(); burst($('#drops'), 18); toast('¡8 vasos! Velita de agüita encendida'); }
-  });
+  /* ---------- Hoy ---------- */
+  const h = now.getHours();
+  $('#greet').innerHTML = (h < 12 ? 'Buen día' : h < 20 ? 'Buenas tardes' : 'Buenas noches') + ', <span>linda</span>';
+  $('#todayLabel').textContent = `${DAYS[todayIdx]} ${now.getDate()} de ${MONTHS[now.getMonth()]}`;
+  $('#clock').textContent = `${h}:${String(now.getMinutes()).padStart(2, '0')}`;
+  const tipOfDay = TIPS[(now.getDate() + now.getMonth() * 31) % TIPS.length];
+  $('#tipDayT').textContent = tipOfDay[1]; $('#tipDayP').textContent = tipOfDay[2];
 
-  let wasFull = false;
-  function updateDay() {
-    if (!$('#ringT')) return;
-    const steps = [...routines.sun.steps, ...routines.moon.steps];
-    const parts = [
-      ['ringT', 'lgT', todayTasks.filter(t => t.done).length, todayTasks.length, 38],
-      ['ringH', 'lgH', habits.filter(h => h.today).length, habits.length, 28],
-      ['ringR', 'lgR', steps.filter(st => st[3]).length, steps.length, 18]
-    ];
-    let sum = 0;
-    parts.forEach(([ring, lg, d, n, r]) => {
-      const C = 2 * Math.PI * r, f = n ? d / n : 0; sum += f;
-      const el = $('#' + ring); el.style.strokeDasharray = C.toFixed(1); el.style.strokeDashoffset = (C * (1 - f)).toFixed(1);
-      $('#' + lg).textContent = `${d}/${n}`;
-    });
-    const pct = Math.round(sum / 3 * 100);
+  let wasFull = null;
+  function renderChecklist() {
+    $('#checklist').innerHTML = S.checklist.map(o => itemHTML(o, 'cl')).join('');
+    const d = S.checklist.filter(c => c.done).length, n = S.checklist.length, f = n ? d / n : 0, pct = Math.round(f * 100);
+    const C = 2 * Math.PI * 38, ring = $('#dayRing');
+    ring.style.strokeDasharray = C.toFixed(1); ring.style.strokeDashoffset = (C * (1 - f)).toFixed(1);
     $('#dayPct').textContent = pct + '%';
-    $('#dayMsg').textContent = pct >= 100 ? '¡día completo!' : pct >= 75 ? 'ya casi, estrellita' : pct >= 50 ? '¡vas re bien!' : pct >= 25 ? 'vas arrancando' : 'recién empieza';
-    if (pct >= 100 && !wasFull) { burst($('.rings'), 28); toast('¡Completaste tu día! Miso está orgulloso'); }
+    $('#dayCount').textContent = `${d} de ${n} listas`;
+    $('#clCount').textContent = `${d}/${n}`;
+    $('#dayMsg').textContent = pct >= 100 ? '¡Día completo!' : pct >= 75 ? 'Ya casi' : pct >= 50 ? 'Vas muy bien' : pct >= 25 ? 'Arrancando' : 'Recién empieza';
+    if (wasFull === false && pct >= 100) { burst($('.ring-wrap'), 22); toast('¡Completaste tu checklist!'); }
     wasFull = pct >= 100;
   }
 
-  /* ---------- Modo celular ---------- */
+  function renderTiles() {
+    const p = PLAN[todayIdx], dn = p[2].filter((_, i) => S.workoutDone[todayIdx + '-' + i]).length;
+    $('#tWork').textContent = p[0]; $('#tWorkS').textContent = `${dn}/${p[2].length} ejercicios`;
+    $('#tWater').textContent = `${S.water}/8 vasos`; $('#tWaterS').textContent = `${S.meals.filter(Boolean).length}/4 comidas`;
+    const m = sleepMinutes(); $('#tSleep').textContent = fmtH(m); $('#tSleepS').textContent = 'dormiste anoche';
+    $('#tStudy').textContent = `${S.study.minutes} min`;
+    $('#mHab').textContent = `${S.habits.length} hábitos`; $('#mClo').textContent = `${S.closet.length} prendas`; $('#mTip').textContent = `${TIPS.length} tips · ${S.favs.length} favoritos`;
+  }
+
+  /* ---------- Ejercicio ---------- */
+  function renderWorkout() {
+    const d = S.workoutDay, p = PLAN[d];
+    $('#weekDays').innerHTML = DS.map((l, i) => `<button class="wd press${i === todayIdx ? ' today' : ''}" type="button" data-wd="${i}" aria-pressed="${i === d}" aria-label="${DAYS[i]}">${l}<span class="num">${dateOf(i)}</span></button>`).join('');
+    $('#wkDay').textContent = DAYS[d] + (d === todayIdx ? ' · hoy' : '');
+    $('#wkName').textContent = p[0];
+    const dn = p[2].filter((_, i) => S.workoutDone[d + '-' + i]).length;
+    $('#wkMeta').textContent = `${dn} de ${p[2].length} ejercicios · ${p[1]}`;
+    $('#exercises').innerHTML = p[2].map(([n, s], i) => { const done = !!S.workoutDone[d + '-' + i]; return `<div class="item ex${done ? ' done' : ''}">
+      <button class="check rose" type="button" data-ex="${i}" aria-pressed="${done}" aria-label="Marcar ${esc(n)}">${DAISY}</button>
+      <div class="txt"><b>${esc(n)}</b></div><span class="sets">${s}</span></div>`; }).join('');
+  }
+  $('#weekDays').addEventListener('click', e => { const b = e.target.closest('[data-wd]'); if (!b) return; S.workoutDay = +b.dataset.wd; save(); renderWorkout(); });
+  $('#exercises').addEventListener('click', e => {
+    const b = e.target.closest('[data-ex]'); if (!b) return;
+    const k = S.workoutDay + '-' + b.dataset.ex; S.workoutDone[k] = !S.workoutDone[k];
+    if (S.workoutDone[k]) burst(b, 6);
+    const p = PLAN[S.workoutDay];
+    if (p[2].every((_, i) => S.workoutDone[S.workoutDay + '-' + i])) { toast('¡Rutina terminada! Tomá agua'); burst($('#wkName'), 18); }
+    save(); renderWorkout(); renderTiles();
+  });
+  let rest = null, restLeft = 60;
+  const RC = 2 * Math.PI * 25;
+  function drawRest() {
+    $('#restTime').textContent = restLeft;
+    const r = $('#restRing'); r.style.strokeDasharray = RC.toFixed(1); r.style.strokeDashoffset = (RC * (1 - restLeft / 60)).toFixed(1);
+  }
+  $('#restBtn').addEventListener('click', () => {
+    if (rest) { clearInterval(rest); rest = null; restLeft = 60; drawRest(); $('#restMsg').textContent = 'Tocá para contar 60 segundos'; $('#restBtn').innerHTML = '<svg><use href="#i-play"/></svg>'; return; }
+    $('#restMsg').textContent = 'Respirá hondo…'; $('#restBtn').innerHTML = '<svg><use href="#i-x"/></svg>';
+    rest = setInterval(() => {
+      restLeft--; drawRest();
+      if (restLeft <= 0) { clearInterval(rest); rest = null; restLeft = 60; drawRest(); $('#restMsg').textContent = '¡A la próxima serie!'; $('#restBtn').innerHTML = '<svg><use href="#i-play"/></svg>'; toast('¡Descanso terminado!'); }
+    }, 1000);
+  });
+
+  /* ---------- Comida ---------- */
+  const DROP = '<svg viewBox="0 0 24 30" aria-hidden="true"><path d="M12 2C12 2 4 12 4 19a8 8 0 0 0 16 0C20 12 12 2 12 2z"/></svg>';
+  function renderWater() {
+    $('#drops').innerHTML = Array.from({ length: 8 }, (_, i) => `<button type="button" class="drop press${i < S.water ? ' on' : ''}" data-drop="${i}" aria-label="Vaso ${i + 1}">${DROP}</button>`).join('');
+    $('#waterCount').textContent = `${S.water}/8 vasos`;
+  }
+  $('#drops').addEventListener('click', e => {
+    const b = e.target.closest('[data-drop]'); if (!b) return;
+    const i = +b.dataset.drop, prev = S.water; S.water = i + 1 === S.water ? i : i + 1;
+    if (S.water > prev) burst(b, 4);
+    if (S.water === 8 && prev < 8) toast('¡8 vasos! Bien hidratada');
+    save(); renderWater(); renderTiles();
+  });
+  function renderMeals() {
+    $('#meals').innerHTML = MEALS.map(([t, n, s], i) => `<div class="item meal${S.meals[i] ? ' done' : ''}"><span class="meal-time">${t}</span>
+      <div class="txt"><b>${n}</b><small>${s}</small></div>
+      <button class="check" type="button" data-meal="${i}" aria-pressed="${S.meals[i]}" aria-label="Marcar ${n}">${DAISY}</button></div>`).join('');
+    $('#mealCount').textContent = `${S.meals.filter(Boolean).length}/4`;
+  }
+  $('#meals').addEventListener('click', e => { const b = e.target.closest('[data-meal]'); if (!b) return; const i = +b.dataset.meal; S.meals[i] = !S.meals[i]; if (S.meals[i]) burst(b, 5); save(); renderMeals(); renderTiles(); });
+  function renderPlate() {
+    ['v', 'p', 'c'].forEach(k => { $('#p' + k).classList.toggle('on', !!S.plate[k]); $(`[data-plate="${k}"]`).setAttribute('aria-pressed', !!S.plate[k]); });
+  }
+  $('#plateOpts').addEventListener('click', e => {
+    const b = e.target.closest('[data-plate]'); if (!b) return; const k = b.dataset.plate; S.plate[k] = !S.plate[k];
+    if (S.plate.v && S.plate.p && S.plate.c) { toast('¡Plato balanceado!'); burst($('.plate'), 14); }
+    save(); renderPlate();
+  });
+  function renderGroceries() { $('#groceries').innerHTML = S.groceries.map(o => itemHTML(o, 'gr')).join(''); }
+
+  /* ---------- Sueño ---------- */
+  const toMin = t => { const [a, b] = t.split(':').map(Number); return a * 60 + b; };
+  function sleepMinutes() { let m = toMin(S.sleep.wake) - toMin(S.sleep.bed); if (m <= 0) m += 1440; return m; }
+  const fmtH = m => `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')}`;
+  const QL = ['', 'Muy mal', 'Regular', 'Bien', 'Muy bien', 'Increíble'];
+  function renderSleep() {
+    const m = sleepMinutes(), hrs = m / 60;
+    S.sleep.week[todayIdx] = Math.round(hrs * 10) / 10;
+    $('#sleepHours').textContent = `${Math.floor(m / 60)} h ${m % 60} min`;
+    $('#sleepNote').textContent = hrs >= 8 ? '¡Cumpliste tu meta de 8 h!' : hrs >= 7 ? 'Muy cerca de tu meta de 8 h' : hrs >= 6 ? 'Un poquito corto: hoy acostate antes' : 'Dormiste poco. Hoy, siesta o temprano a la cama';
+    $('#bedT').value = S.sleep.bed; $('#wakeT').value = S.sleep.wake;
+    $('#quality').innerHTML = [1, 2, 3, 4, 5].map(q => `<button class="q press${q <= S.sleep.q ? ' on' : ''}" type="button" data-q="${q}" aria-pressed="${q === S.sleep.q}" aria-label="${QL[q]}">${DAISY}</button>`).join('');
+    $('#qLabel').textContent = QL[S.sleep.q];
+    // gráfico de la semana
+    const W = 320, H = 150, top = 18, base = 122, max = 10, bw = 26, gap = (W - 7 * bw) / 7;
+    const y = v => base - (v / max) * (base - top);
+    let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Horas de sueño de la semana">`;
+    S.sleep.week.forEach((v, i) => {
+      const x = gap / 2 + i * (bw + gap), future = i > todayIdx;
+      svg += `<rect class="bar-bg" x="${x}" y="${top}" width="${bw}" height="${base - top}" rx="10"/>`;
+      if (!future && v) {
+        svg += `<rect class="bar${i === todayIdx ? ' today' : v < 7 ? ' low' : ''}" x="${x}" y="${y(v)}" width="${bw}" height="${base - y(v)}" rx="10"/>`;
+        svg += `<text class="val" x="${x + bw / 2}" y="${y(v) - 5}">${v}</text>`;
+      }
+      svg += `<text class="lbl" x="${x + bw / 2}" y="${base + 18}">${DS[i]}</text>`;
+    });
+    svg += `<line class="goal" x1="0" x2="${W}" y1="${y(8)}" y2="${y(8)}"/><text class="lbl" x="${W - 12}" y="${y(8) - 4}" style="fill:var(--rose)">8h</text></svg>`;
+    $('#sleepChart').innerHTML = svg;
+    const past = S.sleep.week.slice(0, todayIdx + 1), avg = past.reduce((a, b) => a + b, 0) / past.length;
+    $('#sleepAvg').textContent = `promedio ${avg.toFixed(1)} h`;
+    $('#nightList').innerHTML = S.night.map(([t, d], i) => `<div class="item${d ? ' done' : ''}"><button class="check" type="button" data-night="${i}" aria-pressed="${d}" aria-label="Marcar ${esc(t)}">${DAISY}</button><div class="txt"><b>${esc(t)}</b></div></div>`).join('');
+    renderTiles();
+  }
+  ['bedT', 'wakeT'].forEach(id => $('#' + id).addEventListener('change', e => { if (!e.target.value) return; S.sleep[id === 'bedT' ? 'bed' : 'wake'] = e.target.value; save(); renderSleep(); }));
+  $('#quality').addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (!b) return; S.sleep.q = +b.dataset.q; save(); renderSleep(); burst($(`[data-q="${S.sleep.q}"]`), 5); });
+  $('#nightList').addEventListener('click', e => {
+    const b = e.target.closest('[data-night]'); if (!b) return; const n = S.night[+b.dataset.night]; n[1] = !n[1];
+    if (n[1]) burst(b, 5);
+    if (S.night.every(x => x[1])) toast('Rutina de noche lista. ¡A dormir!');
+    save(); renderSleep();
+  });
+
+  /* ---------- Hábitos ---------- */
+  const streak = w => { let s = 0; for (let i = todayIdx; i >= 0; i--) { if (w[i]) s++; else if (i !== todayIdx) break; } return s; };
+  function renderHabits() {
+    $('#habits').innerHTML = S.habits.map(hb => `<div class="neu pad habit">
+      <div class="habit-top"><i class="dot" style="background:${DOT[hb.c]}"></i><b>${esc(hb.n)}</b>
+        <span class="streak ${hb.c}"><svg><use href="#i-fire"/></svg>${streak(hb.w)}</span>
+        <button class="del" type="button" data-delhab="${hb.id}" aria-label="Borrar ${esc(hb.n)}">${X}</button></div>
+      <div class="hdays">${DS.map((l, i) => `<button class="hd press ${hb.c}${i === todayIdx ? ' today' : ''}" type="button" data-hab="${hb.id}" data-i="${i}" aria-pressed="${!!hb.w[i]}" aria-label="${esc(hb.n)}, ${DAYS[i]}"${i > todayIdx ? ' disabled' : ''}>${l}${DAISY}</button>`).join('')}</div></div>`).join('');
+    const possible = S.habits.length * (todayIdx + 1), done = S.habits.reduce((a, hb) => a + hb.w.slice(0, todayIdx + 1).filter(Boolean).length, 0);
+    $('#habSum').textContent = `${done} de ${possible}`;
+    renderTiles();
+  }
+  $('#habits').addEventListener('click', e => {
+    const d = e.target.closest('[data-delhab]');
+    if (d) { S.habits = S.habits.filter(hb => hb.id !== d.dataset.delhab); save(); renderHabits(); return; }
+    const b = e.target.closest('[data-hab]'); if (!b) return;
+    const hb = S.habits.find(x => x.id === b.dataset.hab), i = +b.dataset.i; hb.w[i] = hb.w[i] ? 0 : 1;
+    if (hb.w[i]) burst(b, 5);
+    save(); renderHabits();
+  });
+  $('#habForm').addEventListener('submit', e => {
+    e.preventDefault(); const v = $('#habInput').value.trim(); if (!v) return;
+    S.habits.push({ id: uid(), n: v, c: S.habits.length % 2 ? 'sage' : 'rose', w: [0, 0, 0, 0, 0, 0, 0] }); $('#habInput').value = ''; save(); renderHabits();
+  });
+
+  /* ---------- Tips ---------- */
+  let tipCat = 'todos';
+  function renderTips() {
+    $('#tipCats').innerHTML = TIP_CATS.map(([k, n]) => `<button class="chip press" type="button" data-tc="${k}" aria-pressed="${k === tipCat}">${n}</button>`).join('');
+    const list = TIPS.map((t, i) => [t, i]).filter(([t, i]) => tipCat === 'todos' || (tipCat === 'fav' ? S.favs.includes(i) : t[0] === tipCat));
+    const name = Object.fromEntries(TIP_CATS);
+    $('#tipList').innerHTML = list.length ? list.map(([[c, t, p], i]) => `<article class="neu pad tip">
+      <span class="cat wide"><i style="background:${TIP_COLOR[c]}"></i>${name[c]}</span><b>${t}</b><p>${p}</p>
+      <button class="press icon-btn fav" type="button" data-fav="${i}" aria-pressed="${S.favs.includes(i)}" aria-label="Guardar en favoritos"><svg><use href="#i-heart"/></svg></button></article>`).join('')
+      : '<p class="muted" style="text-align:center">Todavía no guardaste tips. Tocá el corazón de los que te gusten.</p>';
+  }
+  $('#tipCats').addEventListener('click', e => { const b = e.target.closest('[data-tc]'); if (!b) return; tipCat = b.dataset.tc; renderTips(); });
+  $('#tipList').addEventListener('click', e => {
+    const b = e.target.closest('[data-fav]'); if (!b) return; const i = +b.dataset.fav;
+    S.favs = S.favs.includes(i) ? S.favs.filter(x => x !== i) : [...S.favs, i];
+    if (S.favs.includes(i)) burst(b, 6);
+    save(); renderTips(); renderTiles();
+  });
+
+  /* ---------- Closet ---------- */
+  let closetCat = 'all';
+  const SLOTS = [['up', 'Arriba'], ['down', 'Abajo'], ['feet', 'Zapatos'], ['extra', 'Extra']];
+  const slotFor = cat => ({ top: 'up', dress: 'up', bottom: 'down', shoes: 'feet', coat: 'extra', acc: 'extra' }[cat]);
+  function renderCloset() {
+    const byId = id => S.closet.find(g => g.id === id);
+    $('#outfit').innerHTML = SLOTS.map(([k, n]) => {
+      const g = byId(S.outfit[k]);
+      if (k === 'down' && byId(S.outfit.up)?.cat === 'dress') return `<div class="slot"><svg class="empty-ic"><use href="#i-daisy"/></svg><small>Vestido</small></div>`;
+      return `<div class="slot">${g ? garmentSVG(g.cat, g.color) + `<small>${esc(g.n)}</small>` : `<svg class="empty-ic"><use href="#i-plus"/></svg><small>${n}</small>`}</div>`;
+    }).join('');
+    $('#closetCats').innerHTML = [['all', 'Todo'], ...G_CATS].map(([k, n]) => `<button class="chip press" type="button" data-cc="${k}" aria-pressed="${k === closetCat}">${n}</button>`).join('');
+    const items = S.closet.filter(g => closetCat === 'all' || g.cat === closetCat);
+    $('#garments').innerHTML = items.map(g => `<button class="garment" type="button" data-g="${g.id}" aria-pressed="${Object.values(S.outfit).includes(g.id)}">${garmentSVG(g.cat, g.color)}${esc(g.n)}</button>`).join('')
+      + `<button class="garment add" type="button" id="addGar"><svg><use href="#i-plus"/></svg>Agregar prenda</button>`;
+    renderTiles();
+  }
+  $('#closetCats').addEventListener('click', e => { const b = e.target.closest('[data-cc]'); if (!b) return; closetCat = b.dataset.cc; renderCloset(); });
+  $('#garments').addEventListener('click', e => {
+    if (e.target.closest('#addGar')) return openSheet();
+    const b = e.target.closest('[data-g]'); if (!b) return;
+    const g = S.closet.find(x => x.id === b.dataset.g), k = slotFor(g.cat);
+    S.outfit[k] = S.outfit[k] === g.id ? undefined : g.id;
+    if (g.cat === 'dress' && S.outfit[k]) delete S.outfit.down;
+    if (g.cat === 'bottom' && S.closet.find(x => x.id === S.outfit.up)?.cat === 'dress') delete S.outfit.up;
+    save(); renderCloset();
+  });
+  $('#shuffle').addEventListener('click', e => {
+    const pick = cats => { const l = S.closet.filter(g => cats.includes(g.cat)); return l.length ? l[Math.floor(Math.random() * l.length)].id : undefined; };
+    const up = pick(Math.random() < .25 ? ['dress'] : ['top']) || pick(['top', 'dress']);
+    S.outfit = { up, feet: pick(['shoes']), extra: pick(['coat', 'acc']) };
+    if (S.closet.find(g => g.id === up)?.cat !== 'dress') S.outfit.down = pick(['bottom']);
+    save(); renderCloset(); burst(e.currentTarget, 10); toast('Outfit sorpresa listo');
+  });
+  let newCat = 'top', newColor = COLORS[0][1];
+  function openSheet() {
+    newCat = closetCat === 'all' ? 'top' : closetCat;
+    $('#garCat').innerHTML = G_CATS.map(([k, n]) => `<button class="chip press" type="button" data-nc="${k}" aria-pressed="${k === newCat}">${n}</button>`).join('');
+    $('#garColor').innerHTML = COLORS.map(([n, c]) => `<button class="sw" type="button" data-col="${c}" style="background:${c}" aria-label="${n}" aria-pressed="${c === newColor}"></button>`).join('');
+    $('#garName').value = ''; $('#sheet').hidden = false; setTimeout(() => $('#garName').focus(), 50);
+  }
+  const closeSheet = () => $('#sheet').hidden = true;
+  $('#garCancel').addEventListener('click', closeSheet);
+  $('#sheet').addEventListener('click', e => {
+    if (e.target === e.currentTarget) return closeSheet();
+    const c = e.target.closest('[data-nc]'); if (c) { newCat = c.dataset.nc; $$('[data-nc]').forEach(b => b.setAttribute('aria-pressed', b === c)); }
+    const s = e.target.closest('[data-col]'); if (s) { newColor = s.dataset.col; $$('[data-col]').forEach(b => b.setAttribute('aria-pressed', b === s)); }
+  });
+  $('#garForm').addEventListener('submit', e => {
+    e.preventDefault(); const n = $('#garName').value.trim(); if (!n) return;
+    S.closet.push({ id: uid(), n, cat: newCat, color: newColor }); save(); closeSheet(); renderCloset(); toast('Prenda agregada al closet');
+  });
+
+  /* ---------- Aprender ---------- */
+  const FOCUS = 25 * 60, BREAK = 5 * 60, PC = 2 * Math.PI * 76;
+  let pMode = 'focus', pLeft = FOCUS, pTimer = null;
+  function drawPomo() {
+    const total = pMode === 'focus' ? FOCUS : BREAK;
+    $('#pomoTime').textContent = `${String(Math.floor(pLeft / 60)).padStart(2, '0')}:${String(pLeft % 60).padStart(2, '0')}`;
+    $('#pomoMode').textContent = pMode === 'focus' ? 'Foco' : 'Pausa';
+    $('#pomo').classList.toggle('break', pMode !== 'focus');
+    const r = $('#pomoRing'); r.style.strokeDasharray = PC.toFixed(1); r.style.strokeDashoffset = (PC * (1 - pLeft / total)).toFixed(1);
+    $('#pomoPlay').innerHTML = `<svg><use href="#i-${pTimer ? 'pause' : 'play'}"/></svg>`;
+    $('#pomoPlay').setAttribute('aria-label', pTimer ? 'Pausar' : 'Empezar');
+    $('#pomoSwitch').setAttribute('aria-label', pMode === 'focus' ? 'Cambiar a pausa' : 'Cambiar a foco');
+    $('#pomoInfo').textContent = `${S.study.pomos} pomodoro${S.study.pomos === 1 ? '' : 's'} hoy · ${S.study.minutes} min de estudio`;
+  }
+  function setMode(m) { clearInterval(pTimer); pTimer = null; pMode = m; pLeft = m === 'focus' ? FOCUS : BREAK; drawPomo(); }
+  $('#pomoPlay').addEventListener('click', () => {
+    if (pTimer) { clearInterval(pTimer); pTimer = null; return drawPomo(); }
+    pTimer = setInterval(() => {
+      pLeft--;
+      if (pLeft <= 0) {
+        if (pMode === 'focus') { S.study.pomos++; S.study.minutes += 25; save(); renderTiles(); toast('¡Pomodoro listo! Tomate 5 minutos'); burst($('.pomo-ring'), 18); setMode('break'); }
+        else { toast('Pausa terminada. ¡Otra vuelta!'); setMode('focus'); }
+        return;
+      }
+      drawPomo();
+    }, 1000);
+    drawPomo();
+  });
+  $('#pomoReset').addEventListener('click', () => setMode(pMode));
+  $('#pomoSwitch').addEventListener('click', () => setMode(pMode === 'focus' ? 'break' : 'focus'));
+  const SUBC = { rose: 'var(--rose)', sage: 'var(--sage)', sand: 'var(--sand)' };
+  function renderStudy() {
+    $('#subjects').innerHTML = S.study.subjects.map(s => `<div class="neu pad subject">
+      <div class="subject-top"><b>${esc(s.n)}</b><span class="num">${s.d}/${s.t}</span><button class="press icon-btn plus" type="button" data-sub="${s.id}" aria-label="Sumar un tema a ${esc(s.n)}"><svg><use href="#i-plus"/></svg></button></div>
+      <div class="bar-in"><i style="width:${Math.round(s.d / s.t * 100)}%;background:${SUBC[s.c]}"></i></div></div>`).join('');
+    $('#studyTasks').innerHTML = S.study.tasks.map(o => itemHTML(o, 'st')).join('');
+    drawPomo();
+  }
+  $('#subjects').addEventListener('click', e => {
+    const b = e.target.closest('[data-sub]'); if (!b) return; const s = S.study.subjects.find(x => x.id === b.dataset.sub);
+    if (s.d < s.t) { s.d++; burst(b, 5); if (s.d === s.t) toast(`¡Terminaste ${s.n}!`); }
+    save(); renderStudy();
+  });
+
+  /* ---------- Listas genéricas (checklist, súper, estudio) ---------- */
+  const rerender = { cl: () => { renderChecklist(); }, gr: renderGroceries, st: renderStudy };
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-toggle]');
+    if (t) { const o = lists[t.dataset.toggle]().find(x => x.id === t.dataset.id); o.done = !o.done; if (o.done) burst(t, 6); save(); rerender[t.dataset.toggle](); return; }
+    const d = e.target.closest('[data-del]');
+    if (d) { const k = d.dataset.del, arr = lists[k](), i = arr.findIndex(x => x.id === d.dataset.id); arr.splice(i, 1); save(); rerender[k](); }
+  });
+  [['clForm', 'clInput', 'cl'], ['grForm', 'grInput', 'gr'], ['stForm', 'stInput', 'st']].forEach(([f, inp, k]) => {
+    $('#' + f).addEventListener('submit', e => {
+      e.preventDefault(); const v = $('#' + inp).value.trim(); if (!v) return;
+      lists[k]().push({ id: uid(), t: v, done: false, ...(k === 'cl' ? { c: ['rose', 'sage', 'cream'][lists[k]().length % 3] } : {}) });
+      $('#' + inp).value = ''; save(); rerender[k]();
+    });
+  });
+
+  $('#resetAll').addEventListener('click', () => {
+    if (!confirm('¿Volver a los datos de ejemplo? Se borra lo que cargaste.')) return;
+    S = defaults(); save(); wasFull = null; bootRender(); toast('Listo, datos de ejemplo');
+  });
+
+  /* ---------- Modos de vista ---------- */
   function applyMode() {
-    const h = location.hash, solo = h === '#celular', web = !solo && h !== '#tablero';
+    const hs = location.hash, solo = hs === '#celular', web = !solo && hs !== '#tablero';
     document.documentElement.classList.toggle('solo', solo);
     document.documentElement.classList.toggle('web', web);
-    // en modo celular, achica el teléfono para que entre entero en el panel
-    $('#phoneWrap').style.zoom = solo ? Math.min(1, (innerHeight - 24) / 920, (innerWidth - 32) / 400).toFixed(3) : '';
+    $('#phoneWrap').style.zoom = solo ? Math.min(1, (innerHeight - 24) / 900, (innerWidth - 32) / 400).toFixed(3) : '';
   }
-  addEventListener('hashchange', applyMode);
-  addEventListener('resize', applyMode);
-  applyMode();
+  addEventListener('hashchange', applyMode); addEventListener('resize', applyMode); applyMode();
 
-  /* ---------- Modo día / noche ---------- */
   function setTheme(t) {
     document.documentElement.dataset.theme = t;
-    $('#themeBtn').innerHTML = t === 'dark' ? '<svg><use href="#i-sun"/></svg><span>Modo día</span>' : '<svg><use href="#i-moon"/></svg><span>Modo noche</span>';
+    $('#themeBtn').innerHTML = `<svg><use href="#i-${t === 'dark' ? 'sun' : 'moon'}"/></svg>`;
+    $('#themeBtn').setAttribute('aria-label', t === 'dark' ? 'Cambiar a modo día' : 'Cambiar a modo noche');
     try { localStorage.setItem('mlos-theme', t); } catch (e) {}
   }
-  let saved = 'light'; try { saved = localStorage.getItem('mlos-theme') || 'light'; } catch (e) {}
-  setTheme(saved);
+  let th = 'light'; try { th = localStorage.getItem('mlos-theme') || 'light'; } catch (e) {}
+  setTheme(th);
   $('#themeBtn').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
 
-  /* ---------- Boot ---------- */
-  renderWater(); renderRoutine(); renderTasks(); renderHabits(); renderGoals(); renderMoodScales(); renderEntries(); renderMoodWeek(); renderMonth(); renderDay();
+  function bootRender() { renderChecklist(); renderWorkout(); renderWater(); renderMeals(); renderPlate(); renderGroceries(); renderSleep(); renderHabits(); renderTips(); renderCloset(); renderStudy(); drawRest(); renderTiles(); }
+  bootRender(); save();
   go('hoy');
 })();
 </script>
-
 </body>
 </html>

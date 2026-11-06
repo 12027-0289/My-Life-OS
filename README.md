@@ -38,7 +38,7 @@ Tocá **Go Live** (Live Server). Abre la carpeta y te lleva directo a la app.
 | H | **Tips** | **Mazo de cartas**: deslizá → para guardar, ← para pasar, botón para volver. Filtros por categoría y lista de favoritos. |
 
 | I | **Ánimo y diario** | Cómo te sentís (5 florcitas), diario del día y "tres cosas lindas". Cruza tu ánimo con el sueño, el ejercicio y el agua ("los días que dormís 7½ h o más tu ánimo es 4,3") y muestra un gráfico de 14 días. |
-| J | **Plata** | Gastos del día por categoría, presupuesto del mes con lo que te queda por día, gastos del mes por categoría y metas de ahorro. |
+| J | **Plata** | Gastos del día en colones (₡) por categoría, presupuesto del mes con lo que te queda por día, gastos del mes por categoría y metas de ahorro. |
 | K | **Skincare** | Rutina de mañana y de noche armada con tus productos (tipo, cuándo lo usás y color del frasco), con racha de días completos. |
 | L | **Metas** | Tablero de sueños con frases o fotos por categoría. "¡Lo logré!" las marca con confeti. |
 | M | **Ajustes** | Tu nombre, la paleta de colores, modo noche, recordatorios e instalar la app. |
@@ -52,7 +52,7 @@ Tocá **Go Live** (Live Server). Abre la carpeta y te lleva directo a la app.
 
 La barra de abajo flota y tiene **Hoy · Ejercicio · Comida · Sueño · Más**; en **Más** están Hábitos, Aprender, Closet y Tips.
 
-Todo se guarda en el dispositivo (localStorage; las fotos, achicadas, en IndexedDB) y, si conectás Supabase, también en tu cuenta para verlo en todos tus dispositivos. La primera vez te pregunta tu nombre y tus colores. Lo diario (checklist, agua, comidas, ejercicio, rutina de noche, estudio) se reinicia cada día; los hábitos, cada semana.
+La app arranca vacía, lista para tus datos reales: los gráficos, rachas y lo que noto del diario se van llenando a medida que la usás. Todo se guarda en el dispositivo (localStorage; las fotos, achicadas, en IndexedDB) y, si conectás Supabase, también en tu cuenta para verlo en todos tus dispositivos. La primera vez te pregunta tu nombre y tus colores. Lo diario (checklist, agua, comidas, ejercicio, rutina de noche, estudio) se reinicia cada día; los hábitos, cada semana.
 
 ## Tus datos en todos tus dispositivos (Supabase)
 

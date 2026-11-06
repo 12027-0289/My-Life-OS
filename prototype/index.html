@@ -736,11 +736,14 @@ textarea.field { resize: none; font: inherit; line-height: 1.5; }
 
 /* Comida: fotos, recetas, menú */
 .meal-hit { position: absolute; inset: 0; border: 0; background: none; border-radius: inherit; padding: 0; z-index: 0; }
-.meal > :not(.meal-hit):not(.cam):not(.mk) { position: relative; pointer-events: none; }
+.meal > :not(.meal-hit):not(.cam):not(.mk):not(.pen) { position: relative; pointer-events: none; }
 .meal .mk { pointer-events: none; }
 .meal small { padding-right: 30px; }
 .meal .cam { position: absolute; right: 10px; bottom: 10px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--card) 75%, transparent); box-shadow: var(--raise-sm); cursor: pointer; z-index: 2; color: var(--muted); }
 .meal .cam svg { width: 16px; height: 16px; }
+.meal .pen { position: absolute; right: 48px; bottom: 10px; width: 32px; height: 32px; border-radius: 50%; border: 0; padding: 0; display: grid; place-items: center; background: color-mix(in srgb, var(--card) 75%, transparent); box-shadow: var(--raise-sm); z-index: 2; color: var(--muted); }
+.meal .pen svg { width: 15px; height: 15px; }
+.meal small { padding-right: 0; margin-bottom: 34px; }
 .meal.ph { background: linear-gradient(180deg, rgba(30,20,20,.08), rgba(30,20,20,.72)), var(--ph) center / cover; color: #fff; }
 .meal.ph small, .meal.ph .t { color: rgba(255,255,255,.88); }
 .meal.on.ph { box-shadow: 0 0 0 3px var(--sage), 0 16px 26px -16px var(--sage-ink); }
@@ -1131,7 +1134,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
                   <path d="M24 18 L30 118" stroke="rgba(255,255,255,.6)" stroke-width="4" stroke-linecap="round"/>
                 </svg>
               </button>
-              <div class="water-info"><span class="wide muted">Agua de hoy</span><b class="num"><span id="waterN">3</span><small>/8</small></b><p id="waterL">0,75 litros · tocá el vaso</p>
+              <div class="water-info"><span class="wide muted">Agua de hoy</span><b class="num"><span id="waterN">3</span><small>/8</small></b><p id="waterL">0 vasos · te faltan 8</p>
                 <div class="water-btns"><button class="press icon-btn" type="button" id="wMinus" aria-label="Restar un vaso"><svg><use href="#i-minus"/></svg></button><button class="btn sage icon-btn" type="button" id="wPlus" aria-label="Sumar un vaso"><svg><use href="#i-plus"/></svg></button></div></div>
             </div>
             <div class="sec"><h3>Comidas de hoy</h3><span class="wide" id="mealCount"></span></div>
@@ -1231,7 +1234,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
             <div class="garments" id="garments"></div>
             <div class="sec"><h3>Lista de deseos</h3><span class="wide" id="wishTotal"></span></div>
             <div class="list" id="wish"></div>
-            <form class="add-row" id="wishForm"><input class="field" id="wishN" placeholder="Quiero…" maxlength="40" aria-label="Qué querés comprar"><input class="field" id="wishP" placeholder="$" inputmode="numeric" maxlength="12" aria-label="Precio" style="max-width:96px;flex:none"><button class="btn rose icon-btn" type="submit" aria-label="Agregar deseo"><svg><use href="#i-plus"/></svg></button></form>
+            <form class="add-row" id="wishForm"><input class="field" id="wishN" placeholder="Quiero…" maxlength="40" aria-label="Qué querés comprar"><input class="field" id="wishP" placeholder="₡" inputmode="numeric" maxlength="12" aria-label="Precio" style="max-width:96px;flex:none"><button class="btn rose icon-btn" type="submit" aria-label="Agregar deseo"><svg><use href="#i-plus"/></svg></button></form>
           </section>
 
           <!-- ===== APRENDER ===== -->
@@ -1256,6 +1259,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
             </div>
             <div class="sec"><h3>Materias</h3><span class="wide">temas vistos</span></div>
             <div class="list" id="subjects" style="gap:14px"></div>
+            <form class="add-row" id="subForm"><input class="field" id="subN" placeholder="Nueva materia…" maxlength="30" aria-label="Nombre de la materia"><input class="field" id="subT" type="number" min="1" max="200" placeholder="Temas" aria-label="Cantidad de temas" style="max-width:90px;flex:none"><button class="btn rose icon-btn" type="submit" aria-label="Agregar materia"><svg><use href="#i-plus"/></svg></button></form>
             <div class="sec"><h3>Pendientes</h3></div>
             <div class="list" id="studyTasks"></div>
             <form class="add-row" id="stForm"><input class="field" id="stInput" placeholder="Agregar pendiente…" maxlength="50" aria-label="Nuevo pendiente de estudio"><button class="btn rose icon-btn" type="submit" aria-label="Agregar"><svg><use href="#i-plus"/></svg></button></form>
@@ -1281,11 +1285,11 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
           <!-- ===== PLATA ===== -->
           <section class="view" data-view="plata" hidden>
             <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Plata</h2></div></div>
-            <div class="hero rose tilt"><svg class="daisy"><use href="#i-daisy"/></svg><span class="wide">Hoy gastaste</span><h3 class="num big" id="finToday">$0</h3>
+            <div class="hero rose tilt"><svg class="daisy"><use href="#i-daisy"/></svg><span class="wide">Hoy gastaste</span><h3 class="num big" id="finToday">₡0</h3>
               <div class="hero-row"><span id="finMonth"></span><button class="link" type="button" id="finBudget">Presupuesto</button></div>
               <div class="bar-in"><i id="finBar"></i></div><p id="finLeft" style="max-width:none"></p></div>
             <form class="glass pad fin-add" id="finForm">
-              <div class="amount"><span>$</span><input id="finAmt" inputmode="decimal" placeholder="0" aria-label="Monto" autocomplete="off" maxlength="12"></div>
+              <div class="amount"><span>₡</span><input id="finAmt" inputmode="decimal" placeholder="0" aria-label="Monto" autocomplete="off" maxlength="12"></div>
               <div class="chips" id="finCatsPick"></div>
               <div class="add-row"><input class="field" id="finNote" placeholder="¿En qué? (opcional)" maxlength="40" aria-label="Detalle"><button class="btn rose" type="submit"><svg><use href="#i-plus"/></svg>Anotar</button></div>
             </form>
@@ -1337,7 +1341,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
               <button class="btn rose" type="button" id="instBtn" hidden><svg><use href="#i-download"/></svg>Instalar My Life OS</button>
               <details><summary>¿Cómo la instalo?</summary><p><b>iPhone:</b> abrila en Safari, tocá Compartir y después “Agregar a inicio”.<br><b>Android:</b> en Chrome, tocá el menú ⋮ y “Instalar app”.<br><b>Compu:</b> en Chrome o Edge, tocá el ícono de instalar en la barra de direcciones.</p></details>
             </div>
-            <button class="btn" type="button" id="resetAll"><svg><use href="#i-reset"/></svg>Volver a los datos de ejemplo</button>
+            <button class="btn" type="button" id="resetAll"><svg><use href="#i-reset"/></svg>Borrar todo y empezar de cero</button>
           </section>
           <!-- ===== MÁS ===== -->
           <section class="view" data-view="mas" hidden>
@@ -1486,58 +1490,36 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   };
   const gSVG = (cat, color) => `<svg viewBox="0 0 48 48" aria-hidden="true" style="fill:${color}">${G_PATH[cat]}</svg>`;
 
+  // Versión de los datos: 6 = la app arranca vacía, lista para tus datos reales
+  const DATA_VER = 6;
   function defaults() {
     return {
-      day: todayKey, week: weekKey,
-      hist: { [daysAgo(1)]: 100, [daysAgo(2)]: 75, [daysAgo(3)]: 88 },
-      checklist: [
-        { id: uid(), t: 'Tomar un vaso de agua al despertar', c: 'sage', done: true },
-        { id: uid(), t: 'Tender la cama', c: 'cream', done: true },
-        { id: uid(), t: 'Entrenar', c: 'rose', done: false },
-        { id: uid(), t: 'Estudiar 2 pomodoros', c: 'rose', done: false },
-        { id: uid(), t: 'Comer frutas y verduras', c: 'sage', done: false },
-        { id: uid(), t: 'Elegir el outfit de mañana', c: 'cream', done: false },
-        { id: uid(), t: 'Skincare de noche', c: 'rose', done: false },
-        { id: uid(), t: 'Celular lejos a las 23', c: 'sage', done: false }
-      ],
+      ver: DATA_VER, day: todayKey, week: weekKey, hist: {},
+      checklist: [],
       workoutDay: todayIdx, workoutDone: {},
-      water: 3, meals: [true, false, false, false], plate: { v: true, p: true, c: false },
-      groceries: [{ id: uid(), t: 'Espinaca', done: false }, { id: uid(), t: 'Avena', done: true }, { id: uid(), t: 'Huevos', done: false }, { id: uid(), t: 'Frutos rojos', done: false }],
-      sleep: { bed: '23:30', wake: '07:15', q: 4, week: [7.5, 6.2, 8.1, 6.8, 7.4, 8.6, 7.9] },
+      water: 0, meals: [false, false, false, false], mealTxt: ['', '', '', ''], plate: { v: false, p: false, c: false },
+      groceries: [],
+      sleep: { bed: '23:00', wake: '07:00', q: 0, week: [0, 0, 0, 0, 0, 0, 0] },
       night: [['Preparar la ropa de mañana', false], ['Té de manzanilla', false], ['Skincare', false], ['Leer 15 minutos', false], ['Luces bajas y celular lejos', false]],
-      habits: [
-        { id: uid(), n: 'Meditar 10 min', c: 'sage', w: [1, 1, 0, 1, 1, 0, 0] },
-        { id: uid(), n: 'Leer 20 páginas', c: 'rose', w: [1, 1, 1, 1, 0, 0, 0] },
-        { id: uid(), n: 'Sin azúcar agregada', c: 'sage', w: [1, 0, 1, 1, 1, 0, 0] },
-        { id: uid(), n: 'Caminar 8.000 pasos', c: 'rose', w: [0, 1, 1, 0, 1, 0, 0] },
-        { id: uid(), n: 'Skincare', c: 'sage', w: [1, 1, 1, 1, 1, 0, 0] }
-      ],
-      favs: [3, 9], tipPos: 0,
-      closet: [
-        ['Remera básica', 'top', '#FFFFFF'], ['Blusa de lino', 'top', '#F3EADF'], ['Suéter tejido', 'top', '#C9908F'], ['Camisa salvia', 'top', '#9CAF98'],
-        ['Jean recto', 'bottom', '#6F87A6'], ['Pantalón sastrero', 'bottom', '#C49A6C'], ['Falda midi', 'bottom', '#3A3330'],
-        ['Vestido floreado', 'dress', '#C9908F'], ['Trench', 'coat', '#C49A6C'], ['Zapatillas blancas', 'shoes', '#FFFFFF'],
-        ['Mocasines', 'shoes', '#7A3B3F'], ['Cartera de cuero', 'acc', '#3A3330']
-      ].map(([n, cat, color]) => ({ id: uid(), n, cat, color })),
+      habits: [],
+      favs: [], tipPos: 0,
+      closet: [],
       outfit: {}, looks: [], ...extraDefaults(),
-      study: {
-        pomos: 0, minutes: 0, focus: 25, cardPos: 0,
-        cards: [['Hello', 'Hola'], ['To learn', 'Aprender'], ['¿7 × 8?', '56'], ['¿Qué es UX?', 'Experiencia de usuario'], ['¿Quién pintó La noche estrellada?', 'Van Gogh'], ['Bedtime', 'Hora de dormir']].map(([q, a], i) => ({ id: uid(), q, a, ok: i < 2 })),
-        subjects: [{ id: uid(), n: 'Inglés', d: 7, t: 12, c: 'rose' }, { id: uid(), n: 'Matemática', d: 4, t: 10, c: 'sage' }, { id: uid(), n: 'Diseño UX', d: 9, t: 14, c: 'sand' }, { id: uid(), n: 'Historia del arte', d: 2, t: 8, c: 'rose' }],
-        tasks: [{ id: uid(), t: 'Resumen del capítulo 3', done: false }, { id: uid(), t: 'Ejercicios de fracciones', done: true }, { id: uid(), t: 'Vocabulario: 20 palabras', done: false }]
-      }
+      study: { pomos: 0, minutes: 0, focus: 25, cardPos: 0, cards: [], subjects: [], tasks: [] }
     };
   }
   const KEY = 'mlos-v2';
   function mergeState(saved) {
     const d = defaults();
-    const s = saved && saved.checklist ? { ...d, ...saved, study: { ...d.study, ...(saved.study || {}) }, profile: { ...d.profile, ...(saved.profile || {}) }, sleep: { ...d.sleep, ...(saved.sleep || {}) } } : d;
+    const s = saved && saved.checklist && saved.ver === DATA_VER ? { ...d, ...saved, study: { ...d.study, ...(saved.study || {}) }, profile: { ...d.profile, ...(saved.profile || {}) }, sleep: { ...d.sleep, ...(saved.sleep || {}) } } : d;
+    if (saved && saved.ver !== DATA_VER && saved.profile) s.profile = { ...s.profile, ...saved.profile };
+    if (!s.mealTxt) s.mealTxt = ['', '', '', ''];
     delete s.study.day; return s;
   }
   // nuevo día: se reinicia lo diario; nueva semana: los hábitos
   function dailyReset(s) {
     if (s.day !== todayKey) {
-      s.day = todayKey; s.checklist.forEach(c => c.done = false); s.water = 0; s.meals = [false, false, false, false];
+      s.day = todayKey; s.checklist.forEach(c => c.done = false); s.water = 0; s.meals = [false, false, false, false]; s.mealTxt = ['', '', '', ''];
       s.plate = { v: false, p: false, c: false }; s.workoutDone = {}; s.workoutDay = todayIdx; s.night.forEach(n => n[1] = false);
       s.study.pomos = 0; s.study.minutes = 0; s.outfit = {}; s.skin.done = { am: [], pm: [] }; s.fired = {};
     }
@@ -1708,7 +1690,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   let wasFull = null;
   function streakDays() { let s = 0; for (let i = 0; i < 365; i++) { const v = S.hist[daysAgo(i)]; if (v >= 50) s++; else if (i > 0) break; } return s; }
   function renderChecklist() {
-    $('#checklist').innerHTML = S.checklist.map(o => itemHTML(o, 'cl')).join('');
+    $('#checklist').innerHTML = S.checklist.map(o => itemHTML(o, 'cl')).join('') || '<p class="hint" style="margin:0">Tu checklist está vacío. Escribí abajo lo que querés hacer cada día.</p>';
     const d = S.checklist.filter(c => c.done).length, n = S.checklist.length, f = n ? d / n : 0, pct = Math.round(f * 100);
     S.hist[todayKey] = pct;
     const C = 2 * Math.PI * 58, ring = $('#dayRing');
@@ -1831,7 +1813,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   /* ---------- Comida ---------- */
   function renderWater() {
     tween($('#waterN'), S.water);
-    $('#waterL').textContent = `${String(S.water * .25).replace('.', ',')} litros · tocá el vaso`;
+    $('#waterL').textContent = S.water >= 8 ? '¡Meta cumplida! 8 vasos' : `${S.water} ${S.water === 1 ? 'vaso' : 'vasos'} · te ${8 - S.water === 1 ? 'falta 1' : 'faltan ' + (8 - S.water)}`;
     $('#wLevel').style.transform = `translateY(${134 - 122 * S.water / 8}px)`;
     renderCarousel();
   }
@@ -1845,9 +1827,15 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   $('#wPlus').addEventListener('click', () => setWater(S.water + 1, $('#glassBtn')));
   $('#wMinus').addEventListener('click', () => setWater(S.water - 1));
   function renderMeals() {
-    $('#meals').innerHTML = MEALS.map(([t, n, s], i) => { const ph = PH[`meal-${todayKey}-${i}`]; return `<div class="meal${S.meals[i] ? ' on' : ''}${ph ? ' ph' : ''}"${ph ? ` style="--ph:url('${ph}')"` : ''}><button class="meal-hit" type="button" data-meal="${i}" aria-pressed="${S.meals[i]}" aria-label="${n}: ${s}"></button><span class="mk">${ICON('check')}</span><span class="t">${t}</span><b>${n}</b><small>${s}</small><label class="cam" aria-label="Foto de ${n}">${ICON('camera')}<input type="file" accept="image/*" data-mealphoto="${i}" hidden></label></div>`; }).join('');
+    $('#meals').innerHTML = MEALS.map(([t, n, s], i) => { const ph = PH[`meal-${todayKey}-${i}`]; return `<div class="meal${S.meals[i] ? ' on' : ''}${ph ? ' ph' : ''}"${ph ? ` style="--ph:url('${ph}')"` : ''}><button class="meal-hit" type="button" data-meal="${i}" aria-pressed="${S.meals[i]}" aria-label="${n}${S.mealTxt[i] ? ': ' + esc(S.mealTxt[i]) : ''}"></button><span class="mk">${ICON('check')}</span><span class="t">${t}</span><b>${n}</b><small>${S.mealTxt[i] ? esc(S.mealTxt[i]) : '¿Qué comiste?'}</small><button class="pen" type="button" data-mealtxt="${i}" aria-label="Anotar qué comiste en ${n}">${ICON('edit')}</button><label class="cam" aria-label="Foto de ${n}">${ICON('camera')}<input type="file" accept="image/*" data-mealphoto="${i}" hidden></label></div>`; }).join('');
     $('#mealCount').textContent = `${S.meals.filter(Boolean).length}/4`;
   }
+  $('#meals').addEventListener('click', e => {
+    const pb = e.target.closest('[data-mealtxt]');
+    if (pb) { const i = +pb.dataset.mealtxt; return sheet(`<span class="wide muted">${MEALS[i][0]}</span><h3>${MEALS[i][1]}</h3><textarea class="field" id="mtTxt" rows="3" maxlength="80" placeholder="¿Qué comiste?" aria-label="Qué comiste">${esc(S.mealTxt[i] || '')}</textarea><div class="sheet-btns"><button class="btn" type="button" data-close>Cancelar</button><button class="btn rose" type="button" id="mtSave">Guardar</button></div>`, () => {
+      $('#mtSave').addEventListener('click', () => { S.mealTxt[i] = $('#mtTxt').value.trim(); if (S.mealTxt[i] && !S.meals[i]) S.meals[i] = true; save(); closeSheet(); renderMeals(); renderCarousel(); });
+    }); }
+  });
   $('#meals').addEventListener('click', e => { const b = e.target.closest('[data-meal]'); if (!b) return; const i = +b.dataset.meal; S.meals[i] = !S.meals[i]; if (S.meals[i]) { burst(b, 8); buzz(10); } save(); renderMeals(); renderCarousel(); });
   function renderPlate() {
     ['v', 'p', 'c'].forEach(k => $$(`[data-plate="${k}"]`).forEach(el => el.tagName.toLowerCase() === 'path' ? el.classList.toggle('on', !!S.plate[k]) : el.setAttribute('aria-pressed', !!S.plate[k])));
@@ -1911,7 +1899,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     });
     svg += `<line class="goal" x1="0" x2="${W}" y1="${y(8)}" y2="${y(8)}"/><text class="lbl" x="${W - 10}" y="${y(8) - 5}" style="fill:var(--rose)">8h</text></svg>`;
     $('#sleepChart').innerHTML = svg;
-    const past = S.sleep.week.slice(0, todayIdx + 1), avg = past.reduce((a, b) => a + b, 0) / past.length;
+    const past = S.sleep.week.slice(0, todayIdx + 1).filter(v => v > 0), avg = past.length ? past.reduce((a, b) => a + b, 0) / past.length : 0;
     $('#sleepAvg').textContent = `promedio ${avg.toFixed(1)} h`;
     $('#nightList').innerHTML = S.night.map(([t, d], i) => `<div class="item${d ? ' done' : ''}"><div class="sw-fg"><button class="check" type="button" data-night="${i}" aria-pressed="${d}" aria-label="Marcar ${esc(t)}">${DAISY}</button><div class="txt"><b>${esc(t)}</b></div></div></div>`).join('');
     $('#nightCount').textContent = `${S.night.filter(n => n[1]).length}/${S.night.length}`;
@@ -1929,7 +1917,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   const streak = w => { let s = 0; for (let i = todayIdx; i >= 0; i--) { if (w[i]) s++; else if (i !== todayIdx) break; } return s; };
   const HC = 2 * Math.PI * 26;
   function renderHabits() {
-    $('#habits').innerHTML = S.habits.map(hb => `<div class="glass habit">
+    $('#habits').innerHTML = (S.habits.length ? '' : '<p class="hint" style="margin:0">Todavía no tenés hábitos. Agregá el primero abajo.</p>') + S.habits.map(hb => `<div class="glass habit">
       <div class="habit-top">
         <button class="hold ${hb.c}" type="button" data-hold="${hb.id}" aria-pressed="${!!hb.w[todayIdx]}" aria-label="${hb.w[todayIdx] ? 'Desmarcar' : 'Marcar'} ${esc(hb.n)} hoy (mantené apretado)">
           <svg class="r" viewBox="0 0 58 58" aria-hidden="true"><circle cx="29" cy="29" r="26" style="stroke:${DOT[hb.c]};stroke-dasharray:${HC.toFixed(1)};stroke-dashoffset:${HC.toFixed(1)}"/></svg><svg class="d"><use href="#i-daisy"/></svg></button>
@@ -2065,6 +2053,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     if (S.outfit[k]) { burst($(`[data-row="${k}"] .look-g`), 6); }
   });
   $('#shuffle').addEventListener('click', () => {
+    if (!S.closet.length) return toast('Primero agregá tu ropa abajo');
     const pick = cats => { const l = S.closet.filter(g => cats.includes(g.cat)); return l.length ? l[Math.floor(Math.random() * l.length)].id : undefined; };
     const final = { up: pick(Math.random() < .25 ? ['dress'] : ['top']) || pick(['top', 'dress']), feet: pick(['shoes']), extra: pick(['coat', 'acc']) };
     if (byId(final.up)?.cat !== 'dress') final.down = pick(['bottom']);
@@ -2143,19 +2132,24 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   const SUBC = { rose: 'var(--rose)', sage: 'var(--sage)', sand: 'var(--sand)' };
   function renderSubjects() {
     $('#subjects').innerHTML = S.study.subjects.map(s => `<div class="glass subject">
-      <div class="subject-top"><b>${esc(s.n)}</b><span class="num">${s.d}/${s.t}</span><button class="press icon-btn plus" type="button" data-sub="${s.id}" aria-label="Sumar un tema a ${esc(s.n)}">${ICON('plus')}</button></div>
-      <div class="bar-in"><i style="width:${Math.round(s.d / s.t * 100)}%;background:${SUBC[s.c]}"></i></div></div>`).join('');
+      <div class="subject-top"><b>${esc(s.n)}</b><span class="num">${s.d}/${s.t}</span><button class="press icon-btn plus" type="button" data-sub="${s.id}" aria-label="Sumar un tema a ${esc(s.n)}">${ICON('plus')}</button><button class="del" type="button" data-subdel="${s.id}" aria-label="Borrar ${esc(s.n)}">${ICON('x')}</button></div>
+      <div class="bar-in"><i style="width:${Math.round(s.d / s.t * 100)}%;background:${SUBC[s.c]}"></i></div></div>`).join('') || '<p class="hint" style="margin:0">Agregá tus materias y cuántos temas tiene cada una.</p>';
   }
   function renderStudyTasks() { $('#studyTasks').innerHTML = S.study.tasks.map(o => itemHTML(o, 'st')).join(''); }
+  $('#subForm').addEventListener('submit', e => {
+    e.preventDefault(); const n = $('#subN').value.trim(), t = Math.max(1, Math.min(200, +$('#subT').value || 10)); if (!n) return;
+    S.study.subjects.push({ id: uid(), n, d: 0, t, c: ['rose', 'sage', 'sand'][S.study.subjects.length % 3] }); $('#subN').value = ''; $('#subT').value = ''; save(); renderSubjects(); buzz(8);
+  });
   $('#subjects').addEventListener('click', e => {
+    const x = e.target.closest('[data-subdel]'); if (x) { S.study.subjects = S.study.subjects.filter(s => s.id !== x.dataset.subdel); save(); renderSubjects(); return; }
     const b = e.target.closest('[data-sub]'); if (!b) return; const s = S.study.subjects.find(x => x.id === b.dataset.sub);
     if (s.d < s.t) { s.d++; burst(b, 6); buzz(8); if (s.d === s.t) { confetti(); toast(`¡Terminaste ${s.n}!`); } }
     save(); renderSubjects();
   });
 
   $('#resetAll').addEventListener('click', () => {
-    if (!confirm('¿Volver a los datos de ejemplo? Se borra lo que cargaste.')) return;
-    const keep = S.profile; S = defaults(); S.profile = keep; save(); wasFull = null; bootRender(); toast('Listo, datos de ejemplo');
+    if (!confirm('¿Borrar todos tus datos y empezar de cero? Si sincronizás, se borra también en tus otros dispositivos.')) return;
+    const keep = S.profile; S = defaults(); S.profile = keep; save(); wasFull = null; bootRender(); toast('Listo, empezás de cero');
   });
 
   /* =====================================================================
@@ -2164,66 +2158,20 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
      siesta, fotos, lista de deseos, recordatorios y app instalable
      ===================================================================== */
   function extraDefaults() {
-    let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
     const routines = PLAN.map(([n, min, ex], i) => ({ id: 'r' + i, n, min, ex: ex.map(e => [...e]) }));
-    const log = {}, journal = {}, workLog = {}, skinLog = {};
-    const notes = ['Día tranqui, tomé mate con mi hermana.', 'Mucho trabajo, pero salí a caminar y me despejé.', 'Me costó levantarme. A la noche vi una peli linda.', 'Entrené y me sentí poderosa.', 'Almuerzo rico con amigas.', 'Estudié un montón; cansada pero contenta.', 'Día gris, me abrigué y leí.'];
-    const goods = [['El sol de la mañana', 'Un café rico', 'Mensaje de mamá'], ['Terminé el capítulo', 'Caminata al atardecer', 'Pizza casera'], ['Dormí la siesta', 'Me salió el ejercicio', 'Charla con Juli']];
-    for (let i = 1; i <= 28; i++) {
-      const k = daysAgo(i), sleep = Math.round((5.8 + rnd() * 3) * 10) / 10, work = rnd() < .58 || i <= 3 ? 3 + Math.floor(rnd() * 3) : 0, water = 3 + Math.floor(rnd() * 6);
-      log[k] = { sleep, work, water }; workLog[k] = work;
-      if (i <= 21 && rnd() < .85) journal[k] = { mood: Math.max(1, Math.min(5, Math.round(1.3 + (sleep - 6) * .8 + (work ? .9 : 0) + (water >= 6 ? .3 : 0) + rnd() * .8))), text: rnd() < .65 ? notes[Math.floor(rnd() * notes.length)] : '', good: rnd() < .5 ? goods[Math.floor(rnd() * goods.length)].slice() : ['', '', ''] };
-      skinLog[k] = rnd() < .75 || i <= 2 ? 1 : .5;
-    }
-    const wk = n => daysAgo(n * 7);
-    const lifts = {
-      'Sentadillas': [10, 12, 12, 14, 15, 16, 18, 20].map((kg, i) => ({ d: wk(8 - i), kg, reps: 15 })),
-      'Peso muerto con mancuernas': [12, 14, 16, 16, 18, 20].map((kg, i) => ({ d: wk(6 - i), kg, reps: 12 })),
-      'Press de hombros': [4, 5, 5, 6, 6, 7].map((kg, i) => ({ d: wk(6 - i), kg, reps: 12 })),
-      'Remo con mancuerna': [6, 7, 8, 8, 9, 10].map((kg, i) => ({ d: wk(6 - i), kg, reps: 12 }))
-    };
-    const dom = now.getDate(), exp = [];
-    [['comida', 'Súper', 18500], ['transporte', 'Carga de SUBE', 3000], ['salidas', 'Cine', 9000], ['comida', 'Café', 2800], ['compras', 'Remera', 22000], ['casa', 'Luz', 15400], ['salud', 'Farmacia', 7600], ['comida', 'Verdulería', 6400], ['salidas', 'Cena con amigas', 26000], ['transporte', 'Uber', 5200], ['comida', 'Panadería', 3100], ['otros', 'Regalo', 12000]]
-      .forEach(([cat, note, amt], i) => { const day = Math.max(1, dom - 1 - Math.floor(i * (dom - 1) / 12)); exp.push({ id: uid(), d: iso(new Date(now.getFullYear(), now.getMonth(), day)), cat, note, amt }); });
-    exp.push({ id: uid(), d: todayKey, cat: 'comida', note: 'Café con medialuna', amt: 3200 }, { id: uid(), d: todayKey, cat: 'transporte', note: 'Colectivo', amt: 900 });
-    const G = { rem: { n: 'Remera básica', cat: 'top', color: '#FFFFFF' }, sue: { n: 'Suéter tejido', cat: 'top', color: '#C9908F' }, cam: { n: 'Camisa salvia', cat: 'top', color: '#9CAF98' }, vest: { n: 'Vestido floreado', cat: 'dress', color: '#C9908F' }, jean: { n: 'Jean recto', cat: 'bottom', color: '#6F87A6' }, falda: { n: 'Falda midi', cat: 'bottom', color: '#3A3330' }, pant: { n: 'Pantalón sastrero', cat: 'bottom', color: '#C49A6C' }, zap: { n: 'Zapatillas blancas', cat: 'shoes', color: '#FFFFFF' }, moc: { n: 'Mocasines', cat: 'shoes', color: '#7A3B3F' } };
-    const combos = [[G.rem, G.jean, G.zap], [G.sue, G.falda, G.moc], [G.vest, G.zap], [G.cam, G.pant, G.moc]], worn = {};
-    [1, 2, 3, 5, 6, 8, 9, 12].forEach((n, i) => { if (dom - n >= 1) worn[daysAgo(n)] = combos[i % 4]; });
     return {
-      profile: { name: '', pal: 'rosa', done: false }, xp: 34,
-      log, journal, workLog, routines, plan: routines.map(r => r.id), lifts,
-      recipes: [
-        { id: 'rc1', n: 'Bowl de quinoa y pollo', min: 25, ing: ['Quinoa', 'Pechuga de pollo', 'Palta', 'Tomates cherry', 'Espinaca', 'Limón'] },
-        { id: 'rc2', n: 'Tortilla de espinaca', min: 20, ing: ['Huevos', 'Espinaca', 'Cebolla', 'Queso'] },
-        { id: 'rc3', n: 'Avena nocturna', min: 5, ing: ['Avena', 'Leche', 'Yogur', 'Banana', 'Canela'] },
-        { id: 'rc4', n: 'Pasta con pesto', min: 20, ing: ['Pasta', 'Albahaca', 'Nueces', 'Queso rallado', 'Ajo', 'Aceite de oliva'] },
-        { id: 'rc5', n: 'Salmón con verduras', min: 30, ing: ['Salmón', 'Brócoli', 'Zanahoria', 'Papa', 'Limón'] }
-      ],
-      mealPlan: { 0: { a: 'rc1', c: 'rc2' }, 1: { a: 'rc5' }, 2: { c: 'rc4' }, 4: { a: 'rc1', c: 'rc3' } },
-      worn,
-      wish: [{ id: uid(), n: 'Blazer camel', price: 85000, p: 3 }, { id: uid(), n: 'Botas texanas', price: 120000, p: 2 }, { id: uid(), n: 'Pañuelo de seda', price: 18000, p: 1 }],
-      vision: [
-        { id: 'v1', t: 'Viajar a Japón en primavera', cat: 'viajes', c: 'rose' }, { id: 'v2', t: 'Correr mis primeros 10K', cat: 'salud', c: 'sage' },
-        { id: 'v3', t: 'Mi propio depto con plantas', cat: 'casa', c: 'cream' }, { id: 'v4', t: 'Hablar inglés fluido', cat: 'carrera', c: 'mauve' },
-        { id: 'v5', t: 'Leer 24 libros este año', cat: 'yo', c: 'sage', done: true }, { id: 'v6', t: 'Más tiempo con mi familia', cat: 'amor', c: 'rose' },
-        { id: 'v7', t: 'Conseguir el trabajo de mis sueños', cat: 'carrera', c: 'cream' }
-      ],
-      fin: { budget: 400000, exp, goals: [{ id: uid(), n: 'Viaje a Japón', saved: 380000, goal: 1500000 }, { id: uid(), n: 'Fondo de emergencia', saved: 220000, goal: 600000 }, { id: uid(), n: 'Zapatillas para correr', saved: 95000, goal: 120000 }] },
-      skin: {
-        products: [
-          { id: 'sk1', n: 'Gel limpiador', type: 'Limpiador', when: 'both', color: '#B5C8D2' }, { id: 'sk2', n: 'Tónico de rosas', type: 'Tónico', when: 'both', color: '#E7C9C3' },
-          { id: 'sk3', n: 'Sérum vitamina C', type: 'Sérum', when: 'am', color: '#F0D2BF' }, { id: 'sk4', n: 'Crema hidratante', type: 'Hidratante', when: 'both', color: '#F3EADF' },
-          { id: 'sk5', n: 'Protector FPS 50', type: 'Protector solar', when: 'am', color: '#F5E6B8' }, { id: 'sk6', n: 'Retinol suave', type: 'Sérum', when: 'pm', color: '#DCD3EA' },
-          { id: 'sk7', n: 'Contorno de ojos', type: 'Contorno', when: 'pm', color: '#C9908F' }
-        ], done: { am: ['sk1', 'sk2'], pm: [] }, log: skinLog
-      },
+      profile: { name: '', pal: 'rosa', done: false }, xp: 0,
+      log: {}, journal: {}, workLog: {}, routines, plan: routines.map(r => r.id), lifts: {},
+      recipes: [], mealPlan: {}, worn: {}, wish: [], vision: [],
+      fin: { budget: 0, exp: [], goals: [] },
+      skin: { products: [], done: { am: [], pm: [] }, log: {} },
       rem: { agua: { on: true, every: 2 }, dormir: { on: true, t: '23:00' }, habitos: { on: true, t: '20:30' }, skin: { on: false, t: '22:00' }, pomodoro: { on: true } },
-      fired: {}, sound: { vol: 60, timer: 30 }, alarm: { on: false, t: '07:15' }
+      fired: {}, sound: { vol: 60, timer: 30 }, alarm: { on: false, t: '07:00' }
     };
   }
 
   const sum = a => a.reduce((t, x) => t + (+x.amt || 0), 0);
-  const money = n => '$' + Math.round(n).toLocaleString('es-AR');
+  const money = n => '₡' + Math.round(n).toLocaleString('es-CR');
   const parseMoney = v => +String(v).replace(/[^\d,]/g, '').replace(',', '.') || 0;
   const MOODS = [['Mal', 'var(--taupe)'], ['Bajón', 'var(--mauve)'], ['Normal', 'var(--sand)'], ['Bien', 'var(--sage)'], ['¡Genial!', 'var(--rose)']];
   const PALETTES = [
@@ -2361,7 +2309,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   function extraCards() {
     const tTot = sum(S.fin.exp.filter(x => x.d === todayKey)), sk = skinList(skinSeg), j = S.journal[todayKey];
     return [
-      ['plata', 'rose', 'wallet', money(tTot), 'gastaste hoy', Math.min(1, tTot / (S.fin.budget / 30))],
+      ['plata', 'rose', 'wallet', money(tTot), 'gastaste hoy', S.fin.budget ? Math.min(1, tTot / (S.fin.budget / 30)) : 0],
       ['skin', 'sage', 'drop', `${sk.filter(p => S.skin.done[skinSeg].includes(p.id)).length}/${sk.length}`, skinSeg === 'am' ? 'skincare de mañana' : 'skincare de noche', sk.length ? sk.filter(p => S.skin.done[skinSeg].includes(p.id)).length / sk.length : 0],
       ['diario', 'cream', 'edit', j && j.mood ? MOODS[j.mood - 1][0] : '¿Y hoy?', 'cómo te sentís', j && j.mood ? j.mood / 5 : 0]
     ];
@@ -2712,9 +2660,9 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     const month = todayKey.slice(0, 7), mExp = S.fin.exp.filter(x => x.d.slice(0, 7) === month), tExp = S.fin.exp.filter(x => x.d === todayKey);
     const mTot = sum(mExp), tTot = sum(tExp), left = S.fin.budget - mTot;
     tween($('#finToday'), tTot, money);
-    $('#finMonth').textContent = `Este mes: ${money(mTot)} de ${money(S.fin.budget)}`;
-    $('#finBar').style.width = Math.min(100, mTot / S.fin.budget * 100) + '%';
-    $('#finLeft').textContent = left >= 0 ? `Te quedan ${money(left)} · unos ${money(left / Math.max(1, new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() - now.getDate() + 1))} por día` : `Te pasaste ${money(-left)} del presupuesto`;
+    $('#finMonth').textContent = S.fin.budget ? `Este mes: ${money(mTot)} de ${money(S.fin.budget)}` : `Este mes: ${money(mTot)}`;
+    $('#finBar').style.width = S.fin.budget ? Math.min(100, mTot / S.fin.budget * 100) + '%' : '0%';
+    $('#finLeft').textContent = !S.fin.budget ? 'Tocá Presupuesto para ponerte un límite mensual' : left >= 0 ? `Te quedan ${money(left)} · unos ${money(left / Math.max(1, new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate() - now.getDate() + 1))} por día` : `Te pasaste ${money(-left)} del presupuesto`;
     $('#finCatsPick').innerHTML = FIN_CATS.map(([k, n, ic]) => `<button class="chip press" type="button" data-fc="${k}" aria-pressed="${k === finCat}">${ICON(ic)}${n}</button>`).join('');
     $('#finTodayList').innerHTML = tExp.length ? tExp.slice().reverse().map(x => `<div class="item"><div class="sw-fg"><span class="fin-ic">${ICON(catOf(x.cat)[2])}</span><div class="txt"><b>${esc(x.note || catOf(x.cat)[1])}</b><small>${catOf(x.cat)[1]}</small></div><span class="amt">${money(x.amt)}</span><button class="del" type="button" data-expdel="${x.id}" aria-label="Borrar gasto">${ICON('x')}</button></div></div>`).join('') : '<p class="hint" style="margin:0">Hoy no anotaste gastos.</p>';
     const byCat = FIN_CATS.map(([k, n, ic]) => [n, ic, sum(mExp.filter(x => x.cat === k))]).filter(x => x[2]).sort((a, b) => b[2] - a[2]), mx = byCat[0]?.[2] || 1;
@@ -2728,26 +2676,26 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     const month = todayKey.slice(0, 7), before = sum(S.fin.exp.filter(x => x.d.slice(0, 7) === month));
     S.fin.exp.push({ id: uid(), d: todayKey, cat: finCat, note: $('#finNote').value.trim(), amt }); $('#finAmt').value = ''; $('#finNote').value = '';
     save(); renderFin(); renderCarousel(); buzz(10);
-    if (before <= S.fin.budget && before + amt > S.fin.budget) toast('Ojo: te pasaste del presupuesto del mes'); else toast(`Anotado: ${money(amt)}`);
+    if (S.fin.budget && before <= S.fin.budget && before + amt > S.fin.budget) toast('Ojo: te pasaste del presupuesto del mes'); else toast(`Anotado: ${money(amt)}`);
   });
   $('#finTodayList').addEventListener('click', e => { const d = e.target.closest('[data-expdel]'); if (!d) return; S.fin.exp = S.fin.exp.filter(x => x.id !== d.dataset.expdel); save(); renderFin(); renderCarousel(); });
-  $('#finBudget').addEventListener('click', () => sheet(`<h3>Presupuesto del mes</h3><div class="amount"><span>$</span><input id="budIn" inputmode="decimal" value="${S.fin.budget}" aria-label="Presupuesto mensual"></div><div class="sheet-btns"><button class="btn" type="button" data-close>Cancelar</button><button class="btn rose" type="button" id="budSave">Guardar</button></div>`, () => {
+  $('#finBudget').addEventListener('click', () => sheet(`<h3>Presupuesto del mes</h3><div class="amount"><span>₡</span><input id="budIn" inputmode="decimal" value="${S.fin.budget || ''}" placeholder="0" aria-label="Presupuesto mensual"></div><div class="sheet-btns"><button class="btn" type="button" data-close>Cancelar</button><button class="btn rose" type="button" id="budSave">Guardar</button></div>`, () => {
     $('#budSave').addEventListener('click', () => { const v = parseMoney($('#budIn').value); if (!v) return toast('Escribí un monto'); S.fin.budget = v; save(); closeSheet(); renderFin(); toast('Presupuesto guardado'); });
   }));
   function goalSheet(g) {
     sheet(`<span class="wide muted">Meta de ahorro</span><h3>${esc(g.n)}</h3><p class="muted" style="margin:-6px 0 0;font-weight:700">${money(g.saved)} de ${money(g.goal)}</p>
-      <div class="amount"><span>$</span><input id="gAmt" inputmode="decimal" placeholder="0" aria-label="Monto a sumar"></div>
+      <div class="amount"><span>₡</span><input id="gAmt" inputmode="decimal" placeholder="0" aria-label="Monto a sumar"></div>
       <div class="quick">${[1000, 5000, 10000, 20000].map(v => `<button class="chip press" type="button" data-q="${v}">+${money(v)}</button>`).join('')}</div>
       <div class="sheet-btns"><button class="btn" type="button" id="gTake">Sacar</button><button class="btn rose" type="button" id="gAdd">Sumar</button></div>
       <button class="link" type="button" id="gEdit" style="align-self:center">Editar o borrar esta meta</button>`, b => {
-      b.addEventListener('click', e => { const q = e.target.closest('[data-q]'); if (q) $('#gAmt').value = (parseMoney($('#gAmt').value) + +q.dataset.q).toLocaleString('es-AR'); });
+      b.addEventListener('click', e => { const q = e.target.closest('[data-q]'); if (q) $('#gAmt').value = (parseMoney($('#gAmt').value) + +q.dataset.q).toLocaleString('es-CR'); });
       const apply = sign => { const v = parseMoney($('#gAmt').value); if (!v) return toast('Escribí un monto'); const was = g.saved >= g.goal; g.saved = Math.max(0, g.saved + sign * v); save(); closeSheet(); renderFin(); if (!was && g.saved >= g.goal) { confetti(); toast(`¡Cumpliste la meta ${g.n}!`); } else if (sign > 0) { award(1); toast(`+${money(v)} para ${g.n}`); } };
       $('#gAdd').addEventListener('click', () => apply(1)); $('#gTake').addEventListener('click', () => apply(-1));
       $('#gEdit').addEventListener('click', () => goalEditor(g));
     });
   }
   function goalEditor(g) {
-    sheet(`<h3>${g ? 'Editar meta' : 'Nueva meta de ahorro'}</h3><input class="field" id="geN" placeholder="Ej: Viaje a la playa" maxlength="30" value="${g ? esc(g.n) : ''}" aria-label="Nombre de la meta"><label class="lb" for="geG">¿Cuánto necesitás?</label><div class="amount"><span>$</span><input id="geG" inputmode="decimal" value="${g ? g.goal : ''}" placeholder="0"></div>
+    sheet(`<h3>${g ? 'Editar meta' : 'Nueva meta de ahorro'}</h3><input class="field" id="geN" placeholder="Ej: Viaje a la playa" maxlength="30" value="${g ? esc(g.n) : ''}" aria-label="Nombre de la meta"><label class="lb" for="geG">¿Cuánto necesitás?</label><div class="amount"><span>₡</span><input id="geG" inputmode="decimal" value="${g ? g.goal : ''}" placeholder="0"></div>
       <div class="sheet-btns">${g ? '<button class="btn" type="button" id="geDel">Borrar</button>' : '<button class="btn" type="button" data-close>Cancelar</button>'}<button class="btn rose" type="button" id="geSave">Guardar</button></div>`, () => {
       $('#geSave').addEventListener('click', () => { const n = $('#geN').value.trim(), goal = parseMoney($('#geG').value); if (!n || !goal) return toast('Poné un nombre y un monto'); if (g) Object.assign(g, { n, goal }); else { S.fin.goals.push({ id: uid(), n, saved: 0, goal }); award(2); } save(); closeSheet(); renderFin(); toast('Meta guardada'); });
       const del = $('#geDel'); if (del) del.addEventListener('click', () => { S.fin.goals = S.fin.goals.filter(x => x !== g); save(); closeSheet(); renderFin(); toast('Meta borrada'); });
@@ -2981,7 +2929,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     try {
       const { data, error } = await sb.from(SB_TABLE).select('data').eq('user_id', cloud.uid).maybeSingle();
       if (error) throw error;
-      const remote = data && data.data, first = S._uid !== cloud.uid;
+      const remote = data && data.data && data.data.ver === DATA_VER ? data.data : null, first = S._uid !== cloud.uid;
       let merged = S;
       if (remote) { merged = mergeState(mergeStates(S, mergeState(remote), first)); dailyReset(merged); }
       const strip = o => { const c = { ...o }; delete c._t; delete c._uid; return canon(c); };

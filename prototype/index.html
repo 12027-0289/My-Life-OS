@@ -939,6 +939,12 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 .ob-foot .link { color: var(--muted); }
 :root.web .onboard { padding-inline: max(18px, calc((100% - 520px) / 2)); }
 
+.cloud-btn { position: relative; }
+.cloud-btn i { position: absolute; top: 9px; right: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--track); box-shadow: 0 0 0 2px var(--card); }
+.cloud-btn.ok i { background: var(--sage); }
+.cloud-btn.busy i { background: var(--sand); animation: tw 1s ease-in-out infinite; }
+.cloud-btn.err i { background: var(--rose); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
@@ -997,6 +1003,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     <symbol id="i-cart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2.3 11h10.2L20 8H6.6"/><circle cx="9.5" cy="19" r="1.4"/><circle cx="16.5" cy="19" r="1.4"/></g></symbol>
     <symbol id="i-drop" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 3.5s-6 6.8-6 10.8a6 6 0 0 0 12 0c0-4-6-10.8-6-10.8z"/></symbol>
     <symbol id="i-trophy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7"/></g></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M7 18.5h10.5a4 4 0 0 0 .6-7.95A6 6 0 0 0 6.4 9.6 4.5 4.5 0 0 0 7 18.5z"/></symbol>
     <symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></g></symbol>
   </defs>
 </svg>
@@ -1046,7 +1053,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
           <section class="view" data-view="hoy">
             <div class="top">
               <div><span class="wide" id="todayLabel">Viernes 6 de noviembre</span><h2 id="greet">Buen día, <span>linda</span></h2></div>
-              <button class="press icon-btn" id="themeBtn" type="button" aria-label="Cambiar a modo noche"><svg><use href="#i-moon"/></svg></button>
+              <div style="display:flex;flex-direction:column;gap:10px"><button class="press icon-btn cloud-btn" id="cloudBtn" type="button" data-go="ajustes" aria-label="Sincronización"><svg><use href="#i-cloud"/></svg><i></i></button><button class="press icon-btn" id="themeBtn" type="button" aria-label="Cambiar a modo noche"><svg><use href="#i-moon"/></svg></button></div>
             </div>
             <div class="glass day-hero tilt">
               <div class="ring"><svg viewBox="0 0 140 140" aria-hidden="true"><circle class="tr" cx="70" cy="70" r="58"/><circle class="fg" id="dayRing" cx="70" cy="70" r="58"/></svg><span class="pct num" id="dayPct">0%</span></div>
@@ -1322,6 +1329,8 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
               <div class="rem-list" id="remList"></div>
               <p class="note-sm">Los avisos llegan mientras la app está abierta o recién minimizada. Para que lleguen con la app cerrada del todo hace falta un servidor, y esta versión todavía no tiene.</p>
             </div>
+            <div class="sec"><h3>Sincronizar</h3><span class="wide" id="cloudChip">sin conectar</span></div>
+            <div class="glass pad" id="cloud" style="display:flex;flex-direction:column;gap:10px"></div>
             <div class="sec"><h3>App en tu celular</h3></div>
             <div class="glass pad" style="display:flex;flex-direction:column;gap:12px">
               <div class="set-row"><span class="rem-ic"><svg><use href="#i-download"/></svg></span><div class="txt"><b id="instState">…</b><small id="instSub"></small></div></div>
@@ -1408,6 +1417,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   </aside>
 </div>
 
+<script src="config.js"></script>
 <script>
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
@@ -1519,20 +1529,23 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     };
   }
   const KEY = 'mlos-v2';
-  let S;
-  (() => {
-    let saved = null; try { saved = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+  function mergeState(saved) {
     const d = defaults();
-    S = saved && saved.checklist ? { ...d, ...saved, study: { ...d.study, ...(saved.study || {}) }, profile: { ...d.profile, ...(saved.profile || {}) }, sleep: { ...d.sleep, ...(saved.sleep || {}) } } : d;
-    delete S.study.day;
-  })();
-  if (S.day !== todayKey) {
-    S.day = todayKey; S.checklist.forEach(c => c.done = false); S.water = 0; S.meals = [false, false, false, false];
-    S.plate = { v: false, p: false, c: false }; S.workoutDone = {}; S.workoutDay = todayIdx; S.night.forEach(n => n[1] = false);
-    S.study.pomos = 0; S.study.minutes = 0; S.outfit = {}; S.skin.done = { am: [], pm: [] }; S.fired = {};
+    const s = saved && saved.checklist ? { ...d, ...saved, study: { ...d.study, ...(saved.study || {}) }, profile: { ...d.profile, ...(saved.profile || {}) }, sleep: { ...d.sleep, ...(saved.sleep || {}) } } : d;
+    delete s.study.day; return s;
   }
-  if (S.week !== weekKey) { S.week = weekKey; S.habits.forEach(h => h.w = [0, 0, 0, 0, 0, 0, 0]); }
-  const save = () => { try { syncLog(); } catch (e) {} try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+  // nuevo día: se reinicia lo diario; nueva semana: los hábitos
+  function dailyReset(s) {
+    if (s.day !== todayKey) {
+      s.day = todayKey; s.checklist.forEach(c => c.done = false); s.water = 0; s.meals = [false, false, false, false];
+      s.plate = { v: false, p: false, c: false }; s.workoutDone = {}; s.workoutDay = todayIdx; s.night.forEach(n => n[1] = false);
+      s.study.pomos = 0; s.study.minutes = 0; s.outfit = {}; s.skin.done = { am: [], pm: [] }; s.fired = {};
+    }
+    if (s.week !== weekKey) { s.week = weekKey; s.habits.forEach(h => h.w = [0, 0, 0, 0, 0, 0, 0]); }
+  }
+  let S;
+  (() => { let saved = null; try { saved = JSON.parse(localStorage.getItem(KEY)); } catch (e) {} S = mergeState(saved); dailyReset(S); })();
+  const save = () => { try { syncLog(); } catch (e) {} let ch = false; try { ch = stamp(); } catch (e) {} try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} if (ch) try { cloudSoon(); } catch (e) {} };
   const R = d => { const r = S.routines.find(x => x.id === S.plan[d]) || S.routines[0]; return [r.n, r.min, r.ex]; };
 
   /* ---------- Efectos ---------- */
@@ -2243,6 +2256,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     if (PH[key]) URL.revokeObjectURL(PH[key]);
     if (blob) { PH[key] = URL.createObjectURL(blob); await IDB.put(key, blob).catch(() => toast('No se pudo guardar la foto')); }
     else { delete PH[key]; await IDB.del(key).catch(() => {}); }
+    trackPhoto(key, !!blob); cloudSoon(800);
   }
   async function shrink(file, max = 900) {
     const bmp = await createImageBitmap(file), k = Math.min(1, max / Math.max(bmp.width, bmp.height));
@@ -2251,7 +2265,8 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     return new Promise(r => c.toBlob(r, 'image/jpeg', .82));
   }
   async function loadPhotos() {
-    try { const all = await IDB.all(); Object.entries(all).forEach(([k, b]) => { PH[k] = URL.createObjectURL(b); }); } catch (e) {}
+    try { const all = await IDB.all(); Object.entries(all).forEach(([k, b]) => { if (PH[k]) URL.revokeObjectURL(PH[k]); PH[k] = URL.createObjectURL(b); }); } catch (e) {}
+    if (!S.photos) { S.photos = Object.keys(PH); upq.set([...upq.get(), ...S.photos]); snap.photos = JSON.stringify(S.photos); saveLocal(); }
     if (Object.keys(PH).length) { renderMeals(); renderGarments(); renderLook(); renderLooks(); renderRecipes(); renderVision(); renderWornCal(); }
   }
   const photoPick = url => `<label class="photo-pick"><input type="file" accept="image/*" hidden><span class="pp">${url ? `<img src="${url}" alt="">` : ICON('camera') + '<span>Agregar foto</span>'}</span></label>`;
@@ -2881,6 +2896,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     $('#instState').textContent = standalone ? 'Ya la estás usando como app' : installEvt ? 'Lista para instalar' : location.protocol === 'file:' ? 'Abrila con Live Server para instalarla' : 'Instalala desde tu navegador';
     $('#instSub').textContent = swReady || (navigator.serviceWorker && navigator.serviceWorker.controller) ? 'Funciona sin internet' : 'Una vez instalada, funciona sin internet';
     $('#instBtn').hidden = !installEvt;
+    renderCloud();
   }
   $('#setName').addEventListener('input', e => { S.profile.name = e.target.value.trim(); renderGreet(); clearTimeout(jT); jT = setTimeout(save, 400); });
   $('#darkSw').addEventListener('click', () => { setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); renderSettings(); buzz(8); });
@@ -2895,6 +2911,199 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; renderSettings(); });
   addEventListener('appinstalled', () => { installEvt = null; toast('¡App instalada!'); renderSettings(); });
   $('#instBtn').addEventListener('click', async () => { if (!installEvt) return; installEvt.prompt(); try { await installEvt.userChoice; } catch (e) {} installEvt = null; renderSettings(); });
+
+  /* =====================================================================
+     Sincronizar entre dispositivos con Supabase
+     - Todo tu estado se guarda como un documento por persona (tabla mlos_state).
+     - Cada parte (checklist, plata, closet…) lleva la hora de su último cambio:
+       al juntar dos dispositivos gana la parte que se cambió más tarde.
+     - Las fotos van a Storage (bucket mlos-photos), en una carpeta por persona.
+     ===================================================================== */
+  const SB_TABLE = 'mlos_state', SB_BUCKET = 'mlos-photos';
+  const NOSTAMP = new Set(['_t', '_uid']);
+  let snap = {};
+  function stamp() {
+    const t = Date.now(); let changed = false; S._t = S._t || {};
+    for (const k of Object.keys(S)) {
+      if (NOSTAMP.has(k)) continue;
+      const j = JSON.stringify(S[k]);
+      if (snap[k] !== undefined && snap[k] !== j) { S._t[k] = t; changed = true; }
+      snap[k] = j;
+    }
+    return changed;
+  }
+  const canon = o => JSON.stringify(o, (k, v) => v && typeof v === 'object' && !Array.isArray(v) ? Object.keys(v).sort().reduce((r, x) => (r[x] = v[x], r), {}) : v);
+  function resnap() { snap = {}; for (const k of Object.keys(S)) if (!NOSTAMP.has(k)) snap[k] = JSON.stringify(S[k]); }
+  function saveLocal() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+  const sbCfg = () => {
+    const f = window.MLOS_SUPABASE || {}; if (f.url && f.anonKey) return { url: f.url.trim(), anonKey: f.anonKey.trim(), fromFile: true };
+    try { const c = JSON.parse(localStorage.getItem('mlos-sb')); if (c && c.url && c.anonKey) return c; } catch (e) {}
+    return null;
+  };
+  const cloud = { sb: null, uid: null, email: '', state: 'off', msg: '', last: 0, busy: false, again: false, timer: 0 };
+  function loadScript(src) { return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+  async function cloudStart() {
+    const cfg = sbCfg(); if (!cfg) { cloud.state = 'off'; renderCloud(); return; }
+    cloud.state = 'connecting'; renderCloud();
+    try {
+      if (!window.supabase) await loadScript('vendor/supabase.js');
+      cloud.sb = window.supabase.createClient(cfg.url, cfg.anonKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: 'mlos-auth' } });
+      cloud.sb.auth.onAuthStateChange((ev, session) => {
+        const was = cloud.uid; cloud.uid = session?.user?.id || null; cloud.email = session?.user?.email || '';
+        if (ev === 'PASSWORD_RECOVERY') setTimeout(newPasswordSheet, 300);
+        if (!cloud.uid) { cloud.state = 'out'; renderCloud(); return; }
+        if (cloud.uid !== was) { cloud.state = 'ok'; renderCloud(); syncNow(); }
+      });
+      const { data } = await cloud.sb.auth.getSession();
+      if (!data.session) { cloud.state = 'out'; renderCloud(); }
+    } catch (e) { cloud.state = 'error'; cloud.msg = 'No pude cargar Supabase. Revisá la dirección y la clave.'; renderCloud(); }
+  }
+  const cloudSoon = (ms = 1500) => { if (!cloud.uid) return; clearTimeout(cloud.timer); cloud.timer = setTimeout(syncNow, ms); };
+  function mergeStates(local, remote, firstTime) {
+    const out = {}, lt = local._t || {}, rt = remote._t || {}, t = {};
+    new Set([...Object.keys(local), ...Object.keys(remote)]).forEach(k => {
+      if (NOSTAMP.has(k)) return;
+      const a = lt[k] || 0, b = rt[k] || 0;
+      // la primera vez en un dispositivo manda la nube, salvo lo que cambiaste acá después
+      const useLocal = firstTime ? a > b : (a > b || (a === b && !(k in remote)));
+      out[k] = useLocal && k in local ? local[k] : (k in remote ? remote[k] : local[k]);
+      t[k] = Math.max(a, b);
+    });
+    out._t = t; return out;
+  }
+  async function syncNow() {
+    const sb = cloud.sb; if (!sb || !cloud.uid) return;
+    if (cloud.busy) { cloud.again = true; return; }
+    if (!navigator.onLine) { cloud.state = 'offline'; renderCloud(); return; }
+    cloud.busy = true; cloud.state = 'syncing'; renderCloud();
+    try {
+      const { data, error } = await sb.from(SB_TABLE).select('data').eq('user_id', cloud.uid).maybeSingle();
+      if (error) throw error;
+      const remote = data && data.data, first = S._uid !== cloud.uid;
+      let merged = S;
+      if (remote) { merged = mergeState(mergeStates(S, mergeState(remote), first)); dailyReset(merged); }
+      const strip = o => { const c = { ...o }; delete c._t; delete c._uid; return canon(c); };
+      if (merged !== S) { if (strip(merged) !== strip(S)) applyState(merged); else S._t = merged._t; }
+      S._uid = cloud.uid; saveLocal();
+      const out = { ...S }; delete out._uid;
+      if (!remote || canon(out) !== canon(remote)) {
+        const up = await sb.from(SB_TABLE).upsert({ user_id: cloud.uid, data: out, updated_at: new Date().toISOString() });
+        if (up.error) throw up.error;
+      }
+      await syncPhotos();
+      cloud.last = Date.now(); cloud.state = 'ok'; cloud.msg = '';
+    } catch (e) {
+      cloud.state = 'error';
+      cloud.msg = /relation|does not exist|schema cache/i.test(e.message || '') ? 'Falta crear la tabla: corré setup.sql en tu proyecto.' : (e.message || 'No se pudo sincronizar');
+    } finally {
+      cloud.busy = false; renderCloud();
+      if (cloud.again) { cloud.again = false; cloudSoon(400); }
+    }
+  }
+  function applyState(m) {
+    S = m; saveLocal(); wasFull = null; lastStage = null;
+    bootRender(); resnap(); saveLocal();
+  }
+  // fotos: S.photos es la lista sincronizada; la cola guarda lo que falta subir
+  const upq = { get: () => { try { return JSON.parse(localStorage.getItem('mlos-upq')) || []; } catch (e) { return []; } }, set: a => { try { localStorage.setItem('mlos-upq', JSON.stringify([...new Set(a)])); } catch (e) {} } };
+  const photoPath = k => `${cloud.uid}/${k}.jpg`;
+  function trackPhoto(key, has) {
+    S.photos = S.photos || [];
+    if (has) { if (!S.photos.includes(key)) S.photos.push(key); upq.set([...upq.get().filter(k => k !== '-' + key), key]); }
+    else { S.photos = S.photos.filter(k => k !== key); upq.set([...upq.get().filter(k => k !== key), '-' + key]); }
+    save();
+  }
+  async function syncPhotos() {
+    const sb = cloud.sb; if (!sb || !cloud.uid) return;
+    const st = sb.storage.from(SB_BUCKET);
+    for (const k of upq.get()) {
+      try {
+        if (k.startsWith('-')) await st.remove([photoPath(k.slice(1))]);
+        else { const all = await IDB.all(); if (all[k]) { const r = await st.upload(photoPath(k), all[k], { upsert: true, contentType: 'image/jpeg' }); if (r.error) throw r.error; } }
+        upq.set(upq.get().filter(x => x !== k));
+      } catch (e) { if (/bucket|not found/i.test(e.message || '')) cloud.msg = 'Falta el bucket de fotos: corré setup.sql.'; break; }
+    }
+    let got = 0;
+    for (const k of S.photos || []) {
+      if (PH[k]) continue;
+      try { const { data, error } = await st.download(photoPath(k)); if (error || !data) continue; await IDB.put(k, data); PH[k] = URL.createObjectURL(data); got++; } catch (e) {}
+    }
+    // borrar acá lo que se borró en otro dispositivo
+    const pending = new Set(upq.get());
+    for (const k of Object.keys(PH)) if (!(S.photos || []).includes(k) && !pending.has(k)) { URL.revokeObjectURL(PH[k]); delete PH[k]; IDB.del(k).catch(() => {}); got++; }
+    if (got) { renderMeals(); renderGarments(); renderLook(); renderLooks(); renderRecipes(); renderVision(); renderWornCal(); }
+  }
+  addEventListener('online', () => cloudSoon(300));
+  addEventListener('offline', () => { if (cloud.uid) { cloud.state = 'offline'; renderCloud(); } });
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') cloudSoon(200); });
+  setInterval(() => { if (document.visibilityState === 'visible') cloudSoon(0); }, 60000);
+
+  const ago = t => { if (!t) return 'todavía no'; const s = Math.round((Date.now() - t) / 1000); return s < 60 ? 'recién' : s < 3600 ? `hace ${Math.round(s / 60)} min` : `hace ${Math.round(s / 3600)} h`; };
+  const CLOUD_TXT = { off: 'sin conectar', connecting: 'conectando…', out: 'sin sesión', syncing: 'sincronizando…', ok: 'sincronizado', offline: 'sin internet', error: 'con un problema' };
+  function renderCloud() {
+    const b = $('#cloudBtn'); if (b) { b.className = 'press icon-btn cloud-btn ' + ({ ok: 'ok', syncing: 'busy', connecting: 'busy', error: 'err', offline: 'err' }[cloud.state] || ''); b.setAttribute('aria-label', 'Sincronización: ' + CLOUD_TXT[cloud.state]); }
+    const chip = $('#cloudChip'); if (chip) chip.textContent = CLOUD_TXT[cloud.state];
+    const box = $('#cloud'); if (!box) return;
+    const cfg = sbCfg(), msg = cloud.msg ? `<p class="note-sm" style="color:var(--rose-ink)">${esc(cloud.msg)}</p>` : '';
+    if (!cfg) {
+      box.innerHTML = `<div class="set-row"><span class="rem-ic">${ICON('cloud')}</span><div class="txt"><b>Conectá tu Supabase</b><small>Para tener tus datos en el celular, la tablet y la compu</small></div></div>
+        <label class="lb" for="sbUrl">Project URL</label><input class="field" id="sbUrl" placeholder="https://xxxx.supabase.co" autocomplete="off" spellcheck="false">
+        <label class="lb" for="sbKey">Clave pública (anon o publishable)</label><input class="field" id="sbKey" placeholder="eyJhbGciOi… o sb_publishable_…" autocomplete="off" spellcheck="false">
+        <button class="btn rose" type="button" id="sbSave">${ICON('cloud')}Conectar</button>
+        <p class="note-sm">Los encontrás en Supabase, en Project Settings → API. También podés escribirlos una sola vez en <b>config.js</b> y así sirven en todos tus dispositivos.</p>`;
+      return;
+    }
+    if (cloud.state === 'connecting') { box.innerHTML = `<p class="note-sm">Conectando con tu Supabase…</p>`; return; }
+    if (!cloud.uid) {
+      box.innerHTML = `<div class="set-row"><span class="rem-ic">${ICON('cloud')}</span><div class="txt"><b>Entrá con tu cuenta</b><small>Usá el mismo email y contraseña en todos tus dispositivos</small></div></div>
+        <input class="field" id="sbEmail" type="email" placeholder="Tu email" autocomplete="email" aria-label="Email">
+        <input class="field" id="sbPass" type="password" placeholder="Contraseña (mínimo 6)" autocomplete="current-password" aria-label="Contraseña">
+        <div class="sheet-btns" style="margin:0"><button class="btn" type="button" id="sbUp">Crear cuenta</button><button class="btn rose" type="button" id="sbIn">Entrar</button></div>
+        <div style="display:flex;justify-content:space-between;gap:10px"><button class="link" type="button" id="sbForgot">Olvidé mi contraseña</button>${cfg.fromFile ? '' : '<button class="link" type="button" id="sbReset" style="color:var(--muted)">Cambiar proyecto</button>'}</div>${msg}`;
+      return;
+    }
+    box.innerHTML = `<div class="set-row"><span class="rem-ic">${ICON('cloud')}</span><div class="txt"><b>${esc(cloud.email)}</b><small>${CLOUD_TXT[cloud.state][0].toUpperCase() + CLOUD_TXT[cloud.state].slice(1)} · última vez ${ago(cloud.last)}</small></div></div>
+      <div class="sheet-btns" style="margin:0"><button class="btn" type="button" id="sbOut">Cerrar sesión</button><button class="btn rose" type="button" id="sbNow">${ICON('reset')}Sincronizar</button></div>${msg}
+      <p class="note-sm">Lo que hacés acá aparece en tus otros dispositivos en menos de un minuto. Sin internet se guarda igual y se sube cuando volvés a tener conexión.</p>`;
+  }
+  async function authCall(fn, okMsg) {
+    try { const r = await fn(); if (r.error) throw r.error; if (okMsg) toast(okMsg); return r; }
+    catch (e) {
+      const m = e.message || '';
+      cloud.msg = /invalid login/i.test(m) ? 'Email o contraseña incorrectos.' : /not confirmed/i.test(m) ? 'Confirmá tu email con el link que te llegó y volvé a entrar.' : /already registered/i.test(m) ? 'Ese email ya tiene cuenta: tocá Entrar.' : /at least 6/i.test(m) ? 'La contraseña tiene que tener al menos 6 caracteres.' : m;
+      renderCloud(); return null;
+    }
+  }
+  document.addEventListener('click', async e => {
+    const id = e.target.closest('button')?.id; if (!id || !id.startsWith('sb')) return;
+    const sb = cloud.sb, redirect = location.href.split('#')[0];
+    if (id === 'sbSave') {
+      const url = $('#sbUrl').value.trim().replace(/\/+$/, ''), anonKey = $('#sbKey').value.trim();
+      if (!/^https:\/\/.+/.test(url) || anonKey.length < 20) return toast('Revisá la dirección y la clave');
+      try { localStorage.setItem('mlos-sb', JSON.stringify({ url, anonKey })); } catch (err) {}
+      cloud.msg = ''; cloudStart(); return;
+    }
+    if (id === 'sbReset') { try { localStorage.removeItem('mlos-sb'); } catch (err) {} if (sb) await sb.auth.signOut().catch(() => {}); cloud.sb = null; cloud.uid = null; cloud.state = 'off'; renderCloud(); return; }
+    if (!sb) return;
+    const email = $('#sbEmail')?.value.trim(), password = $('#sbPass')?.value || '';
+    cloud.msg = '';
+    if (id === 'sbIn') { if (!email || !password) return toast('Escribí tu email y contraseña'); await authCall(() => sb.auth.signInWithPassword({ email, password }), '¡Entraste! Sincronizando…'); }
+    if (id === 'sbUp') {
+      if (!email || password.length < 6) return toast('Email y una contraseña de 6 o más');
+      const r = await authCall(() => sb.auth.signUp({ email, password, options: { emailRedirectTo: redirect } }));
+      if (r && !r.data.session) { cloud.msg = 'Te mandé un email para confirmar la cuenta. Tocá el link y después volvé a entrar acá.'; renderCloud(); }
+      else if (r) toast('¡Cuenta creada!');
+    }
+    if (id === 'sbForgot') { if (!email) return toast('Escribí tu email arriba'); await authCall(() => sb.auth.resetPasswordForEmail(email, { redirectTo: redirect }), 'Te mandé un email para cambiar la contraseña'); }
+    if (id === 'sbNow') { cloud.again = false; syncNow(); }
+    if (id === 'sbOut') { await sb.auth.signOut().catch(() => {}); cloud.uid = null; cloud.state = 'out'; renderCloud(); toast('Sesión cerrada. Tus datos siguen en este dispositivo'); }
+  });
+  function newPasswordSheet() {
+    sheet(`<h3>Nueva contraseña</h3><input class="field" id="npw" type="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" aria-label="Nueva contraseña"><div class="sheet-btns"><button class="btn" type="button" data-close>Después</button><button class="btn rose" type="button" id="npwSave">Guardar</button></div>`, () => {
+      $('#npwSave').addEventListener('click', async () => { const password = $('#npw').value; if (password.length < 6) return toast('Mínimo 6 caracteres'); const r = await authCall(() => cloud.sb.auth.updateUser({ password }), 'Contraseña cambiada'); if (r) closeSheet(); });
+    });
+  }
 
   let curView = 'hoy';
   function onView(v) { curView = v; ({ ejercicio: renderWorkExtras, diario: renderDiary, plata: renderFin, skin: renderSkin, metas: renderVision, ajustes: renderSettings, comida: renderRecipes, sueno: () => { renderSounds(); renderAlarm(); }, closet: renderClosetExtras })[v]?.(); }
@@ -2923,7 +3132,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   $('#themeBtn').addEventListener('click', () => { setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); buzz(8); });
 
   function bootRender() { renderChecklist(); renderWorkout(); renderWater(); renderMeals(); renderPlate(); renderGroceries(); renderSleep(); renderHabits(); renderDeck(); renderLook(); renderGarments(); renderLooks(); drawPomo(); renderCard(); renderSubjects(); renderStudyTasks(); bootExtras(); }
-  bootRender(); save();
+  bootRender(); resnap(); saveLocal(); cloudStart();
   go('hoy');
 })();
 </script>

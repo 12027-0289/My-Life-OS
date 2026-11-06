@@ -1,6 +1,6 @@
 # My Life OS
 
-Una app para organizar toda tu vida desde un solo lugar: checklist diario, ejercicio, alimentación, sueño, hábitos, tips, closet y estudio.
+Una app para organizar toda tu vida desde un solo lugar: checklist diario, ejercicio, alimentación, sueño, hábitos, ánimo y diario, plata, skincare, closet, metas, estudio y tips. Se instala en el celular y funciona sin internet.
 
 Este repositorio contiene, por ahora, el **diseño visual y un prototipo navegable**.
 
@@ -37,15 +37,37 @@ Tocá **Go Live** (Live Server). Abre la carpeta y te lleva directo a la app.
 | G | **Closet** | **Probador**: pasá prendas con las flechas o deslizando (arriba, abajo, zapatos, extra), "Sorprendeme" como tragamonedas y "Guardar look". Ropa por tipo y agregar prendas. |
 | H | **Tips** | **Mazo de cartas**: deslizá → para guardar, ← para pasar, botón para volver. Filtros por categoría y lista de favoritos. |
 
+| I | **Ánimo y diario** | Cómo te sentís (5 florcitas), diario del día y "tres cosas lindas". Cruza tu ánimo con el sueño, el ejercicio y el agua ("los días que dormís 7½ h o más tu ánimo es 4,3") y muestra un gráfico de 14 días. |
+| J | **Plata** | Gastos del día por categoría, presupuesto del mes con lo que te queda por día, gastos del mes por categoría y metas de ahorro. |
+| K | **Skincare** | Rutina de mañana y de noche armada con tus productos (tipo, cuándo lo usás y color del frasco), con racha de días completos. |
+| L | **Metas** | Tablero de sueños con frases o fotos por categoría. "¡Lo logré!" las marca con confeti. |
+| M | **Ajustes** | Tu nombre, la paleta de colores, modo noche, recordatorios e instalar la app. |
+
+**Lo que se sumó a cada sección**
+- **Hoy**: te saluda por tu nombre; **Florcita**, una plantita que crece de semilla a flor según cuánto te cuidás en el día y sube de nivel con cada cosa que completás; elegir tu ánimo con un toque.
+- **Ejercicio**: crear y editar tus propias rutinas y elegir cuál toca cada día; anotar peso y repeticiones de cada ejercicio con gráfico de progreso y récord; calendario de entrenos con racha.
+- **Comida**: foto de cada comida; recetas con foto e ingredientes; menú de la semana (almuerzo y cena) y un botón que pasa todos los ingredientes a la lista del súper.
+- **Sueño**: sonidos para dormir (lluvia, olas, ruido blanco, ruido marrón) con temporizador y volumen; alarma; siesta de 20, 30 o 90 minutos.
+- **Closet**: fotos reales de tu ropa (y editar o borrar prendas); calendario de qué te pusiste cada día; lista de deseos con prioridad que, al comprar, la suma al closet.
+
 La barra de abajo flota y tiene **Hoy · Ejercicio · Comida · Sueño · Más**; en **Más** están Hábitos, Aprender, Closet y Tips.
 
-Todo se guarda en el navegador (localStorage). Lo diario (checklist, agua, comidas, ejercicio, rutina de noche, estudio) se reinicia cada día; los hábitos, cada semana.
+Todo se guarda en el navegador (localStorage; las fotos, achicadas, en IndexedDB). La primera vez te pregunta tu nombre y tus colores. Lo diario (checklist, agua, comidas, ejercicio, rutina de noche, estudio) se reinicia cada día; los hábitos, cada semana.
+
+## Instalarla en el celular
+
+La app es una PWA: tiene `manifest.webmanifest`, íconos y un service worker (`sw.js`) que la guarda para usarla sin internet.
+
+1. Abrila desde un servidor, no como archivo: con **Go Live** (Live Server) en la compu, o subida a cualquier hosting con https (por ejemplo GitHub Pages).
+2. **iPhone**: en Safari, Compartir → "Agregar a inicio". **Android**: en Chrome, menú ⋮ → "Instalar app". También aparece un botón "Instalar" en Ajustes.
+
+**Recordatorios**: en Ajustes activás los avisos y elegís agua (cada 1, 2 o 3 h), hora de dormir, hábitos, skincare de noche y fin del pomodoro. La alarma y la siesta suenan con la app abierta. Los avisos llegan mientras la app está abierta o recién minimizada; para que lleguen con la app cerrada del todo hace falta un servidor de notificaciones push, que esta versión no tiene.
 
 ## Sistema visual
 
 **Soft-UI + vidrio**: detrás, manchas de color difuminadas que se mueven despacio (como el fondo de la paleta) y cambian de tono según la sección. Encima, tarjetas de crema esmerilada. Adentro, controles Soft-UI que se levantan con dos sombras y se hunden al tocarlos.
 
-**Paleta**
+**Paletas**: se elige en Ajustes (o al empezar). La de por defecto es la de abajo; también están **Lavanda y cielo**, **Durazno y oliva** y **Cielo y menta**. Cada paleta define sus colores base y el resto (tonos suaves, sombras, manchas del fondo y modo noche) se calcula a partir de ellos.
 
 | Nombre | Hex | Tinta | Uso |
 |---|---|---|---|

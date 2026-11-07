@@ -746,6 +746,8 @@ textarea.field { resize: none; font: inherit; line-height: 1.5; }
 .meal .pen { position: absolute; right: 48px; bottom: 10px; width: 32px; height: 32px; border-radius: 50%; border: 0; padding: 0; display: grid; place-items: center; background: color-mix(in srgb, var(--card) 75%, transparent); box-shadow: var(--raise-sm); z-index: 2; color: var(--muted); }
 .meal .pen svg { width: 15px; height: 15px; }
 .kcal-card { display: flex; flex-direction: column; gap: 10px; }
+.push-box { display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 18px; box-shadow: var(--inset-sm); }
+.push-box small { display: block; }
 .kcal-big { display: flex; align-items: baseline; gap: 8px; }
 .kcal-big .num { font-family: var(--display); font-weight: 900; font-stretch: 62%; font-size: 52px; line-height: .9; }
 .kcal-big small { font-weight: 800; color: var(--muted); }
@@ -1343,7 +1345,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
               <div class="set-row"><span class="rem-ic"><svg><use href="#i-bell"/></svg></span><div class="txt"><b id="notifState">…</b><small>Avisos en tu celular o compu</small></div></div>
               <div class="sheet-btns" style="margin:0"><button class="btn rose" type="button" id="notifBtn">Activar avisos</button><button class="btn" type="button" id="notifTest">Probar</button></div>
               <div class="rem-list" id="remList"></div>
-              <p class="note-sm">Los avisos llegan mientras la app está abierta o recién minimizada. Para que lleguen con la app cerrada del todo hace falta un servidor, y esta versión todavía no tiene.</p>
+              <div id="pushBox" class="push-box"></div>
             </div>
             <div class="sec"><h3>Sincronizar</h3><span class="wide" id="cloudChip">sin conectar</span></div>
             <div class="glass pad" id="cloud" style="display:flex;flex-direction:column;gap:10px"></div>
@@ -2856,6 +2858,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   }
   const REMS = [['agua', 'Tomar agua', 'drop', 'every'], ['dormir', 'Hora de ir a dormir', 'moon', 't'], ['habitos', 'Marcar mis hábitos', 'leaf', 't'], ['skin', 'Skincare de noche', 'drop', 't'], ['pomodoro', 'Cuando termina un pomodoro', 'timer', null]];
   function checkReminders(d, hm) {
+    if (pushOn()) return; // ya los manda el servidor, aunque la app esté cerrada
     const fire = k => { if (S.fired[k]) return false; S.fired[k] = 1; save(); return true; }, mins = d.getHours() * 60 + d.getMinutes(), R_ = S.rem;
     if (R_.agua.on && mins >= 540 && mins <= 1260 && S.water < 8) { const per = R_.agua.every * 60, slot = Math.floor((mins - 540) / per); if (slot >= 1 && (mins - 540) % per < 2 && fire(`agua-${todayKey}-${slot}`)) notify('Hora de tomar agua', `Vas ${S.water} de 8 vasos`, 'agua'); }
     if (R_.dormir.on && hm === R_.dormir.t && fire('dormir-' + todayKey)) notify('Hora de ir a dormir', 'Celular lejos y luces bajas. Mañana te lo agradecés.', 'dormir');
@@ -2889,7 +2892,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     $('#instState').textContent = standalone ? 'Ya la estás usando como app' : installEvt ? 'Lista para instalar' : location.protocol === 'file:' ? 'Abrila con Live Server para instalarla' : 'Instalala desde tu navegador';
     $('#instSub').textContent = swReady || (navigator.serviceWorker && navigator.serviceWorker.controller) ? 'Funciona sin internet' : 'Una vez instalada, funciona sin internet';
     $('#instBtn').hidden = !installEvt;
-    renderCloud();
+    renderCloud(); renderPushBox();
   }
   $('#setName').addEventListener('input', e => { S.profile.name = e.target.value.trim(); renderGreet(); clearTimeout(jT); jT = setTimeout(save, 400); });
   $('#darkSw').addEventListener('click', () => { setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); renderSettings(); buzz(8); });
@@ -3192,6 +3195,53 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     if (!kcal) { const r = await estimateKcal({ text: t, meal: 'Snack' }); if (r && r.total) { item.kcal = r.total; save(); renderKcal(); toast(`${t}: ≈ ${r.total} kcal`); } }
   });
   $('#snacks').addEventListener('click', e => { const d = e.target.closest('[data-snackdel]'); if (!d) return; S.snacks = S.snacks.filter(x => x.id !== d.dataset.snackdel); save(); renderKcal(); });
+
+  /* ---------- Avisos con la app cerrada (Web Push, función "avisos") ---------- */
+  const pushOK = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window && /^https?:$/.test(location.protocol);
+  const isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const installedApp = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const pushOn = () => { try { return !!localStorage.getItem('mlos-push'); } catch (e) { return false; } };
+  const keyBytes = b64 => { const t = b64.replace(/-/g, '+').replace(/_/g, '/'), bin = atob(t + '==='.slice((t.length + 3) % 4)); return Uint8Array.from(bin, c => c.charCodeAt(0)); };
+  function renderPushBox() {
+    const box = $('#pushBox'); if (!box) return;
+    let txt, btns = '';
+    if (pushOn()) { txt = '<b>Avisos con la app cerrada: activados ✓</b><small>Te llegan aunque cierres la app. Los horarios de abajo se aplican solos.</small>'; btns = '<button class="btn" type="button" id="pushOff">Desactivar</button><button class="btn sage" type="button" id="pushTest">Probar</button>'; }
+    else if (!sbCfg() || !cloud.uid) txt = '<b>Avisos con la app cerrada</b><small>Para recibirlos aunque cierres la app, primero entrá en <b>Sincronizar</b> (abajo).</small>';
+    else if (isIOS && !installedApp()) txt = '<b>Avisos con la app cerrada</b><small>En iPhone y iPad funcionan con la app instalada: Compartir → <b>Agregar a inicio</b>, abrila desde el ícono y activalos acá.</small>';
+    else if (!pushOK()) txt = '<b>Avisos con la app cerrada</b><small>Este navegador no los permite. Mientras la app esté abierta, igual te aviso.</small>';
+    else { txt = '<b>Avisos con la app cerrada</b><small>Activalos para que te lleguen siempre, aunque la app esté cerrada.</small>'; btns = '<button class="btn rose" type="button" id="pushOnBtn" style="grid-column:1/-1">' + ICON('bell') + 'Activar avisos con la app cerrada</button>'; }
+    box.innerHTML = `<div class="set-row"><span class="rem-ic">${ICON('bell')}</span><div class="txt">${txt}</div></div>${btns ? `<div class="sheet-btns" style="margin:0">${btns}</div>` : ''}`;
+  }
+  async function pushEnable() {
+    if (!cloud.uid) return toast('Primero entrá en Sincronizar');
+    if (isIOS && !installedApp()) return toast('Primero instalala: Compartir → Agregar a inicio');
+    if (!pushOK()) return toast('Este navegador no permite avisos con la app cerrada');
+    const perm = await Notification.requestPermission(); renderSettings();
+    if (perm !== 'granted') return toast('Necesito tu permiso para mandarte avisos');
+    try {
+      const k = await cloud.sb.functions.invoke('avisos', { body: { action: 'key' } });
+      if (k.error || !k.data || !k.data.publicKey) throw new Error('sin clave');
+      const reg = await navigator.serviceWorker.ready;
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(k.data.publicKey) });
+      const r = await cloud.sb.functions.invoke('avisos', { body: { action: 'subscribe', subscription: sub.toJSON(), tz: Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/Costa_Rica' } });
+      if (r.error) throw r.error;
+      try { localStorage.setItem('mlos-push', sub.endpoint); } catch (e) {}
+      renderSettings(); toast('¡Listo! Te van a llegar aunque cierres la app');
+      cloud.sb.functions.invoke('avisos', { body: { action: 'test' } }).catch(() => {});
+    } catch (e) { toast('No pude activarlos. ¿Ya publicaste la función "avisos"?'); }
+  }
+  async function pushDisable() {
+    try { const reg = await navigator.serviceWorker.ready, sub = await reg.pushManager.getSubscription(); if (sub) { if (cloud.sb) cloud.sb.functions.invoke('avisos', { body: { action: 'unsubscribe', endpoint: sub.endpoint } }).catch(() => {}); await sub.unsubscribe(); } } catch (e) {}
+    try { localStorage.removeItem('mlos-push'); } catch (e) {}
+    renderSettings(); toast('Avisos con la app cerrada desactivados');
+  }
+  document.addEventListener('click', e => {
+    const b = e.target.closest('#pushOnBtn, #pushOff, #pushTest'); if (!b) return;
+    if (b.id === 'pushOnBtn') pushEnable();
+    if (b.id === 'pushOff') pushDisable();
+    if (b.id === 'pushTest' && cloud.sb) cloud.sb.functions.invoke('avisos', { body: { action: 'test' } }).then(r => toast(r.error ? 'No se pudo mandar la prueba' : 'Te mandé un aviso de prueba')).catch(() => toast('No se pudo mandar la prueba'));
+  });
   let curView = 'hoy';
   function onView(v) { curView = v; ({ ejercicio: renderWorkExtras, diario: renderDiary, plata: renderFin, skin: renderSkin, metas: renderVision, ajustes: renderSettings, comida: renderRecipes, sueno: () => { renderSounds(); renderAlarm(); }, closet: renderClosetExtras })[v]?.(); }
   function bootExtras() {

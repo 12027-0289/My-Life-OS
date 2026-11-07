@@ -87,7 +87,14 @@ La app es una PWA: tiene `manifest.webmanifest`, íconos y un service worker (`s
 1. Abrila desde un servidor, no como archivo: con **Go Live** (Live Server) en la compu, o subida a cualquier hosting con https (por ejemplo GitHub Pages).
 2. **iPhone**: en Safari, Compartir → "Agregar a inicio". **Android**: en Chrome, menú ⋮ → "Instalar app". También aparece un botón "Instalar" en Ajustes.
 
-**Recordatorios**: en Ajustes activás los avisos y elegís agua (cada 1, 2 o 3 h), hora de dormir, hábitos, skincare de noche y fin del pomodoro. La alarma y la siesta suenan con la app abierta. Los avisos llegan mientras la app está abierta o recién minimizada; para que lleguen con la app cerrada del todo hace falta un servidor de notificaciones push, que esta versión no tiene.
+**Recordatorios**: en Ajustes elegís agua (cada 1, 2 o 3 h), hora de dormir, hábitos y skincare de noche. Con la app abierta te avisa siempre. Para que te lleguen **con la app cerrada** (gratis, con Web Push):
+
+1. Supabase → **Edge Functions** → **Deploy a new function** → *Via Editor* → nombre `avisos` → pegá [`supabase/functions/avisos/index.ts`](supabase/functions/avisos/index.ts) → **Deploy**.
+2. En esa función → **Details** (o *Settings*) → apagá **Enforce JWT verification** / *Verify JWT* y guardá. Así el reloj automático la puede llamar; la función igual pide tu sesión para todo lo personal.
+3. **SQL Editor** → pegá [`supabase/avisos.sql`](supabase/avisos.sql) → **Run**. Crea las tablas y un reloj (pg_cron) que cada minuto manda los avisos que toquen.
+4. En cada dispositivo, con la sesión iniciada: **Ajustes → Recordatorios → Activar avisos con la app cerrada** (en iPhone/iPad, desde la app instalada con "Agregar a inicio", iOS 16.4 o más nuevo). Llega un aviso de prueba.
+
+Los avisos se arman con lo que la app ya sincroniza (si ya tomaste los 8 vasos, no te avisa del agua). La alarma también te llega como aviso; el sonido de la alarma y el fin del pomodoro siguen necesitando la app abierta.
 
 ## Sistema visual
 

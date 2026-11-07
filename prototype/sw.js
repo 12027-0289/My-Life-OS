@@ -1,5 +1,5 @@
 // My Life OS: guarda la app para usarla sin internet y muestra los avisos.
-const CACHE = 'mlos-v5';
+const CACHE = 'mlos-v6';
 const SHELL = ['./index.html', './config.js', './vendor/supabase.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -20,6 +20,12 @@ self.addEventListener('fetch', e => {
     // tipografías: primero la copia guardada
     e.respondWith(caches.match(req).then(r => r || fetch(req).then(keep)));
   }
+});
+// avisos que manda el servidor aunque la app esté cerrada
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (err) { d = { body: e.data ? e.data.text() : '' }; }
+  e.waitUntil(self.registration.showNotification(d.title || 'My Life OS', { body: d.body || '', tag: d.tag || undefined, icon: 'icon-192.png', badge: 'icon-192.png' }));
 });
 self.addEventListener('notificationclick', e => {
   e.notification.close();

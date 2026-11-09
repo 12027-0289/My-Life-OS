@@ -748,6 +748,15 @@ textarea.field { resize: none; font: inherit; line-height: 1.5; }
 .kcal-card { display: flex; flex-direction: column; gap: 10px; }
 .push-box { display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 18px; box-shadow: var(--inset-sm); }
 .push-box small { display: block; }
+.bell-btn { position: relative; }
+.bell-btn i { position: absolute; top: -3px; right: -3px; min-width: 18px; height: 18px; border-radius: 9px; padding: 0 5px; background: var(--rose); color: var(--rose-ink); font-style: normal; font-size: 11px; font-weight: 900; display: none; place-items: center; line-height: 18px; }
+.bell-btn.has i { display: grid; }
+.bell-btn.has svg { color: var(--rose-ink); }
+:root[data-theme="dark"] .bell-btn.has svg { color: var(--rose); }
+.rem-edit { border: 0; background: none; padding: 0; text-align: left; color: inherit; font: inherit; cursor: pointer; }
+#skinDays .wd .num { font-size: 13px; color: var(--muted); }
+#skinDays .wd[aria-pressed="true"] .num { color: var(--rose-ink); }
+#mrDays .wd { padding: 11px 0; font-size: 13px; }
 .kcal-big { display: flex; align-items: baseline; gap: 8px; }
 .kcal-big .num { font-family: var(--display); font-weight: 900; font-stretch: 62%; font-size: 52px; line-height: .9; }
 .kcal-big small { font-weight: 800; color: var(--muted); }
@@ -1127,7 +1136,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 
           <!-- ===== COMIDA ===== -->
           <section class="view" data-view="comida" hidden>
-            <div class="top"><div><span class="wide">Sección alimenticia</span><h2>Comida</h2></div></div>
+            <div class="top"><div><span class="wide">Sección alimenticia</span><h2>Comida</h2></div><button class="press icon-btn bell-btn" type="button" data-rembell="agua" aria-label="Recordatorios de agua"><svg><use href="#i-bell"/></svg><i></i></button></div>
             <div class="glass water">
               <button class="glass-svg" type="button" id="glassBtn" aria-label="Sumar un vaso de agua">
                 <svg viewBox="0 0 100 140" aria-hidden="true">
@@ -1206,7 +1215,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 
           <!-- ===== HÁBITOS ===== -->
           <section class="view" data-view="habitos" hidden>
-            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Hábitos</h2></div></div>
+            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Hábitos</h2></div><button class="press icon-btn bell-btn" type="button" data-rembell="habitos" aria-label="Recordatorios de hábitos"><svg><use href="#i-bell"/></svg><i></i></button></div>
             <div class="glass heat"><div><span class="wide muted">Esta semana</span><b class="num" id="habPct">0%</b><small id="habSum">0 de 0</small></div><div class="heat-grid" id="heat"></div></div>
             <p class="hint" style="margin:0">Mantené apretada la flor para marcar hoy</p>
             <div class="list" id="habits" style="gap:16px"></div>
@@ -1253,7 +1262,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 
           <!-- ===== APRENDER ===== -->
           <section class="view" data-view="aprender" hidden>
-            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Aprender</h2></div></div>
+            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Aprender</h2></div><button class="press icon-btn bell-btn" type="button" data-rembell="aprender" aria-label="Recordatorios de estudio"><svg><use href="#i-bell"/></svg><i></i></button></div>
             <div class="glass pomo" id="pomo">
               <div class="presets" id="presets"></div>
               <div class="pomo-ring"><svg viewBox="0 0 194 194" aria-hidden="true"><circle class="tr" cx="97" cy="97" r="86"/><circle class="fg" id="pomoRing" cx="97" cy="97" r="86"/></svg><div class="pomo-time"><span class="num" id="pomoTime">25:00</span><span class="wide" id="pomoMode">Foco</span></div></div>
@@ -1317,17 +1326,19 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
 
           <!-- ===== SKINCARE ===== -->
           <section class="view" data-view="skin" hidden>
-            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Skincare</h2></div></div>
+            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Skincare</h2></div><button class="press icon-btn bell-btn" type="button" data-rembell="skin" aria-label="Recordatorios de skincare"><svg><use href="#i-bell"/></svg><i></i></button></div>
             <div class="segmented" id="skinSeg"><button type="button" data-seg="am"><svg><use href="#i-sun"/></svg>Mañana</button><button type="button" data-seg="pm"><svg><use href="#i-moon"/></svg>Noche</button></div>
+            <div class="week-days" id="skinDays"></div>
             <div class="hero sage tilt"><svg class="daisy"><use href="#i-daisy"/></svg><span class="wide" id="skinWhen">Rutina de mañana</span><h3 id="skinCount">0/0 pasos</h3><p id="skinStreak"></p></div>
             <div class="list" id="skinSteps"></div>
+            <button class="btn" type="button" id="skinEditDay"><svg><use href="#i-edit"/></svg><span>Armar la rutina de este día</span></button>
             <div class="sec"><h3>Mis productos</h3><span class="wide" id="prodCount"></span></div>
             <div class="prods" id="prods"></div>
           </section>
 
           <!-- ===== METAS ===== -->
           <section class="view" data-view="metas" hidden>
-            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Metas</h2></div><button class="press icon-btn" type="button" id="addVb" aria-label="Agregar meta"><svg><use href="#i-plus"/></svg></button></div>
+            <div class="top"><div><button class="back" type="button" data-go="mas"><svg><use href="#i-back"/></svg>Más</button><h2>Metas</h2></div><div style="display:flex;gap:10px"><button class="press icon-btn bell-btn" type="button" data-rembell="metas" aria-label="Recordatorios de metas"><svg><use href="#i-bell"/></svg><i></i></button><button class="press icon-btn" type="button" id="addVb" aria-label="Agregar meta"><svg><use href="#i-plus"/></svg></button></div></div>
             <div class="glass vb-top"><div class="row-head"><b id="vbCount">0 de 0 logradas</b><span class="wide muted">mi tablero</span></div><div class="bar-in" style="margin-top:10px"><i id="vbBar" style="width:0;background:var(--rose)"></i></div></div>
             <div class="chips" id="vbCats"></div>
             <div class="vboard" id="vboard"></div>
@@ -1345,6 +1356,8 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
               <div class="set-row"><span class="rem-ic"><svg><use href="#i-bell"/></svg></span><div class="txt"><b id="notifState">…</b><small>Avisos en tu celular o compu</small></div></div>
               <div class="sheet-btns" style="margin:0"><button class="btn rose" type="button" id="notifBtn">Activar avisos</button><button class="btn" type="button" id="notifTest">Probar</button></div>
               <div class="rem-list" id="remList"></div>
+              <div class="row-head" style="margin-top:6px"><b style="font-size:20px">Mis recordatorios</b><button class="link" type="button" id="addRem">+ Nuevo</button></div>
+              <div class="rem-list" id="myRemList"></div>
               <div id="pushBox" class="push-box"></div>
             </div>
             <div class="sec"><h3>Sincronizar</h3><span class="wide" id="cloudChip">sin conectar</span></div>
@@ -2211,7 +2224,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
       fin: { budget: 0, exp: [], goals: [] },
       skin: { products: [], done: { am: [], pm: [] }, log: {} },
       rem: { agua: { on: true, every: 2 }, dormir: { on: true, t: '23:00' }, habitos: { on: true, t: '20:30' }, skin: { on: false, t: '22:00' }, pomodoro: { on: true } },
-      fired: {}, sound: { vol: 60, timer: 30 }, alarm: { on: false, t: '07:00' }, myTips: []
+      fired: {}, sound: { vol: 60, timer: 30 }, alarm: { on: false, t: '07:00' }, myTips: [], myRems: []
     };
   }
 
@@ -2756,22 +2769,51 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
   const SKIN_COLORS = ['#F3EADF', '#E7C9C3', '#C9908F', '#9CAF98', '#B5C8D2', '#DCD3EA', '#F0D2BF', '#F5E6B8'];
   const WHEN = { am: 'mañana', pm: 'noche', both: 'mañana y noche' };
   let skinSeg = now.getHours() < 15 ? 'am' : 'pm';
-  const skinList = seg => S.skin.products.filter(p => p.when === seg || p.when === 'both');
+  // cada producto puede ir solo algunos días (p.days.am / p.days.pm = lista de días 0=lunes … 6=domingo)
+  const usesOn = (p, seg, d) => (p.when === seg || p.when === 'both') && (!p.days || !p.days[seg] || p.days[seg].includes(d));
+  const skinList = (seg, d = todayIdx) => S.skin.products.filter(p => usesOn(p, seg, d));
+  let skinDay = todayIdx;
   const skinLeft = seg => skinList(seg).filter(p => !S.skin.done[seg].includes(p.id)).length;
   function skinFrac() { const a = skinList('am'), p = skinList('pm'), t = a.length + p.length; return t ? (a.filter(x => S.skin.done.am.includes(x.id)).length + p.filter(x => S.skin.done.pm.includes(x.id)).length) / t : 0; }
   function skinStreak() { let s = 0; for (let i = 0; i < 400; i++) { const v = i === 0 ? skinFrac() : S.skin.log[daysAgo(i)]; if (v >= 1) s++; else if (i > 0) break; } return s; }
   const bottle = c => `<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="19" y="4" width="10" height="7" rx="2" fill="var(--taupe)"/><path d="M16 11h16a4 4 0 0 1 4 4v25a4 4 0 0 1-4 4H16a4 4 0 0 1-4-4V15a4 4 0 0 1 4-4z" fill="${c}" stroke="rgba(60,40,38,.3)" stroke-width="1.4"/><rect x="17" y="21" width="14" height="11" rx="3" fill="rgba(255,255,255,.65)"/></svg>`;
   function renderSkin() {
     $$('#skinSeg [data-seg]').forEach(b => b.setAttribute('aria-pressed', b.dataset.seg === skinSeg));
-    const list = skinList(skinSeg), done = S.skin.done[skinSeg], st = skinStreak();
-    $('#skinWhen').textContent = skinSeg === 'am' ? 'Rutina de mañana' : 'Rutina de noche';
-    $('#skinCount').textContent = `${list.filter(p => done.includes(p.id)).length}/${list.length} pasos`;
+    const isToday = skinDay === todayIdx, list = skinList(skinSeg, skinDay), done = isToday ? S.skin.done[skinSeg] : [], st = skinStreak();
+    $('#skinDays').innerHTML = DS.map((l, i) => `<button class="wd press${i === todayIdx ? ' today' : ''}" type="button" data-skday="${i}" aria-pressed="${i === skinDay}" aria-label="${DAYS[i]}">${l}<span class="num">${skinList(skinSeg, i).length}</span></button>`).join('');
+    $('#skinWhen').textContent = `Rutina de ${skinSeg === 'am' ? 'mañana' : 'noche'} · ${isToday ? 'hoy' : DAYS[skinDay].toLowerCase()}`;
+    $('#skinCount').textContent = isToday ? `${list.filter(p => done.includes(p.id)).length}/${list.length} pasos` : `${list.length} ${list.length === 1 ? 'paso' : 'pasos'}`;
+    $('#skinEditDay span').textContent = `Elegir productos del ${DAYS[skinDay].toLowerCase()}`;
     $('#skinStreak').textContent = `${st} ${st === 1 ? 'día' : 'días'} seguidos con la rutina completa`;
-    $('#skinSteps').innerHTML = list.map((p, i) => `<div class="item${done.includes(p.id) ? ' done' : ''}"><div class="sw-fg"><span class="ex-n">${i + 1}</span><div class="txt"><b>${esc(p.n)}</b><small>${esc(p.type)}</small></div><button class="check" type="button" data-skin="${p.id}" aria-pressed="${done.includes(p.id)}" aria-label="Marcar ${esc(p.n)}">${DAISY}</button></div></div>`).join('') || '<p class="hint" style="margin:0">Agregá productos para armar tu rutina.</p>';
-    $('#prods').innerHTML = S.skin.products.map(p => `<button class="prod" type="button" data-prod="${p.id}">${bottle(p.color)}<b>${esc(p.n)}</b><small>${esc(p.type)} · ${WHEN[p.when]}</small></button>`).join('') + `<button class="prod add" type="button" id="addProd">${ICON('plus')}<b>Agregar producto</b></button>`;
+    $('#skinSteps').innerHTML = list.map((p, i) => `<div class="item${done.includes(p.id) ? ' done' : ''}"><div class="sw-fg"><span class="ex-n">${i + 1}</span><div class="txt"><b>${esc(p.n)}</b><small>${esc(p.type)}</small></div>${isToday ? `<button class="check" type="button" data-skin="${p.id}" aria-pressed="${done.includes(p.id)}" aria-label="Marcar ${esc(p.n)}">${DAISY}</button>` : ''}</div></div>`).join('')
+      || `<p class="hint" style="margin:0">${S.skin.products.length ? `Este día no tiene pasos ${skinSeg === 'am' ? 'de mañana' : 'de noche'}. Tocá “Elegir productos” para armarla.` : 'Agregá tus productos abajo para armar tu rutina.'}</p>`;
+    if (!isToday && list.length) $('#skinSteps').insertAdjacentHTML('beforeend', `<p class="hint" style="margin:0">Así queda tu rutina del ${DAYS[skinDay].toLowerCase()}. Se marca ese día.</p>`);
+    $('#prods').innerHTML = S.skin.products.map(p => `<button class="prod" type="button" data-prod="${p.id}">${bottle(p.color)}<b>${esc(p.n)}</b><small>${esc(p.type)} · ${WHEN[p.when]}${daysTxt(p)}</small></button>`).join('') + `<button class="prod add" type="button" id="addProd">${ICON('plus')}<b>Agregar producto</b></button>`;
     $('#prodCount').textContent = `${S.skin.products.length} productos`;
   }
   $('#skinSeg').addEventListener('click', e => { const b = e.target.closest('[data-seg]'); if (!b) return; skinSeg = b.dataset.seg; renderSkin(); renderCarousel(); buzz(5); });
+  $('#skinDays').addEventListener('click', e => { const b = e.target.closest('[data-skday]'); if (!b) return; skinDay = +b.dataset.skday; renderSkin(); buzz(5); });
+  const daysTxt = p => ['am', 'pm'].map(seg => p.days && p.days[seg] && (p.when === seg || p.when === 'both') ? ` · ${seg === 'am' ? 'mañanas' : 'noches'}: ${p.days[seg].length ? p.days[seg].map(d => DS[d]).join(' ') : 'ninguna'}` : '').join('');
+  $('#skinEditDay').addEventListener('click', () => {
+    const seg = skinSeg, d = skinDay, prods = S.skin.products.filter(p => p.when === seg || p.when === 'both');
+    if (!prods.length) return toast(`Primero agregá productos ${seg === 'am' ? 'de mañana' : 'de noche'} abajo`);
+    sheet(`<span class="wide muted">${seg === 'am' ? 'Mañana' : 'Noche'} del ${DAYS[d].toLowerCase()}</span><h3>¿Qué usás ese día?</h3>
+      <p class="note-sm">Prendé los productos que van el ${DAYS[d].toLowerCase()}. Ideal para los que usás solo algunos días, como el retinol o el exfoliante.</p>
+      <div class="rem-list">${prods.map(p => `<div class="rem"><span class="rem-ic" style="background:none">${bottle(p.color)}</span><div class="txt"><b>${esc(p.n)}</b><small>${esc(p.type)}</small></div><button class="switch" type="button" role="switch" data-skuse="${p.id}" aria-checked="${usesOn(p, seg, d)}" aria-label="Usar ${esc(p.n)} el ${DAYS[d].toLowerCase()}"><i></i></button></div>`).join('')}</div>
+      <div class="sheet-btns"><button class="btn" type="button" data-close>Cancelar</button><button class="btn rose" type="button" id="skDaySave">Guardar</button></div>`, b => {
+      b.addEventListener('click', e => { const sw = e.target.closest('[data-skuse]'); if (sw) { sw.setAttribute('aria-checked', sw.getAttribute('aria-checked') !== 'true'); buzz(4); } });
+      $('#skDaySave').addEventListener('click', () => {
+        $$('[data-skuse]', b).forEach(sw => {
+          const p = S.skin.products.find(x => x.id === sw.dataset.skuse), on = sw.getAttribute('aria-checked') === 'true';
+          p.days = p.days || {}; const cur = new Set(p.days[seg] || [0, 1, 2, 3, 4, 5, 6]);
+          if (on) cur.add(d); else cur.delete(d);
+          if (cur.size === 7) delete p.days[seg]; else p.days[seg] = [...cur].sort();
+          if (!Object.keys(p.days).length) delete p.days;
+        });
+        save(); closeSheet(); renderSkin(); renderCarousel(); toast(`Rutina del ${DAYS[d].toLowerCase()} guardada`);
+      });
+    });
+  });
   $('#skinSteps').addEventListener('click', e => {
     const b = e.target.closest('[data-skin]'); if (!b) return;
     const arr = S.skin.done[skinSeg], i = arr.indexOf(b.dataset.skin);
@@ -2864,6 +2906,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     if (R_.dormir.on && hm === R_.dormir.t && fire('dormir-' + todayKey)) notify('Hora de ir a dormir', 'Celular lejos y luces bajas. Mañana te lo agradecés.', 'dormir');
     if (R_.habitos.on && hm === R_.habitos.t && S.habits.some(h => !h.w[todayIdx]) && fire('hab-' + todayKey)) notify('¿Marcaste tus hábitos?', `Te faltan ${S.habits.filter(h => !h.w[todayIdx]).length} para hoy`, 'habitos');
     if (R_.skin.on && hm === R_.skin.t && skinLeft('pm') && fire('skin-' + todayKey)) notify('Skincare de noche', `${skinLeft('pm')} pasos y a dormir`, 'skin');
+    (S.myRems || []).forEach(r => { if (!r.on || !r.days.includes(todayIdx) || hm !== r.time) return; const body = remBody(r); if (body !== null && fire(`my-${r.id}-${todayKey}`)) notify(r.t, body, 'my-' + r.id); });
   }
   // reloj interno: alarma, siesta, sonidos y recordatorios
   let tickN = 0;
@@ -2892,7 +2935,7 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     $('#instState').textContent = standalone ? 'Ya la estás usando como app' : installEvt ? 'Lista para instalar' : location.protocol === 'file:' ? 'Abrila con Live Server para instalarla' : 'Instalala desde tu navegador';
     $('#instSub').textContent = swReady || (navigator.serviceWorker && navigator.serviceWorker.controller) ? 'Funciona sin internet' : 'Una vez instalada, funciona sin internet';
     $('#instBtn').hidden = !installEvt;
-    renderCloud(); renderPushBox();
+    renderCloud(); renderPushBox(); renderMyRems();
   }
   $('#setName').addEventListener('input', e => { S.profile.name = e.target.value.trim(); renderGreet(); clearTimeout(jT); jT = setTimeout(save, 400); });
   $('#darkSw').addEventListener('click', () => { setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); renderSettings(); buzz(8); });
@@ -3242,6 +3285,96 @@ details p { font-size: 13px; color: var(--muted); margin: 8px 0 0; }
     if (b.id === 'pushOff') pushDisable();
     if (b.id === 'pushTest' && cloud.sb) cloud.sb.functions.invoke('avisos', { body: { action: 'test' } }).then(r => toast(r.error ? 'No se pudo mandar la prueba' : 'Te mandé un aviso de prueba')).catch(() => toast('No se pudo mandar la prueba'));
   });
+
+  /* ---------- Mis recordatorios (los que armás vos) ---------- */
+  const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
+  const daysLabel = ds => { const k = [...ds].sort().join(''); return k === '0123456' ? 'todos los días' : k === '01234' ? 'lunes a viernes' : k === '56' ? 'fines de semana' : !ds.length ? 'ningún día' : [...ds].sort().map(d => DAYS[d].slice(0, 3).toLowerCase()).join(', '); };
+  function renderMyRems() {
+    const list = S.myRems || [], box = $('#myRemList'); if (!box) return;
+    box.innerHTML = list.map(r => `<div class="rem"><span class="rem-ic">${ICON(r.cat ? REM_CAT[r.cat].icon : 'bell')}</span><button class="txt rem-edit" type="button" data-myremedit="${r.id}" aria-label="Editar ${esc(r.t)}"><b>${esc(r.t)}</b><small>${r.time} · ${daysLabel(r.days)}${r.cat ? ' · ' + REM_CAT[r.cat].name : ''}${r.note ? ' · ' + esc(r.note) : ''}</small></button><button class="switch" type="button" role="switch" data-myrem="${r.id}" aria-checked="${!!r.on}" aria-label="${esc(r.t)}"><i></i></button></div>`).join('')
+      || '<p class="note-sm">Creá los tuyos: tomar la pastilla, llamar a mamá, sacar la basura… con la hora y los días que quieras. También desde la campanita de Comida, Hábitos, Aprender, Skincare y Metas.</p>';
+    bellCounts();
+  }
+  function myRemSheet(r, preset = {}) {
+    let days = r ? [...r.days] : [...ALL_DAYS], cat = r ? r.cat || '' : preset.cat || '', ref = r ? r.ref || '' : '';
+    const sugg = cat ? REM_CAT[cat].sugg() : [];
+    const chips = () => DS.map((l, i) => `<button class="wd press" type="button" data-rday="${i}" aria-pressed="${days.includes(i)}" aria-label="${DAYS[i]}">${l}</button>`).join('');
+    const first = !r && sugg.length ? sugg[0] : null; if (first && first.ref) ref = first.ref;
+    sheet(`${cat ? `<span class="wide muted">${REM_CAT[cat].name}</span>` : ''}<h3>${r ? 'Editar recordatorio' : 'Nuevo recordatorio'}</h3>
+      ${sugg.length > 1 ? `<div class="chips wrap" id="mrSugg">${sugg.map((x, i) => `<button class="chip press" type="button" data-sugg="${i}" aria-pressed="${r ? r.t === x.t : i === 0}">${esc(x.t)}</button>`).join('')}</div>` : ''}
+      <input class="field" id="mrT" maxlength="40" placeholder="Ej: Tomar la pastilla" value="${r ? esc(r.t) : first ? esc(first.t) : ''}" aria-label="Qué te recuerdo">
+      <input class="field" id="mrN" maxlength="80" placeholder="${cat ? REM_CAT[cat].hint : 'Detalle (opcional)'}" value="${r && r.note ? esc(r.note) : ''}" aria-label="Detalle">
+      <label class="lb" for="mrTime">Hora</label><input class="field" id="mrTime" type="time" value="${r ? r.time : '09:00'}">
+      <label class="lb">Días</label><div class="week-days" id="mrDays">${chips()}</div>
+      <div class="chips wrap"><button class="chip press" type="button" data-rpreset="all">Todos los días</button><button class="chip press" type="button" data-rpreset="week">Lunes a viernes</button><button class="chip press" type="button" data-rpreset="weekend">Fines de semana</button></div>
+      <div class="sheet-btns">${r ? '<button class="btn" type="button" id="mrDel">Borrar</button>' : '<button class="btn" type="button" data-close>Cancelar</button>'}<button class="btn rose" type="button" id="mrSave">Guardar</button></div>`, b => {
+      b.addEventListener('click', e => {
+        const d = e.target.closest('[data-rday]'); if (d) { const i = +d.dataset.rday; days = days.includes(i) ? days.filter(x => x !== i) : [...days, i]; $('#mrDays').innerHTML = chips(); buzz(4); }
+        const pr = e.target.closest('[data-rpreset]'); if (pr) { days = { all: [...ALL_DAYS], week: [0, 1, 2, 3, 4], weekend: [5, 6] }[pr.dataset.rpreset]; $('#mrDays').innerHTML = chips(); }
+        const sg = e.target.closest('[data-sugg]'); if (sg) { const x = sugg[+sg.dataset.sugg]; $('#mrT').value = x.t; ref = x.ref || ''; $$('[data-sugg]', b).forEach(c => c.setAttribute('aria-pressed', c === sg)); }
+      });
+      $('#mrSave').addEventListener('click', () => {
+        const t = $('#mrT').value.trim(), time = $('#mrTime').value, note = $('#mrN').value.trim();
+        if (!t) return toast('Escribí qué te recuerdo'); if (!time) return toast('Elegí la hora'); if (!days.length) return toast('Elegí al menos un día');
+        S.myRems = S.myRems || [];
+        if (r) Object.assign(r, { t, time, note, days: days.sort(), cat, ref }); else S.myRems.push({ id: uid(), t, time, note, days: days.sort(), on: true, cat, ref });
+        S.myRems.sort((a, b2) => a.time.localeCompare(b2.time));
+        save(); closeSheet(); renderMyRems(); toast(`Te aviso a las ${time}, ${daysLabel(days)}`); if (cat && bellOpen) setTimeout(() => remBellSheet(cat), 350);
+      });
+      const del = $('#mrDel'); if (del) del.addEventListener('click', () => { S.myRems = S.myRems.filter(x => x !== r); save(); closeSheet(); renderMyRems(); toast('Recordatorio borrado'); if (cat && bellOpen) setTimeout(() => remBellSheet(cat), 350); });
+    });
+  }
+  $('#addRem').addEventListener('click', () => myRemSheet(null));
+  $('#myRemList').addEventListener('click', e => {
+    const sw = e.target.closest('[data-myrem]'); if (sw) { const r = S.myRems.find(x => x.id === sw.dataset.myrem); r.on = !r.on; sw.setAttribute('aria-checked', r.on); save(); buzz(6); return; }
+    const ed = e.target.closest('[data-myremedit]'); if (ed) myRemSheet(S.myRems.find(x => x.id === ed.dataset.myremedit));
+  });
+
+  /* ---------- Recordatorios desde cada sección (campanita) ---------- */
+  // Cada recordatorio puede ser de una sección (cat) y de algo puntual (ref: un hábito, una meta, mañana/noche).
+  // Si ya cumpliste, no suena: 8 vasos, el hábito marcado hoy, la rutina de skincare completa, la meta lograda.
+  const REM_CAT = {
+    agua: { name: 'Agua', icon: 'drop', hint: 'Detalle (opcional, si no te digo cuántos vasos llevás)', sugg: () => [{ t: 'Tomar agua' }, { t: 'Un vaso de agua antes de comer' }] },
+    habitos: { name: 'Hábitos', icon: 'leaf', hint: 'Detalle (opcional)', sugg: () => S.habits.map(h => ({ t: h.n, ref: h.id })).concat([{ t: 'Marcar mis hábitos' }]) },
+    aprender: { name: 'Aprender', icon: 'book', hint: 'Detalle (opcional, ej: 2 pomodoros)', sugg: () => [{ t: 'Hora de estudiar' }].concat(S.study.subjects.map(x => ({ t: `Estudiar ${x.n}` })), [{ t: 'Repasar las tarjetas' }]) },
+    skin: { name: 'Skincare', icon: 'drop', hint: 'Detalle (opcional, si no te digo cuántos pasos faltan)', sugg: () => [{ t: 'Skincare de noche', ref: 'pm' }, { t: 'Skincare de mañana', ref: 'am' }] },
+    metas: { name: 'Metas', icon: 'target', hint: 'Detalle (opcional)', sugg: () => S.vision.filter(v => !v.done).map(v => ({ t: v.t, ref: v.id })).concat([{ t: 'Mirar mi tablero de metas' }]) }
+  };
+  // null = no avisar (ya lo cumpliste); si no, el texto del aviso
+  function remBody(r) {
+    if (r.cat === 'agua') return S.water >= 8 ? null : r.note || `Vas ${S.water} de 8 vasos`;
+    if (r.cat === 'habitos' && r.ref) { const h = S.habits.find(x => x.id === r.ref); if (h && h.w[todayIdx]) return null; return r.note || '¿Ya lo hiciste hoy?'; }
+    if (r.cat === 'habitos') { const n = S.habits.filter(h => !h.w[todayIdx]).length; return S.habits.length && !n ? null : r.note || `Te faltan ${n} para hoy`; }
+    if (r.cat === 'skin') { const seg = r.ref === 'am' ? 'am' : 'pm', n = skinLeft(seg); return skinList(seg).length && !n ? null : r.note || `${n} ${n === 1 ? 'paso' : 'pasos'} y listo`; }
+    if (r.cat === 'metas' && r.ref) { const v = S.vision.find(x => x.id === r.ref); if (v && v.done) return null; return r.note || 'Un pasito más hacia tu meta'; }
+    if (r.cat === 'aprender') return r.note || 'Un pomodoro y listo';
+    return r.note || 'Tu recordatorio';
+  }
+  function bellCounts() { $$('[data-rembell]').forEach(b => { const n = (S.myRems || []).filter(r => r.cat === b.dataset.rembell && r.on).length + (b.dataset.rembell === 'agua' && S.rem.agua.on ? 1 : 0) + (b.dataset.rembell === 'skin' && S.rem.skin.on ? 1 : 0); b.classList.toggle('has', n > 0); b.querySelector('i').textContent = n || ''; }); }
+  let bellOpen = false;
+  function remBellSheet(cat) {
+    const c = REM_CAT[cat], list = (S.myRems || []).filter(r => r.cat === cat);
+    const builtin = cat === 'agua' ? `<div class="rem"><span class="rem-ic">${ICON('drop')}</span><div class="txt"><b>Tomar agua seguido</b><small>cada <select data-remev="agua" aria-label="Cada cuántas horas">${[1, 2, 3].map(h => `<option value="${h}"${S.rem.agua.every === h ? ' selected' : ''}>${h} h</option>`).join('')}</select> de 9 a 21, hasta los 8 vasos</small></div><button class="switch" type="button" role="switch" data-rem="agua" aria-checked="${!!S.rem.agua.on}" aria-label="Tomar agua seguido"><i></i></button></div>`
+      : cat === 'skin' ? `<div class="rem"><span class="rem-ic">${ICON('moon')}</span><div class="txt"><b>Skincare de noche</b><small>a las <input type="time" data-remt="skin" value="${S.rem.skin.t}" aria-label="Hora del aviso"> si te faltan pasos</small></div><button class="switch" type="button" role="switch" data-rem="skin" aria-checked="${!!S.rem.skin.on}" aria-label="Skincare de noche"><i></i></button></div>` : '';
+    bellOpen = true;
+    sheet(`<span class="wide muted">Recordatorios</span><h3>${c.name}</h3>
+      <div class="rem-list">${builtin}${list.map(r => `<div class="rem"><span class="rem-ic">${ICON('bell')}</span><button class="txt rem-edit" type="button" data-bremedit="${r.id}" aria-label="Editar ${esc(r.t)}"><b>${esc(r.t)}</b><small>${r.time} · ${daysLabel(r.days)}${r.note ? ' · ' + esc(r.note) : ''}</small></button><button class="switch" type="button" role="switch" data-brem="${r.id}" aria-checked="${!!r.on}" aria-label="${esc(r.t)}"><i></i></button></div>`).join('')}</div>
+      ${!builtin && !list.length ? `<p class="note-sm">Todavía no tenés recordatorios de ${c.name.toLowerCase()}. Si ya cumpliste, no te molesto.</p>` : '<p class="note-sm">Si ya cumpliste, no te molesto.</p>'}
+      <div class="sheet-btns"><button class="btn" type="button" data-close>Cerrar</button><button class="btn rose" type="button" id="bremNew">${ICON('plus')}Nuevo</button></div>`, b => {
+      b.addEventListener('click', e => {
+        const sw = e.target.closest('[data-brem]'); if (sw) { const r = S.myRems.find(x => x.id === sw.dataset.brem); r.on = !r.on; sw.setAttribute('aria-checked', r.on); save(); bellCounts(); renderMyRems(); return; }
+        const bs = e.target.closest('[data-rem]'); if (bs) { const r = S.rem[bs.dataset.rem]; r.on = !r.on; bs.setAttribute('aria-checked', r.on); save(); bellCounts(); renderSettings(); return; }
+        const ed = e.target.closest('[data-bremedit]'); if (ed) return myRemSheet(S.myRems.find(x => x.id === ed.dataset.bremedit));
+      });
+      b.addEventListener('change', e => {
+        const ev = e.target.closest('[data-remev]'); if (ev) { S.rem.agua.every = +ev.value; save(); }
+        const t = e.target.closest('[data-remt]'); if (t && t.value) { S.rem[t.dataset.remt].t = t.value; save(); }
+      });
+      $('#bremNew').addEventListener('click', () => myRemSheet(null, { cat }));
+    });
+  }
+  document.addEventListener('click', e => { const b = e.target.closest('[data-rembell]'); if (b) { remBellSheet(b.dataset.rembell); buzz(6); } });
+  $('#sheet').addEventListener('click', e => { if (e.target === e.currentTarget || e.target.closest('[data-close]')) bellOpen = false; });
   let curView = 'hoy';
   function onView(v) { curView = v; ({ ejercicio: renderWorkExtras, diario: renderDiary, plata: renderFin, skin: renderSkin, metas: renderVision, ajustes: renderSettings, comida: renderRecipes, sueno: () => { renderSounds(); renderAlarm(); }, closet: renderClosetExtras })[v]?.(); }
   function bootExtras() {

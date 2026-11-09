@@ -104,9 +104,27 @@ export function dueMessages(st: State, tz: string, now = new Date()): Msg[] {
   if (rem.dormir?.on && inWindow(rem.dormir.t, mins)) out.push({ key: `dormir-${day}`, title: "Hora de ir a dormir", body: "Celular lejos y luces bajas. Mañana te lo agradecés.", tag: "dormir" });
   const habits = st.habits || [], pending = habits.filter((h: State) => !(st.week === week && h.w?.[idx])).length;
   if (rem.habitos?.on && inWindow(rem.habitos.t, mins) && pending) out.push({ key: `hab-${day}`, title: "¿Marcaste tus hábitos?", body: `Te faltan ${pending} para hoy`, tag: "habitos" });
-  const pm = (st.skin?.products || []).filter((p: State) => p.when === "pm" || p.when === "both"), done = today ? (st.skin?.done?.pm || []) : [];
+  const pm = (st.skin?.products || []).filter((p: State) => (p.when === "pm" || p.when === "both") && (!p.days?.pm || p.days.pm.includes(idx))), done = today ? (st.skin?.done?.pm || []) : [];
   const left = pm.filter((p: State) => !done.includes(p.id)).length;
   if (rem.skin?.on && inWindow(rem.skin.t, mins) && left) out.push({ key: `skin-${day}`, title: "Skincare de noche", body: `${left} pasos y a dormir`, tag: "skin" });
+  // tus recordatorios; si ya cumpliste (8 vasos, hábito marcado, rutina hecha, meta lograda) no suenan
+  const habitDone = (h: State) => st.week === week && !!h.w?.[idx];
+  const skinLeftFor = (seg: string) => {
+    const list = (st.skin?.products || []).filter((p: State) => (p.when === seg || p.when === "both") && (!p.days?.[seg] || p.days[seg].includes(idx)));
+    const d = today ? (st.skin?.done?.[seg] || []) : [];
+    return { total: list.length, left: list.filter((p: State) => !d.includes(p.id)).length };
+  };
+  for (const r of st.myRems || []) {
+    if (!r.on || !(r.days || []).includes(idx) || !inWindow(r.time, mins)) continue;
+    let body: string | null = r.note || "Tu recordatorio";
+    if (r.cat === "agua") body = water >= 8 ? null : r.note || `Vas ${water} de 8 vasos`;
+    else if (r.cat === "habitos" && r.ref) { const h = habits.find((x: State) => x.id === r.ref); body = h && habitDone(h) ? null : r.note || "¿Ya lo hiciste hoy?"; }
+    else if (r.cat === "habitos") body = habits.length && !pending ? null : r.note || `Te faltan ${pending} para hoy`;
+    else if (r.cat === "skin") { const k = skinLeftFor(r.ref === "am" ? "am" : "pm"); body = k.total && !k.left ? null : r.note || `${k.left} ${k.left === 1 ? "paso" : "pasos"} y listo`; }
+    else if (r.cat === "metas" && r.ref) { const v = (st.vision || []).find((x: State) => x.id === r.ref); body = v?.done ? null : r.note || "Un pasito más hacia tu meta"; }
+    else if (r.cat === "aprender") body = r.note || "Un pomodoro y listo";
+    if (body !== null) out.push({ key: `my-${r.id}-${day}`, title: r.t, body, tag: `my-${r.id}` });
+  }
   if (st.alarm?.on && inWindow(st.alarm.t, mins)) out.push({ key: `alarm-${day}`, title: `¡Buen día${name}!`, body: "Es la hora de tu alarma", tag: "alarm" });
   return out;
 }

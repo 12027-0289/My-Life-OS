@@ -39,7 +39,7 @@ Tocá **Go Live** (Live Server). Abre la carpeta y te lleva directo a la app.
 
 | I | **Ánimo y diario** | Cómo te sentís (5 florcitas), diario del día y "tres cosas lindas". Cruza tu ánimo con el sueño, el ejercicio y el agua ("los días que dormís 7½ h o más tu ánimo es 4,3") y muestra un gráfico de 14 días. |
 | J | **Plata** | Gastos del día en colones (₡) por categoría, presupuesto del mes con lo que te queda por día, gastos del mes por categoría y metas de ahorro. |
-| K | **Skincare** | Rutina de mañana y de noche armada con tus productos (tipo, cuándo lo usás y color del frasco), con racha de días completos. |
+| K | **Skincare** | Rutina de mañana y de noche armada con tus productos, distinta para cada día de la semana (por ejemplo retinol solo lunes y jueves), con racha de días completos. |
 | L | **Metas** | Tablero de sueños con frases o fotos por categoría. "¡Lo logré!" las marca con confeti. |
 | M | **Ajustes** | Tu nombre, la paleta de colores, modo noche, recordatorios e instalar la app. |
 
@@ -87,7 +87,7 @@ La app es una PWA: tiene `manifest.webmanifest`, íconos y un service worker (`s
 1. Abrila desde un servidor, no como archivo: con **Go Live** (Live Server) en la compu, o subida a cualquier hosting con https (por ejemplo GitHub Pages).
 2. **iPhone**: en Safari, Compartir → "Agregar a inicio". **Android**: en Chrome, menú ⋮ → "Instalar app". También aparece un botón "Instalar" en Ajustes.
 
-**Recordatorios**: en Ajustes elegís agua (cada 1, 2 o 3 h), hora de dormir, hábitos y skincare de noche. Con la app abierta te avisa siempre. Para que te lleguen **con la app cerrada** (gratis, con Web Push):
+**Recordatorios**: en Ajustes elegís agua (cada 1, 2 o 3 h), hora de dormir, hábitos y skincare de noche, y creás **los tuyos** con texto, hora y días. También desde la campanita de Comida (agua), Hábitos, Aprender, Skincare y Metas; si ya cumpliste (8 vasos, hábito marcado, rutina hecha, meta lograda), no suenan. Con la app abierta te avisa siempre. Para que te lleguen **con la app cerrada** (gratis, con Web Push):
 
 1. Supabase → **Edge Functions** → **Deploy a new function** → *Via Editor* → nombre `avisos` → pegá [`supabase/functions/avisos/index.ts`](supabase/functions/avisos/index.ts) → **Deploy**.
 2. En esa función → **Details** (o *Settings*) → apagá **Enforce JWT verification** / *Verify JWT* y guardá. Así el reloj automático la puede llamar; la función igual pide tu sesión para todo lo personal.

@@ -385,8 +385,8 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
     </div>
 
     <div class="duo">
-      <div class="card mini"><div class="eyebrow">Piel esta noche</div><p id="mini-skin"></p></div>
-      <div class="card mini"><div class="eyebrow">Cabello hoy</div><p id="mini-hair"></p></div>
+      <div class="card mini"><div class="eyebrow" id="mini-skin-lb">Piel esta noche</div><p id="mini-skin"></p></div>
+      <div class="card mini"><div class="eyebrow" id="mini-hair-lb">Cabello hoy</div><p id="mini-hair"></p></div>
     </div>
 
     <div class="sec-head"><h2>Energía <em>primero</em></h2></div>
@@ -530,6 +530,7 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
     </div>
     <div class="card" data-subview="skin">
       <h3>Noche · limpiador → ácido → hidratante</h3>
+      <p class="small" id="skToday"></p>
       <div class="sk" id="skweek"></div>
       <div class="keyrow"><span><i style="background:var(--rose)"></i>Salicílico</span><span><i style="background:var(--lilac)"></i>Glicólico</span><span><i style="background:var(--line)"></i>Solo limpiar e hidratar</span></div>
       <p class="small muted">Aplica el ácido con la piel bien seca, espera 5 minutos y luego la hidratante. Si después de 3 semanas tu piel está tranquila, añade glicólico también el sábado. Si arde, pica o se pela, vuelve un paso atrás.</p>
@@ -575,6 +576,7 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
 
     <div class="sec-head"><h2>Calendario <em>capilar</em></h2></div>
     <div class="card">
+      <p class="small" id="hairToday"></p>
       <div class="hc" id="hairweek"></div>
       <p class="small muted">Si necesitas lavar todos los días, hazlo; solo mantén las mascarillas en miércoles y domingo.</p>
     </div>
@@ -752,12 +754,17 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
 
   $("#week").innerHTML=WEEK.map((w,i)=>`<button class="day${i===todayIdx?" today":""}" data-i="${i}" data-k="${w.k}" aria-label="${DAYS[i]}: ${w.t}"><b>${SHORT[i]}</b><span></span></button>`).join("");
   $("#week").addEventListener("click",e=>{const b=e.target.closest(".day");if(!b)return;sel=+b.dataset.i;renderDay(true)});
+  $("#hero").addEventListener("click",e=>{if(e.target.closest("#backToday")){sel=todayIdx;renderDay(true)}});
 
   function renderDay(animate){
     $$(".day").forEach(b=>b.classList.toggle("sel",+b.dataset.i===sel));
     const w=WEEK[sel], rel=sel===todayIdx?"Hoy":DAYS[sel];
     const extra=w.k==="gl"?"6 ejercicios · calentamiento 5 min":(w.note||"");
     $("#hero").innerHTML=`<div class="eyebrow">${rel} · entreno</div><h2>${w.t}</h2><p style="opacity:.92">${extra}</p><div class="meta"><span class="chip">⏱ ${w.d}</span><span class="chip">👟 7–10 mil pasos</span>${w.k==="gl"?'<a class="chip" href="#entreno" style="text-decoration:none;background:#fff;color:var(--rose)">Ver rutina →</a>':""}${w.v?`<a class="chip" href="${w.v}" target="_blank" rel="noopener" style="text-decoration:none;background:#fff;color:var(--rose)">▶ Ver video</a>`:""}</div>`;
+    const isToday=sel===todayIdx, dn=DAYS[sel].toLowerCase();
+    $("#mini-skin-lb").textContent=isToday?"Piel esta noche":`Piel el ${dn} en la noche`;
+    $("#mini-hair-lb").textContent=isToday?"Cabello hoy":`Cabello el ${dn}`;
+    if(!isToday)$("#hero .meta").insertAdjacentHTML("beforeend",`<button class="chip" type="button" id="backToday" style="border:0;cursor:pointer;font:inherit;font-size:12px;font-weight:600;background:rgba(255,255,255,.22);color:#fff">↺ Volver a hoy</button>`);
     $("#mini-skin").innerHTML=SKINTXT[SKIN[sel]];
     $("#mini-hair").innerHTML=HAIRMINI[sel];
     if(animate){const h=$("#hero");h.style.animation="none";h.offsetHeight;h.style.animation=""}
@@ -832,7 +839,9 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
   $("#exlist").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const o=b.parentElement.classList.toggle("open");b.setAttribute("aria-expanded",o)});
 
   $("#weeklist").innerHTML=WEEK.map((w,i)=>`<div class="${i===todayIdx?"now":""}${w.k==="gl"?" mask":""}"><b>${SHORT[i]}</b><span style="flex:1">${w.t}</span><small class="muted" style="font-variant-numeric:tabular-nums">${w.d}</small></div>`).join("");
+  $("#skToday").innerHTML=`<b>Hoy, ${DAYS[todayIdx].toLowerCase()}:</b> ${SKINTXT[SKIN[todayIdx]].replace(/<\/?em>/g,"").toLowerCase()}`;
   $("#skweek").innerHTML=SKIN.map((s,i)=>`<div class="${s}${i===todayIdx?" now":""}">${SHORT[i]}<i></i></div>`).join("");
+  $("#hairToday").innerHTML=`<b>Hoy, ${DAYS[todayIdx].toLowerCase()}:</b> ${HAIR[todayIdx].toLowerCase()}`;
   $("#hairweek").innerHTML=HAIR.map((h,i)=>`<div class="${h.includes("mascarilla")?"mask":""}${i===todayIdx?" now":""}"><b>${SHORT[i]}</b><span>${h}</span></div>`).join("");
 
   $$(".seg button").forEach(b=>b.addEventListener("click",()=>{

@@ -1,9 +1,9 @@
 // Mi Glow Up: guarda la app para usarla sin internet y muestra los avisos.
-const CACHE = 'glow-v3';
+const CACHE = 'glow-v4';
 const SHELL = ['./index.html', './config.js', './vendor/supabase.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
@@ -14,8 +14,8 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   const keep = res => { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); return res; };
   if (url.origin === location.origin) {
-    // la app: primero la red (para ver cambios), si no hay internet, la copia guardada
-    e.respondWith(fetch(req).then(keep).catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || caches.match('./index.html'))));
+    // la app: primero la red sin caché del navegador (para ver los cambios apenas se publican), si no hay internet, la copia guardada
+    e.respondWith(fetch(req.url, { cache: 'no-cache', credentials: 'same-origin' }).then(keep).catch(() => caches.match(req, { ignoreSearch: true }).then(r => r || caches.match('./index.html'))));
   } else if (/fonts\.(googleapis|gstatic)\.com$/.test(url.hostname)) {
     // tipografías: primero la copia guardada
     e.respondWith(caches.match(req).then(r => r || fetch(req).then(keep)));

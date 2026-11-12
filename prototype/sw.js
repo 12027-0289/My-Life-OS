@@ -1,5 +1,5 @@
-// My Life OS: guarda la app para usarla sin internet y muestra los avisos.
-const CACHE = 'mlos-v6';
+// Mi Glow Up: guarda la app para usarla sin internet y muestra los avisos.
+const CACHE = 'glow-v1';
 const SHELL = ['./index.html', './config.js', './vendor/supabase.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -25,7 +25,7 @@ self.addEventListener('fetch', e => {
 self.addEventListener('push', e => {
   let d = {};
   try { d = e.data ? e.data.json() : {}; } catch (err) { d = { body: e.data ? e.data.text() : '' }; }
-  e.waitUntil(self.registration.showNotification(d.title || 'My Life OS', { body: d.body || '', tag: d.tag || undefined, icon: 'icon-192.png', badge: 'icon-192.png' }));
+  e.waitUntil(self.registration.showNotification(d.title || 'Mi Glow Up', { body: d.body || '', tag: d.tag || undefined, icon: 'icon-192.png', badge: 'icon-192.png' }));
 });
 self.addEventListener('notificationclick', e => {
   e.notification.close();

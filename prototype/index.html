@@ -301,7 +301,19 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
 /* reminder list */
 .rems{display:flex;flex-direction:column;gap:8px}
 .rem{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:var(--surface-solid);border:1px solid var(--line);transition:opacity .3s}
+.rem{position:relative;overflow:hidden;max-height:200px}
 .rem.off{opacity:.55}
+.trash{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;transition:background .2s,transform .2s;margin-right:-6px}
+.trash:hover{background:var(--rose-soft);transform:scale(1.08)}
+.trash svg{width:18px;height:18px;fill:none;stroke:var(--muted);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.trash:hover svg{stroke:var(--rose)}
+.rem .ask{position:absolute;inset:0;display:flex;align-items:center;gap:8px;padding:0 12px 0 16px;background:var(--surface-solid);transform:translateX(100%);transition:transform .35s cubic-bezier(.3,1.2,.5,1);font-size:14px}
+.rem .ask span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rem .ask .btn{padding:9px 14px;font-size:13px;flex:none}
+.rem.asking{opacity:1;border-color:var(--rose)}
+.rem .ask{visibility:hidden;transition:transform .35s cubic-bezier(.3,1.2,.5,1),visibility 0s .35s}
+.rem.asking .ask{transform:none;visibility:visible;transition:transform .35s cubic-bezier(.3,1.2,.5,1)}
+.rem.gone{opacity:0;transform:translateX(40px) scale(.96);max-height:0;padding-block:0;margin-block:-4px;border-width:0;transition:all .38s ease}
 .rem .time{font-family:var(--display);font-size:26px;line-height:1;color:var(--rose);font-variant-numeric:tabular-nums;flex:none;min-width:64px}
 .rem .info{all:unset;flex:1;min-width:0;cursor:pointer}
 .rem .info b{display:block;font-size:14.5px;overflow-wrap:anywhere}
@@ -876,7 +888,7 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
   });
   function renderRems(){
     const list=S.myRems;
-    $("#remList").innerHTML=list.length?list.map(r=>`<div class="rem${r.on?"":" off"}"><span class="time">${esc(r.time)}</span><button class="info" type="button" data-edit="${esc(r.id)}" aria-label="Editar ${esc(r.t)}"><b>${esc(r.t)}</b><small>${daysLabel(r.days||[])}${r.note?" · "+esc(r.note):""}</small></button><button class="switch" type="button" role="switch" data-sw="${esc(r.id)}" aria-checked="${!!r.on}" aria-label="${esc(r.t)}"><i></i></button></div>`).join("")
+    $("#remList").innerHTML=list.length?list.map(r=>`<div class="rem${r.on?"":" off"}" data-rem="${esc(r.id)}"><span class="time">${esc(r.time)}</span><button class="info" type="button" data-edit="${esc(r.id)}" aria-label="Editar ${esc(r.t)}"><b>${esc(r.t)}</b><small>${daysLabel(r.days||[])}${r.note?" · "+esc(r.note):""}</small></button><button class="switch" type="button" role="switch" data-sw="${esc(r.id)}" aria-checked="${!!r.on}" aria-label="${esc(r.t)}"><i></i></button><button class="trash" type="button" data-ask="${esc(r.id)}" aria-label="Eliminar ${esc(r.t)}"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 12.5h9l1-12.5M10 11v5M14 11v5"/></svg></button><div class="ask"><span>¿Eliminar <b>${esc(r.t)}</b>?</span><button class="btn ghost" type="button" data-no>No</button><button class="btn main" type="button" data-del="${esc(r.id)}">Eliminar</button></div></div>`).join("")
       :`<div class="empty"><b>Todavía no tienes</b>Toca una idea de tu plan o escribe el tuyo abajo.</div>`;
     const on=list.filter(r=>r.on).length+(S.rem.agua.on?1:0)+(S.rem.dormir.on?1:0);
     $("#remCount").textContent=on?`${on} activos`:"";
@@ -886,6 +898,19 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
     $("#dormirSw").setAttribute("aria-checked",!!S.rem.dormir.on); $("#dormirT").value=S.rem.dormir.t||"22:00";
   }
   $("#remList").addEventListener("click",e=>{
+    const ask=e.target.closest("[data-ask]");
+    if(ask){$$("#remList .rem.asking").forEach(x=>x.classList.remove("asking"));ask.closest(".rem").classList.add("asking");ask.closest(".rem").querySelector("[data-del]").focus();return}
+    if(e.target.closest("[data-no]")){e.target.closest(".rem").classList.remove("asking");return}
+    const del=e.target.closest("[data-del]");
+    if(del){
+      const id=del.dataset.del, row=del.closest(".rem"), r=S.myRems.find(x=>x.id===id);
+      if(editing&&editing.id===id){editing=null;fillForm(null)}
+      S.myRems=S.myRems.filter(x=>x.id!==id); save(["myRems"]);
+      burst(row,8); row.classList.add("gone");
+      setTimeout(renderRems,matchMedia("(prefers-reduced-motion: reduce)").matches?0:380);
+      toast(`Eliminado: ${r?r.t:"recordatorio"}`);
+      return;
+    }
     const sw=e.target.closest("[data-sw]");
     if(sw){const r=S.myRems.find(x=>x.id===sw.dataset.sw);r.on=!r.on;save(["myRems"]);renderRems();return}
     const ed=e.target.closest("[data-edit]");

@@ -576,6 +576,7 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
 
     <div class="sec-head"><h2>Calendario <em>capilar</em></h2></div>
     <div class="card">
+      <p class="small" id="hairToday"></p>
       <div class="hc" id="hairweek"></div>
       <p class="small muted">Si necesitas lavar todos los días, hazlo; solo mantén las mascarillas en miércoles y domingo.</p>
     </div>
@@ -840,6 +841,7 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
   $("#weeklist").innerHTML=WEEK.map((w,i)=>`<div class="${i===todayIdx?"now":""}${w.k==="gl"?" mask":""}"><b>${SHORT[i]}</b><span style="flex:1">${w.t}</span><small class="muted" style="font-variant-numeric:tabular-nums">${w.d}</small></div>`).join("");
   $("#skToday").innerHTML=`<b>Hoy, ${DAYS[todayIdx].toLowerCase()}:</b> ${SKINTXT[SKIN[todayIdx]].replace(/<\/?em>/g,"").toLowerCase()}`;
   $("#skweek").innerHTML=SKIN.map((s,i)=>`<div class="${s}${i===todayIdx?" now":""}">${SHORT[i]}<i></i></div>`).join("");
+  $("#hairToday").innerHTML=`<b>Hoy, ${DAYS[todayIdx].toLowerCase()}:</b> ${HAIR[todayIdx].toLowerCase()}`;
   $("#hairweek").innerHTML=HAIR.map((h,i)=>`<div class="${h.includes("mascarilla")?"mask":""}${i===todayIdx?" now":""}"><b>${SHORT[i]}</b><span>${h}</span></div>`).join("");
 
   $$(".seg button").forEach(b=>b.addEventListener("click",()=>{

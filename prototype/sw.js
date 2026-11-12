@@ -1,5 +1,5 @@
 // Mi Glow Up: guarda la app para usarla sin internet y muestra los avisos.
-const CACHE = 'glow-v2';
+const CACHE = 'glow-v3';
 const SHELL = ['./index.html', './config.js', './vendor/supabase.js', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

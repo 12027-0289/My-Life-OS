@@ -440,15 +440,24 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
       <p class="small muted">Grábate de lado una vez en el rumano y la sumo para revisar la técnica.</p>
     </div>
 
-    <div class="sec-head"><h2>Cardio <em>&amp; abs</em></h2><span class="eyebrow">Fausto Murillo</span></div>
+    <div class="sec-head"><h2>Cardio <em>&amp; abs</em></h2><span class="eyebrow">tus videos</span></div>
     <div class="card">
+      <div class="vids">
+        <a class="vid" href="https://youtu.be/GIrj9V4HchI" target="_blank" rel="noopener"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span><div>Rutina de abs<small>Martes · abs + bíceps</small></div></a>
+        <a class="vid" href="https://youtu.be/3oAf-GtOudI" target="_blank" rel="noopener"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span><div>Rutina de cardio<small>Miércoles · cardio</small></div></a>
+        <a class="vid" href="https://youtu.be/qNw8y_9TMIk" target="_blank" rel="noopener"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span><div>Rutina de abs<small>Viernes · abs</small></div></a>
+        <a class="vid" href="https://youtu.be/cCbPQ9eXRjE" target="_blank" rel="noopener"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span><div>Rutina de cardio<small>Sábado · cardio</small></div></a>
+      </div>
+      <p class="small"><b>Bíceps (martes, después de abs):</b> curl con mochila o botellas 3 × 12, curl martillo 3 × 12. Cuando sea fácil, añade peso.</p>
+    </div>
+    <div class="card">
+      <h3>Otras opciones · Fausto Murillo</h3>
       <div class="vids">
         <a class="vid" href="https://recapio.com/digest/mejores-ejercicios-para-cintura-de-avispa-y-abdomen-plano-en-9-minutos-rutina-para-abdomen-en-casa-b" target="_blank" rel="noopener"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span><div>Cintura de avispa y abdomen plano en 9 min<small>Martes y viernes · abs</small></div></a>
         <a class="vid" href="https://recapio.com/digest/rutina-express-cardio-abdomen-en-solo-9-min-by-fausto-murillo" target="_blank" rel="noopener"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span><div>Rutina Express: Cardio + Abdomen en 9 min<small>Martes y viernes · alternativa</small></div></a>
         <a class="vid" href="https://recapio.com/digest/10-minutos-de-cardio-para-quemar-grasa-en-casa-rapido-y-efectivo-by-fausto-murillo" target="_blank" rel="noopener"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span><div>10 minutos de cardio para quemar grasa<small>Miércoles · cardio corto</small></div></a>
         <a class="vid" href="https://recapio.com/digest/dia-6-cardio-intermedio-para-quemar-grasa-en-25-min-by-fausto-murillo" target="_blank" rel="noopener"><span class="play"><svg viewBox="0 0 10 12"><path d="M0 0l10 6-10 6z"/></svg></span><div>Día 6: Cardio intermedio en 25 min<small>Sábado · cardio largo</small></div></a>
       </div>
-      <p class="small"><b>Bíceps (martes, después de abs):</b> curl con mochila o botellas 3 × 12, curl martillo 3 × 12. Cuando sea fácil, añade peso.</p>
     </div>
   </section>
 
@@ -724,11 +733,11 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
   const SHORT=["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
   const WEEK=[
     {k:"gl",t:"Glúteos y piernas",d:"45 min"},
-    {k:"ab",t:"Abs + bíceps",d:"25 min",note:"Video de Fausto + curl 3×12 y martillo 3×12"},
-    {k:"ca",t:"Cardio",d:"10–25 min",note:"10 minutos de cardio para quemar grasa (Fausto)"},
+    {k:"ab",t:"Abs + bíceps",d:"25 min",note:"Tu video de abs + curl 3×12 y martillo 3×12",v:"https://youtu.be/GIrj9V4HchI"},
+    {k:"ca",t:"Cardio",d:"10–25 min",note:"Tu video de cardio",v:"https://youtu.be/3oAf-GtOudI"},
     {k:"gl",t:"Glúteos y piernas",d:"45 min"},
-    {k:"ab",t:"Abs",d:"10 min",note:"Cintura de avispa en 9 min (Fausto)"},
-    {k:"ca",t:"Cardio o caminata larga",d:"25–45 min",note:"Día 6: cardio intermedio en 25 min (Fausto)"},
+    {k:"ab",t:"Abs",d:"10 min",note:"Tu video de abs",v:"https://youtu.be/qNw8y_9TMIk"},
+    {k:"ca",t:"Cardio o caminata larga",d:"25–45 min",note:"Tu video de cardio o una caminata larga",v:"https://youtu.be/cCbPQ9eXRjE"},
     {k:"de",t:"Descanso",d:"—",note:"Descansa, camina suave y prepara la semana"}
   ];
   const SKIN=["sa","","gl","","sa","",""];
@@ -748,7 +757,7 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
     $$(".day").forEach(b=>b.classList.toggle("sel",+b.dataset.i===sel));
     const w=WEEK[sel], rel=sel===todayIdx?"Hoy":DAYS[sel];
     const extra=w.k==="gl"?"6 ejercicios · calentamiento 5 min":(w.note||"");
-    $("#hero").innerHTML=`<div class="eyebrow">${rel} · entreno</div><h2>${w.t}</h2><p style="opacity:.92">${extra}</p><div class="meta"><span class="chip">⏱ ${w.d}</span><span class="chip">👟 7–10 mil pasos</span>${w.k==="gl"?'<a class="chip" href="#entreno" style="text-decoration:none;background:#fff;color:var(--rose)">Ver rutina →</a>':""}</div>`;
+    $("#hero").innerHTML=`<div class="eyebrow">${rel} · entreno</div><h2>${w.t}</h2><p style="opacity:.92">${extra}</p><div class="meta"><span class="chip">⏱ ${w.d}</span><span class="chip">👟 7–10 mil pasos</span>${w.k==="gl"?'<a class="chip" href="#entreno" style="text-decoration:none;background:#fff;color:var(--rose)">Ver rutina →</a>':""}${w.v?`<a class="chip" href="${w.v}" target="_blank" rel="noopener" style="text-decoration:none;background:#fff;color:var(--rose)">▶ Ver video</a>`:""}</div>`;
     $("#mini-skin").innerHTML=SKINTXT[SKIN[sel]];
     $("#mini-hair").innerHTML=HAIRMINI[sel];
     if(animate){const h=$("#hero");h.style.animation="none";h.offsetHeight;h.style.animation=""}
@@ -835,8 +844,8 @@ nav.tabs a[aria-current="page"] svg{transform:translateY(-1px) scale(1.1)}
   const ALL=[0,1,2,3,4,5,6];
   const PRESETS=[
     {t:"Entreno de glúteos",time:"17:00",days:[0,3],note:"Hip thrust, búlgara y rumano. ¡Tú puedes!"},
-    {t:"Abs con Fausto",time:"17:00",days:[1,4],note:"Solo 10 minutos"},
-    {t:"Cardio",time:"17:00",days:[2,5],note:"Ponte el video de Fausto"},
+    {t:"Abs",time:"17:00",days:[1,4],note:"Ponte tu video de abs"},
+    {t:"Cardio",time:"17:00",days:[2,5],note:"Ponte tu video de cardio"},
     {t:"Protector solar",time:"07:00",days:ALL,note:"FPS 30 o más, siempre"},
     {t:"Skincare de noche",time:"21:00",days:ALL,note:"Limpiador, ácido si toca e hidratante"},
     {t:"Mascarilla de linaza",time:"19:00",days:[2],note:"20–30 min de medios a puntas"},
